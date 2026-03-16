@@ -62,8 +62,12 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
-      max-width: 640px;
+      max-width: 960px;
       width: 100%;
+    }
+
+    .card-icon.green {
+      background: rgba(62, 207, 142, 0.15);
     }
 
     .card {
@@ -167,12 +171,21 @@
       </div>
       <span class="card-badge wip">Static HTML</span>
     </a>
+
+    <a href="architecture.html" class="card">
+      <div class="card-icon green">📖</div>
+      <div class="card-title">Architecture</div>
+      <div class="card-desc">
+        Архитектурное повествование. CRD design, controllers, DAG engine, user flows.
+      </div>
+      <span class="card-badge">Narrative</span>
+    </a>
   </div>
 
   <div class="footer">
     <a href="https://github.com/kitsunoff/cozyap-" target="_blank">GitHub Repository</a>
     &nbsp;·&nbsp;
-    <a href="docs/architecture-narrative.md">Architecture</a>
+    <a href="docs/adr/">ADR Documents</a>
   </div>
 </body>
 </html>

@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cozy User Apps — Архитектура</title>
+  <style>
+    :root {
+      --bg-app: #1a1a1e;
+      --bg-sidebar: #16161a;
+      --bg-surface: #222226;
+      --bg-elevated: #2a2a2e;
+      --bg-hover: #2e2e34;
+      --text-primary: #e8e8ea;
+      --text-secondary: #9999a8;
+      --text-muted: #666672;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.14);
+      --accent-blue: #4c7ef3;
+      --accent-green: #3ecf8e;
+      --accent-amber: #f5a623;
+      --accent-red: #f87171;
+      --accent-purple: #a78bfa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, system-ui, 'Segoe UI', sans-serif;
+      background: var(--bg-app);
+      color: var(--text-primary);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* Header */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: var(--bg-sidebar);
+      border-bottom: 0.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    /* Sidebar TOC */
+    .sidebar {
+      position: fixed;
+      top: 48px;
+      left: 0;
+      width: 240px;
+      height: calc(100vh - 48px);
+      background: var(--bg-sidebar);
+      border-right: 0.5px solid var(--border);
+      padding: 24px 0;
+      overflow-y: auto;
+    }
+
+    .toc-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 0 20px;
+      margin-bottom: 12px;
+    }
+
+    .toc a {
+      display: block;
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 6px 20px;
+      transition: all 0.15s;
+    }
+
+    .toc a:hover {
+      color: var(--text-primary);
+      background: var(--bg-hover);
+    }
+
+    .toc a.active {
+      color: var(--accent-blue);
+      background: rgba(76, 126, 243, 0.1);
+      border-right: 2px solid var(--accent-blue);
+    }
+
+    .toc a.sub {
+      padding-left: 32px;
+      font-size: 12px;
+    }
+
+    /* Main content */
+    .main {
+      margin-left: 240px;
+      padding: 48px 0 0 0;
+    }
+
+    .content {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--text-primary);
+    }
+
+    .subtitle {
+      font-size: 16px;
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      padding-bottom: 24px;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 600;
+      margin-top: 56px;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      padding-top: 24px;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 600;
+      margin-top: 36px;
+      margin-bottom: 14px;
+      color: var(--text-primary);
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text-secondary);
+    }
+
+    strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    ul, ol {
+      margin-bottom: 16px;
+      padding-left: 24px;
+      color: var(--text-secondary);
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    li strong {
+      color: var(--accent-blue);
+    }
+
+    /* Code blocks */
+    code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      background: var(--bg-elevated);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent-purple);
+    }
+
+    pre {
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      overflow-x: auto;
+      margin: 20px 0;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    td {
+      padding: 12px 16px;
+      border: 0.5px solid var(--border);
+      color: var(--text-secondary);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    /* Info boxes */
+    .info-box {
+      background: var(--bg-elevated);
+      border-left: 3px solid var(--accent-blue);
+      padding: 16px 20px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .info-box.green {
+      border-left-color: var(--accent-green);
+    }
+
+    .info-box.amber {
+      border-left-color: var(--accent-amber);
+    }
+
+    /* ASCII diagrams */
+    .diagram {
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      margin: 24px 0;
+      overflow-x: auto;
+    }
+
+    .diagram pre {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .diagram code {
+      font-size: 12px;
+      line-height: 1.4;
+      color: var(--text-secondary);
+    }
+
+    /* Principles list */
+    .principles {
+      list-style: none;
+      padding: 0;
+      margin: 24px 0;
+    }
+
+    .principles li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .principles li:last-child {
+      border-bottom: none;
+    }
+
+    .principle-num {
+      width: 28px;
+      height: 28px;
+      background: rgba(76, 126, 243, 0.15);
+      color: var(--accent-blue);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .principle-text strong {
+      color: var(--text-primary);
+    }
+
+    /* Footer */
+    .doc-footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 0.5px solid var(--border);
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .doc-footer a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        margin-left: 0;
+      }
+      .content {
+        padding: 32px 20px 60px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html" class="logo">COZY≡TACK</a>
+  <nav class="nav-links">
+    <a href="index.html">Prototypes</a>
+    <a href="cozy-apps.html">UI Demo</a>
+    <a href="https://github.com/kitsunoff/cozyap-" target="_blank">GitHub</a>
+  </nav>
+</header>
+
+<aside class="sidebar">
+  <div class="toc-title">Содержание</div>
+  <nav class="toc">
+    <a href="#problem">Проблема</a>
+    <a href="#solution">Решение: Шаблоны и Экземпляры</a>
+    <a href="#parameters" class="sub">Параметры</a>
+    <a href="#hooks" class="sub">Хуки жизненного цикла</a>
+    <a href="#actions" class="sub">Действия (Actions)</a>
+    <a href="#environment">Среды выполнения</a>
+    <a href="#multitenancy" class="sub">Мультитенантность</a>
+    <a href="#sizing" class="sub">Размеры узлов</a>
+    <a href="#controllers">Архитектура контроллеров</a>
+    <a href="#state-machines" class="sub">Машины состояний</a>
+    <a href="#multi-cluster" class="sub">Многокластерная архитектура</a>
+    <a href="#dag-engine">DAG Engine: Argo Workflows</a>
+    <a href="#user-flows">Пользовательские сценарии</a>
+    <a href="#catalog">Каталог шаблонов</a>
+    <a href="#networking">Сеть</a>
+    <a href="#observability">Наблюдаемость</a>
+    <a href="#summary">Резюме архитектуры</a>
+  </nav>
+</aside>
+
+<main class="main">
+  <article class="content">
+    <h1>Cozy User Apps</h1>
+    <p class="subtitle">Архитектурное повествование — система управления приложениями для конечных пользователей поверх Cozystack</p>
+
+    <section id="problem">
+      <h2>Проблема</h2>
+      <p>Cozystack использует модель «один CRD на тип приложения». Хотите Minecraft-сервер — вот вам CRD для Minecraft. Нужен PostgreSQL — другой CRD. Это создаёт проблемы:</p>
+      <ul>
+        <li><strong>CRD — ресурсы уровня кластера.</strong> Они захламляют API-сервер.</li>
+        <li><strong>Для создания CRD нужны права cluster-admin.</strong> Обычному арендатору их не дашь.</li>
+        <li><strong>Каждый новый тип приложения</strong> требует нового CRD, контроллера, поддержки.</li>
+      </ul>
+      <div class="info-box">
+        Нужна универсальная абстракция: один механизм для любых приложений.
+      </div>
+    </section>
+
+    <section id="solution">
+      <h2>Решение: Шаблоны и Экземпляры</h2>
+      <p>Платформа вводит два ключевых ресурса:</p>
+
+      <div class="card">
+        <div class="card-title">ApplicationTemplate</div>
+        <p>Шаблон приложения. Описывает, как установить, обновить и удалить приложение. Это cluster-scoped ресурс, доступный всем арендаторам только для чтения. Создаётся оператором платформы или берётся из публичного каталога.</p>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Application</div>
+        <p>Экземпляр приложения. Конкретный Minecraft-сервер, конкретная база данных. Живёт в namespace арендатора. Арендатор создаёт Application, ссылаясь на ApplicationTemplate, и указывает свои параметры.</p>
+      </div>
+
+      <p><strong>Пример:</strong> арендатор хочет игровой сервер. Он находит в каталоге шаблон <code>minecraft</code>, создаёт Application с именем <code>my-minecraft</code>, указывает <code>serverName: "ACME Gaming"</code>, <code>maxPlayers: 50</code>. Платформа берёт шаблон, подставляет параметры, выполняет хуки установки.</p>
+
+      <h3 id="parameters">Параметры</h3>
+      <p>Шаблон определяет, какие параметры принимает приложение. Типы простые: строка, число, булев, перечисление, список, ссылка на Secret/ConfigMap. Никакой вложенности — плоская структура для простоты валидации и рендеринга в UI.</p>
+      <p>Каждый параметр несёт подсказки для интерфейса: метка, описание, плейсхолдер, порядок отображения, ограничения (min/max для чисел, варианты для перечислений).</p>
+
+      <h3 id="hooks">Хуки жизненного цикла</h3>
+      <p>Шаблон описывает три хука:</p>
+      <ul>
+        <li><strong>install</strong> — выполняется при создании Application</li>
+        <li><strong>upgrade</strong> — выполняется при изменении spec</li>
+        <li><strong>remove</strong> — выполняется при удалении Application</li>
+      </ul>
+      <p>Каждый хук — это последовательность шагов. Шаг — контейнер с образом и командой. Платформа превращает эти шаги в Argo Workflow и выполняет в целевом кластере.</p>
+
+      <h3 id="actions">Действия (Actions)</h3>
+      <p>Помимо системных хуков, шаблон может определять произвольные действия: бэкап, рестарт, миграция. Пользователь создаёт ресурс Action, платформа выполняет соответствующие шаги. Это расширяемый механизм операций без хардкода в платформе.</p>
+    </section>
+
+    <section id="environment">
+      <h2>Среды выполнения (Environment)</h2>
+      <p>Приложениям нужен кластер для работы. Вместо того чтобы заставлять пользователя разбираться в Kubernetes, платформа предоставляет абстракцию <strong>Environment</strong>.</p>
+
+      <p>Environment — это декларативное описание среды выполнения. Пользователь говорит: «Хочу production-среду с узлами размера medium». Платформа:</p>
+      <ol>
+        <li>Создаёт managed Kubernetes через Cozystack API</li>
+        <li>Устанавливает необходимые контроллеры (Argo Workflows, Argo Events, Ingress, cert-manager)</li>
+        <li>Генерирует kubeconfig и кладёт в Secret</li>
+        <li>Мониторит здоровье каждые 30 секунд</li>
+      </ol>
+
+      <p>Application ссылается на Environment по имени: <code>targetEnvironment: production</code>. Контроллер находит Environment, берёт kubeconfig, создаёт Workflow в целевом кластере.</p>
+
+      <h3 id="multitenancy">Мультитенантность</h3>
+      <p>Cozy User Apps не изобретает свою изоляцию. Она переиспользует существующую модель Cozystack:</p>
+      <ul>
+        <li>Каждый арендатор работает в своём namespace</li>
+        <li>ServiceAccount с RBAC ограничивает доступ</li>
+        <li>ResourceQuota лимитирует ресурсы</li>
+        <li>NetworkPolicy изолирует трафик между арендаторами</li>
+      </ul>
+      <p>В рамках своего namespace арендатор может создавать Environment, Application, Action. Между namespace'ами доступа нет. ApplicationTemplate — исключение: они cluster-scoped и read-only для всех.</p>
+
+      <h3 id="sizing">Размеры узлов</h3>
+      <p>Environment поддерживает подсказки по размеру:</p>
+      <table>
+        <thead>
+          <tr><th>Размер</th><th>vCPU</th><th>RAM</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>small</td><td>2</td><td>4Gi</td></tr>
+          <tr><td>medium</td><td>4</td><td>8Gi</td></tr>
+          <tr><td>large</td><td>8</td><td>16Gi</td></tr>
+          <tr><td>xlarge</td><td>16</td><td>32Gi</td></tr>
+        </tbody>
+      </table>
+      <p>Если не указать — платформа решит сама на основе нагрузки.</p>
+    </section>
+
+    <section id="controllers">
+      <h2>Архитектура контроллеров</h2>
+      <p>Единый бинарник <code>cozy-apps-operator</code> содержит несколько контроллеров:</p>
+      <ul>
+        <li><strong>Environment Controller</strong> — следит за Environment, создаёт кластеры через Cozystack, устанавливает контроллеры, мониторит здоровье.</li>
+        <li><strong>Application Controller</strong> — следит за Application, валидирует параметры, создаёт Workflow для install/upgrade/remove, отслеживает их статус.</li>
+        <li><strong>Action Controller</strong> — следит за Action, валидирует, создаёт Workflow для действий.</li>
+        <li><strong>Cleanup Controller</strong> — удаляет завершённые Action через 24 часа.</li>
+      </ul>
+
+      <h3 id="state-machines">Машины состояний</h3>
+
+      <div class="card">
+        <div class="card-title">Environment</div>
+        <pre><code>Pending → Provisioning → Ready ⇄ Degraded → Deleting → [удалён]</code></pre>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Application</div>
+        <pre><code>Pending → Installing → Running → Upgrading → Running
+                   ↓              ↓
+                Failed ←──────────┘</code></pre>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Action</div>
+        <pre><code>Pending → Running → Succeeded/Failed → [удалён через 24ч]</code></pre>
+      </div>
+
+      <h3 id="multi-cluster">Многокластерная архитектура</h3>
+      <p>Контроллер работает в host-кластере (Cozystack), но создаёт ресурсы в Environment-кластерах. Для этого поддерживается кэш клиентов:</p>
+      <ul>
+        <li>Клиенты создаются лениво при первом обращении</li>
+        <li>Kubeconfig обновляется каждые 5 минут</li>
+        <li>Устаревшие клиенты (Environment удалён) собираются garbage collector'ом</li>
+      </ul>
+
+      <h3>Финализаторы</h3>
+      <p>Environment и Application имеют финализаторы для корректной очистки:</p>
+      <ul>
+        <li>Environment финализатор ждёт удаления всех Application, потом удаляет кластер</li>
+        <li>Application финализатор запускает remove hook перед удалением</li>
+      </ul>
+      <p>Action финализатора не имеет — это короткоживущий ресурс.</p>
+    </section>
+
+    <section id="dag-engine">
+      <h2>DAG Engine: Argo Workflows</h2>
+      <p>Для выполнения хуков и действий платформа использует Argo Workflows. Это зрелый DAG-движок с поддержкой:</p>
+      <ul>
+        <li>Параллельного и последовательного выполнения шагов</li>
+        <li>Зависимостей между шагами (dependsOn)</li>
+        <li>Retry с backoff</li>
+        <li>Таймаутов на уровне шага и workflow</li>
+        <li>Shared volume для передачи данных между шагами</li>
+      </ul>
+
+      <h3>Маппинг шагов в Workflow</h3>
+      <p>Каждый шаг из ApplicationTemplate превращается в DAG task:</p>
+      <pre><code># В шаблоне
+steps:
+  - name: deploy
+    image: alpine/helm:3.14
+    args: [helm, install, ...]
+    dependsOn: [prepare]
+
+# Становится Argo Workflow DAG task
+tasks:
+  - name: deploy
+    template: deploy
+    dependencies: [prepare]</code></pre>
+
+      <h3>Платформенные данные</h3>
+      <p>Каждый Workflow получает доступ к:</p>
+      <ul>
+        <li><code>/platform/kubeconfig</code> — kubeconfig для доступа к host-кластеру (для заказа managed-сервисов)</li>
+        <li><code>/platform/values.yaml</code> — параметры Application</li>
+        <li><code>/platform/app.yaml</code> — метаданные Application</li>
+      </ul>
+      <p>Это позволяет шагам взаимодействовать с Cozystack для заказа баз данных, S3-бакетов и прочего.</p>
+
+      <h3>Модель выполнения</h3>
+      <p><strong>Системные хуки</strong> (install, upgrade, remove) — строго последовательные. Один Workflow на Application в один момент времени. Контроллер ждёт завершения перед запуском следующего.</p>
+      <p><strong>Действия</strong> (Actions) — параллельные. Несколько Action могут выполняться одновременно. Ответственность за конфликты — на пользователе.</p>
+
+      <h3>Очистка</h3>
+      <p>Workflow сохраняются для отладки:</p>
+      <ul>
+        <li>Успешные — 1 час</li>
+        <li>Неудачные — 24 часа</li>
+      </ul>
+      <p>Argo Workflows garbage collector удаляет их автоматически.</p>
+    </section>
+
+    <section id="user-flows">
+      <h2>Пользовательские сценарии</h2>
+      <p>Платформа обслуживает разные категории пользователей:</p>
+
+      <h3>Конечный пользователь (End User)</h3>
+      <p>Клиент ISP, хочет запустить игровой сервер. Kubernetes не знает, знать не хочет.</p>
+      <ol>
+        <li>Открывает веб-интерфейс, логинится</li>
+        <li>Просматривает каталог: игры, базы данных, веб-приложения</li>
+        <li>Выбирает Minecraft, видит описание и параметры</li>
+        <li>Выбирает Environment (production или staging)</li>
+        <li>Заполняет форму: имя сервера, максимум игроков, режим игры</li>
+        <li>Нажимает «Deploy», смотрит на прогресс установки</li>
+        <li>Получает работающий сервер</li>
+      </ol>
+      <p>Для отладки: централизованные логи в Grafana, скачивание kubeconfig для kubectl exec/port-forward, просмотр логов Workflow при ошибках установки.</p>
+
+      <h3>Автор шаблонов (Template Author)</h3>
+      <p>Контрибьютор сообщества, упаковывает приложения в шаблоны.</p>
+      <ol>
+        <li>Изучает, как приложение обычно устанавливается (Helm? Манифесты?)</li>
+        <li>Выделяет параметры, которые должен настраивать пользователь</li>
+        <li>Пишет хуки install/upgrade/remove</li>
+        <li>Добавляет действия (backup, restart)</li>
+        <li>Тестирует локально</li>
+        <li>Отправляет PR в репозиторий каталога</li>
+      </ol>
+      <div class="info-box green">
+        <strong>Best practices:</strong> использовать известные базовые образы, обеспечить идемпотентность, очищать все ресурсы в remove hook, пинить версии, не хардкодить параметры.
+      </div>
+
+      <h3>Оператор ISP</h3>
+      <p>Управляет платформой Cozystack, онбордит арендаторов.</p>
+      <ol>
+        <li>Разворачивает Cozystack</li>
+        <li>Устанавливает cozy-apps-operator</li>
+        <li>Настраивает синхронизацию каталога шаблонов</li>
+        <li>Создаёт namespace для арендаторов, настраивает RBAC и квоты</li>
+        <li>Мониторит через алерты: Environment Degraded, Application Failed, Resource Exhaustion</li>
+      </ol>
+
+      <h3>Разработчик</h3>
+      <p>Использует платформу как среду разработки.</p>
+      <p><strong>Git-based workflow:</strong></p>
+      <ol>
+        <li>Указывает Git-репозиторий как источник</li>
+        <li>Платформа клонирует, билдит через Kaniko, деплоит</li>
+        <li>Push в Git триггерит upgrade</li>
+        <li>Preview-окружения для pull request'ов</li>
+      </ol>
+    </section>
+
+    <section id="catalog">
+      <h2>Каталог шаблонов</h2>
+      <p>ApplicationTemplate нужно где-то хранить. Два варианта:</p>
+
+      <div class="card">
+        <div class="card-title">Вариант A: etcd (стандартный CRD)</div>
+        <p>Простота: это обычный Kubernetes CRD. Минус: etcd имеет лимит ~1.5MB на объект, нет версионирования, большой каталог нагружает etcd.</p>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--accent-green);">
+        <div class="card-title">Вариант B: Aggregated API Server + PostgreSQL (рекомендуется)</div>
+        <p>Kubernetes Aggregation Layer позволяет подменить обработку определённой API-группы своим сервером. ApplicationTemplate обрабатывается <code>cozy-apps-apiserver</code>, который хранит данные в PostgreSQL.</p>
+        <p style="margin-top: 12px;"><strong>Преимущества:</strong> нет лимитов etcd, нативное версионирование, SQL-запросы для поиска и фильтрации, масштабируется независимо от etcd, PostgreSQL уже есть в Cozystack.</p>
+      </div>
+
+      <p>При этом Application, Environment, Action остаются стандартными CRD в etcd — они небольшие и их не так много.</p>
+
+      <h3>Версионирование шаблонов</h3>
+      <p>Каждый ApplicationTemplate имеет версии. В первой версии Application ссылается на шаблон по имени без версии — всегда используется последняя. В будущем: <code>templateRef: minecraft@v1.2.3</code>.</p>
+      <p>Устаревшие версии можно пометить deprecated — они скрываются в UI, но продолжают работать для существующих Application.</p>
+    </section>
+
+    <section id="networking">
+      <h2>Сеть</h2>
+      <p>Приложениям нужен внешний доступ. Environment включает сетевые контроллеры:</p>
+      <ul>
+        <li><strong>Ingress Controller</strong> (nginx) — HTTP(S) роутинг, TLS termination. Приложения создают стандартные Ingress-ресурсы.</li>
+        <li><strong>cert-manager</strong> — автоматические TLS-сертификаты от Let's Encrypt.</li>
+        <li><strong>Cloud Controller Manager</strong> — для LoadBalancer-сервисов. Minecraft-сервер на 25565 порту? Service типа LoadBalancer получит внешний IP.</li>
+        <li><strong>External-DNS</strong> (опционально) — автоматическое создание DNS-записей.</li>
+      </ul>
+
+      <h3>Namespace для приложений</h3>
+      <p>Каждое приложение живёт в своём namespace внутри Environment:</p>
+      <pre><code>Environment Cluster
+├── argo-workflows/      # Платформа
+├── cert-manager/        # Платформа
+├── ingress-nginx/       # Платформа
+├── my-minecraft/        # Приложение
+├── my-webapp/           # Приложение
+└── my-database/         # Приложение</code></pre>
+      <p>Network Policy между приложениями пока не применяется — они могут общаться свободно. Это упрощение для первой версии.</p>
+    </section>
+
+    <section id="observability">
+      <h2>Наблюдаемость</h2>
+      <p>Логи и метрики собираются централизованно:</p>
+      <ul>
+        <li>В каждом Environment работает monitoring agent</li>
+        <li>Данные отправляются в центральную Grafana/Loki</li>
+        <li>Арендатор видит логи своих приложений через Grafana-дашборд</li>
+      </ul>
+      <p>Для интерактивной отладки — kubeconfig Secret позволяет подключиться к Environment напрямую и использовать kubectl.</p>
+    </section>
+
+    <section id="summary">
+      <h2>Резюме архитектуры</h2>
+
+      <div class="diagram">
+        <pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                        Host Cozystack                            │
+│  ┌─────────────────────────────────────────────────────────────┐│
+│  │                   cozy-apps-operator                        ││
+│  │  Environment Controller | Application Controller            ││
+│  │  Action Controller      | Cleanup Controller                ││
+│  └─────────────────────────────────────────────────────────────┘│
+│                                                                  │
+│  ┌─────────────────┐  ┌─────────────────┐                       │
+│  │ tenant-acme     │  │ tenant-globex   │                       │
+│  │ ┌─────────────┐ │  │ ┌─────────────┐ │                       │
+│  │ │ Environment │ │  │ │ Environment │ │                       │
+│  │ │ Application │ │  │ │ Application │ │                       │
+│  │ │ Action      │ │  │ │ Action      │ │                       │
+│  │ └─────────────┘ │  │ └─────────────┘ │                       │
+│  └─────────────────┘  └─────────────────┘                       │
+│                                                                  │
+│  ApplicationTemplate (cluster-scoped, read-only)                │
+└─────────────────────────────────────────────────────────────────┘
+          │                           │
+          ▼                           ▼
+┌─────────────────┐         ┌─────────────────┐
+│ Environment     │         │ Environment     │
+│ Cluster (ACME)  │         │ Cluster (Globex)│
+│ ┌─────────────┐ │         │ ┌─────────────┐ │
+│ │Argo Workflow│ │         │ │Argo Workflow│ │
+│ │Ingress      │ │         │ │Ingress      │ │
+│ │cert-manager │ │         │ │cert-manager │ │
+│ │Applications │ │         │ │Applications │ │
+│ └─────────────┘ │         │ └─────────────┘ │
+└─────────────────┘         └─────────────────┘</code></pre>
+      </div>
+
+      <h3>Ключевые принципы</h3>
+      <ul class="principles">
+        <li>
+          <span class="principle-num">1</span>
+          <span class="principle-text"><strong>Единообразие:</strong> один механизм для любых приложений</span>
+        </li>
+        <li>
+          <span class="principle-num">2</span>
+          <span class="principle-text"><strong>Изоляция:</strong> арендаторы в своих namespace, приложения в своих кластерах</span>
+        </li>
+        <li>
+          <span class="principle-num">3</span>
+          <span class="principle-text"><strong>Декларативность:</strong> Environment и Application — желаемое состояние, контроллеры приводят к нему</span>
+        </li>
+        <li>
+          <span class="principle-num">4</span>
+          <span class="principle-text"><strong>Расширяемость:</strong> новые приложения — это просто новые шаблоны, не код</span>
+        </li>
+        <li>
+          <span class="principle-num">5</span>
+          <span class="principle-text"><strong>Переиспользование:</strong> Cozystack multi-tenancy, Argo Workflows, стандартные Kubernetes-примитивы</span>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="doc-footer">
+      <p>Основано на <a href="docs/adr/">ADR 0001-0007</a> · <a href="https://github.com/kitsunoff/cozyap-">GitHub</a></p>
+    </footer>
+  </article>
+</main>
+
+<script>
+  // Highlight active TOC item on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const tocLinks = document.querySelectorAll('.toc a');
+
+  function updateTOC() {
+    const scrollPos = window.scrollY + 100;
+
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+
+      if (scrollPos >= top && scrollPos < top + height) {
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateTOC);
+  updateTOC();
+</script>
+
+</body>
+</html>
