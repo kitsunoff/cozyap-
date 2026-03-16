@@ -1,0 +1,1528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozystack User Apps — UI Mock</title>
+<link href="https://unpkg.com/antd@5/dist/reset.css" rel="stylesheet">
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/antd@5/dist/antd.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+
+  :root {
+    --bg-app:         #1a1a1e;
+    --bg-sidebar:     #16161a;
+    --bg-surface:     #222226;
+    --bg-elevated:    #2a2a2e;
+    --bg-hover:       #2e2e34;
+    --text-primary:   #e8e8ea;
+    --text-secondary: #9999a8;
+    --text-muted:     #666672;
+    --border:         rgba(255,255,255,0.08);
+    --border-hover:   rgba(255,255,255,0.14);
+    --accent-blue:    #4c7ef3;
+    --accent-green:   #3ecf8e;
+    --accent-amber:   #f5a623;
+    --accent-red:     #f87171;
+    --accent-purple:  #a78bfa;
+  }
+
+  body {
+    margin: 0;
+    background: #0f0f12;
+    font-family: -apple-system, system-ui, sans-serif;
+    color: var(--text-primary);
+  }
+
+  /* ─── Screen divider ─── */
+  .screen-divider {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 48px 40px 32px;
+    background: #0f0f12;
+  }
+  .screen-divider-line {
+    flex: 1;
+    height: 0.5px;
+    background: rgba(255,255,255,0.08);
+  }
+  .screen-divider-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+    background: #0f0f12;
+    padding: 0 8px;
+  }
+
+  /* ─── Shell ─── */
+  .shell {
+    display: flex;
+    flex-direction: column;
+    height: 780px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+    margin: 0 40px 0;
+    box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  }
+
+  /* ─── Topbar ─── */
+  .topbar {
+    height: 48px;
+    background: var(--bg-sidebar);
+    border-bottom: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 0;
+    flex-shrink: 0;
+    z-index: 10;
+  }
+  .topbar-logo {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-right: 24px;
+    white-space: nowrap;
+  }
+  .topbar-env-select {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 6px;
+    font-size: 12px;
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+  .topbar-env-select svg { color: var(--text-muted); }
+  .topbar-spacer { flex: 1; }
+  .topbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .topbar-icon-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: background 0.15s;
+  }
+  .topbar-icon-btn:hover { background: var(--bg-hover); }
+  .topbar-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4c7ef3, #a78bfa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    margin-left: 4px;
+    cursor: pointer;
+  }
+
+  /* ─── Body ─── */
+  .body-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: 176px;
+    background: var(--bg-sidebar);
+    border-right: 0.5px solid var(--border);
+    padding: 16px 0;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+  .sidebar-section-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 12px 16px 6px;
+  }
+  .sidebar-section-label:first-child { padding-top: 4px; }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 16px;
+    font-size: 13px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+    border-radius: 0;
+    user-select: none;
+  }
+  .sidebar-item:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+  }
+  .sidebar-item.active {
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+  .sidebar-item.sub {
+    padding-left: 28px;
+    font-size: 12px;
+  }
+
+  /* ─── Content ─── */
+  .content {
+    flex: 1;
+    background: var(--bg-app);
+    overflow-y: auto;
+    padding: 24px 28px;
+  }
+
+  /* ─── Page header ─── */
+  .page-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+  .page-breadcrumb a { color: var(--text-secondary); cursor: pointer; }
+  .page-breadcrumb a:hover { color: var(--text-primary); }
+  .page-breadcrumb .sep { color: var(--text-muted); }
+
+  .page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .page-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  /* ─── Status badges ─── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .badge-running    { background: rgba(62,207,142,0.15);  color: #3ecf8e; }
+  .badge-installing { background: rgba(76,126,243,0.15);  color: #4c7ef3; }
+  .badge-upgrading  { background: rgba(76,126,243,0.15);  color: #4c7ef3; }
+  .badge-starting   { background: rgba(245,166,35,0.15);  color: #f5a623; }
+  .badge-stopped    { background: rgba(255,255,255,0.06); color: #9999a8; }
+  .badge-failed     { background: rgba(248,113,113,0.15); color: #f87171; }
+  .badge-removing   { background: rgba(248,113,113,0.15); color: #f87171; }
+  .badge-ready      { background: rgba(62,207,142,0.15);  color: #3ecf8e; }
+  .badge-provisioning { background: rgba(76,126,243,0.15); color: #4c7ef3; }
+  .badge-degraded   { background: rgba(245,166,35,0.15);  color: #f5a623; }
+  .badge-deleting   { background: rgba(248,113,113,0.15); color: #f87171; }
+
+  /* ─── Category badges ─── */
+  .cat-badge {
+    display: inline-flex;
+    align-items: center;
+    height: 20px;
+    padding: 0 7px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .cat-cms     { background: rgba(52,130,246,0.15);  color: #6aaaf8; }
+  .cat-nodejs  { background: rgba(62,207,142,0.15);  color: #5dd6a0; }
+  .cat-php     { background: rgba(144,97,249,0.15);  color: #b08af9; }
+  .cat-static  { background: rgba(245,166,35,0.15);  color: #f5c462; }
+  .cat-game    { background: rgba(248,113,113,0.15); color: #f87171; }
+
+  /* ─── Env pill ─── */
+  .env-pill {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 7px;
+    background: rgba(167,139,250,0.12);
+    color: var(--accent-purple);
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .env-pill.staging { background: rgba(245,166,35,0.1); color: #f5a623; }
+
+  /* ─── App cards ─── */
+  .app-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .app-card {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .app-card:hover { border-color: var(--border-hover); }
+  .app-card-row1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .app-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .app-name {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  .app-card-row2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .app-card-row2 .type-label {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .app-card-row2 .domain-link {
+    font-size: 12px;
+    color: var(--accent-blue);
+    cursor: pointer;
+  }
+  .app-card-row2 .domain-link:hover { text-decoration: underline; }
+  .app-card-row3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .app-card-row3 .launch-time {
+    font-size: 12px;
+    color: var(--text-muted);
+    flex: 1;
+  }
+  .app-card-btns { display: flex; gap: 6px; margin-left: auto; }
+
+  /* ─── Buttons ─── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s, background 0.15s;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--accent-blue);
+    color: white;
+  }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-default {
+    background: transparent;
+    border: 0.5px solid var(--border-hover);
+    color: var(--text-primary);
+  }
+  .btn-default:hover { background: var(--bg-hover); }
+  .btn-danger {
+    background: transparent;
+    border: 0.5px solid rgba(248,113,113,0.3);
+    color: var(--accent-red);
+  }
+  .btn-danger:hover { background: rgba(248,113,113,0.08); }
+  .btn-icon {
+    background: transparent;
+    border: 0.5px solid var(--border-hover);
+    color: var(--text-muted);
+    padding: 0 8px;
+    width: 28px;
+  }
+  .btn-icon:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .btn-lg {
+    height: 34px;
+    padding: 0 16px;
+    font-size: 13px;
+  }
+
+  /* ─── Summary line ─── */
+  .summary-line {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding-top: 4px;
+  }
+
+  /* ─── Card sections (Details page) ─── */
+  .section-card {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .section-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 18px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .section-card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .desc-table { width: 100%; }
+  .desc-row {
+    display: flex;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .desc-row:last-child { border-bottom: none; }
+  .desc-label {
+    width: 160px;
+    padding: 10px 18px;
+    font-size: 12px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.02);
+  }
+  .desc-value {
+    padding: 10px 18px;
+    font-size: 13px;
+    color: var(--text-primary);
+    flex: 1;
+  }
+  .desc-value a { color: var(--accent-blue); cursor: pointer; }
+  .desc-value a:hover { text-decoration: underline; }
+
+  /* ─── Modal overlay ─── */
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    border-radius: 12px;
+  }
+  .modal-box {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 12px;
+    width: 440px;
+    overflow: hidden;
+  }
+  .modal-header {
+    padding: 18px 22px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .modal-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+  .modal-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .modal-body { padding: 22px; }
+  .modal-footer {
+    padding: 14px 22px;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  /* ─── Form elements ─── */
+  .form-group { margin-bottom: 18px; }
+  .form-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .form-label .required { color: var(--accent-red); margin-left: 2px; }
+  .form-label .lock-icon { opacity: 0.35; margin-left: 4px; }
+  .form-input {
+    width: 100%;
+    height: 34px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.15s;
+  }
+  .form-input:focus { border-color: var(--accent-blue); }
+  .form-input::placeholder { color: var(--text-muted); }
+  .form-select {
+    width: 100%;
+    height: 34px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666672' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+  .form-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 5px;
+  }
+  .form-input-wrap {
+    position: relative;
+  }
+  .form-input-wrap .eye-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .form-section-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.04em;
+    margin: 22px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .form-section-title:first-child { margin-top: 0; }
+
+  /* Toggle */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2px 0;
+  }
+  .toggle-label-wrap { flex: 1; }
+  .toggle-label-text {
+    font-size: 13px;
+    color: var(--text-primary);
+  }
+  .toggle {
+    width: 32px;
+    height: 18px;
+    border-radius: 9px;
+    background: var(--bg-hover);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle.on { background: var(--accent-blue); }
+  .toggle-knob {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: white;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: left 0.2s;
+  }
+  .toggle.on .toggle-knob { left: 16px; }
+
+  /* ─── Info box ─── */
+  .info-box {
+    background: var(--bg-elevated);
+    border-left: 3px solid var(--accent-blue);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 14px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  /* ─── App Store grid ─── */
+  .store-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .search-input {
+    flex: 1;
+    max-width: 280px;
+    height: 32px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 6px;
+    padding: 0 10px 0 32px;
+    font-size: 13px;
+    color: var(--text-primary);
+    outline: none;
+    font-family: inherit;
+    background-image: url("data:image/svg+xml,%3Csvg width='13' height='13' viewBox='0 0 13 13' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='5.5' cy='5.5' r='4.5' stroke='%23666672' stroke-width='1.2'/%3E%3Cpath d='M9 9L11.5 11.5' stroke='%23666672' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: 10px center;
+  }
+  .filter-btn {
+    height: 28px;
+    padding: 0 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    border: 0.5px solid transparent;
+    background: transparent;
+    color: var(--text-secondary);
+    transition: all 0.12s;
+  }
+  .filter-btn:hover { color: var(--text-primary); background: var(--bg-hover); }
+  .filter-btn.active {
+    background: rgba(76,126,243,0.15);
+    color: var(--accent-blue);
+    border-color: rgba(76,126,243,0.25);
+  }
+  .store-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+  }
+  .store-card {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    display: flex;
+    flex-direction: column;
+  }
+  .store-card:hover { border-color: var(--border-hover); }
+  .store-card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .store-card-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 5px;
+  }
+  .store-card-cats {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .store-card-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .store-card-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  /* ─── Template page ─── */
+  .template-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .template-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .template-big-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    flex-shrink: 0;
+  }
+  .template-title-block .title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .template-title-block h1 {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    line-height: 1.2;
+  }
+  .template-version {
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .template-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+  .template-cols {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    gap: 20px;
+  }
+  .checklist { list-style: none; padding: 0; margin: 12px 0; }
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--text-primary);
+    padding: 5px 0;
+  }
+  .checklist li .check { color: var(--accent-green); font-size: 13px; }
+  .actions-list { margin-top: 14px; }
+  .action-row {
+    display: flex;
+    flex-direction: column;
+    padding: 9px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .action-row:last-child { border-bottom: none; }
+  .action-row .action-name {
+    font-size: 13px;
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .action-row .action-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .meta-card {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .meta-row:last-child { border-bottom: none; }
+  .meta-key { font-size: 12px; color: var(--text-muted); }
+  .meta-val { font-size: 12px; color: var(--text-primary); font-weight: 500; }
+  .resources-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+  }
+  .resource-pill {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text-primary);
+  }
+
+  /* ─── Env cards ─── */
+  .env-card {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    cursor: pointer;
+    transition: border-color 0.15s;
+    margin-bottom: 10px;
+  }
+  .env-card:hover { border-color: var(--border-hover); }
+  .env-card-row1 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .env-card-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+    flex: 1;
+    font-family: monospace;
+    letter-spacing: 0.01em;
+  }
+  .env-card-row2 {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .res-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border);
+    border-radius: 5px;
+    padding: 3px 9px;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+  .env-card-row3 {
+    display: flex;
+    align-items: center;
+  }
+  .env-card-row3 .launch-time {
+    flex: 1;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ─── Dropdown menu ─── */
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 4px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 8px;
+    padding: 4px;
+    min-width: 160px;
+    z-index: 50;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 10px;
+    font-size: 13px;
+    color: var(--text-primary);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .dropdown-item:hover { background: var(--bg-hover); }
+  .dropdown-item.danger { color: var(--accent-red); }
+  .dropdown-divider { height: 0.5px; background: var(--border); margin: 4px 2px; }
+
+  /* relative for dropdown */
+  .rel { position: relative; }
+
+  /* form footer */
+  .form-footer {
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 0.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .form-footer-hint {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 10px;
+  }
+
+  /* Description section header */
+  .desc-section-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 16px 0 8px;
+  }
+
+  /* Content max-width for forms */
+  .form-wrap { max-width: 560px; }
+
+  /* Scroll indicator for modal overlay */
+  .screen-shell-wrap { position: relative; }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script>
+const { createElement: h, Fragment } = React;
+
+// ─── Helpers ───
+const Topbar = () =>
+  h('div', { className: 'topbar' },
+    h('div', { className: 'topbar-logo' }, 'COZY≡TACK'),
+    h('div', { className: 'topbar-env-select' },
+      h('span', null, '⬡'),
+      h('span', null, 'My Space'),
+      h('svg', { width: 9, height: 5, viewBox: '0 0 9 5', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
+        h('path', { d: 'M1 1L4.5 4L8 1', stroke: '#666672', strokeWidth: '1.5', strokeLinecap: 'round', strokeLinejoin: 'round' })
+      )
+    ),
+    h('div', { className: 'topbar-spacer' }),
+    h('div', { className: 'topbar-actions' },
+      h('div', { className: 'topbar-icon-btn' }, '🔔'),
+      h('div', { className: 'topbar-icon-btn' }, '?'),
+      h('div', { className: 'topbar-avatar' }, 'kv')
+    )
+  );
+
+const SidebarApp = ({ activeItem }) =>
+  h('div', { className: 'sidebar' },
+    h('div', { className: 'sidebar-section-label' }, 'Applications'),
+    h('div', { className: `sidebar-item sub ${activeItem === 'myapps' ? 'active' : ''}` }, 'My Apps'),
+    h('div', { className: `sidebar-item sub ${activeItem === 'appstore' ? 'active' : ''}` }, 'App Store'),
+    h('div', { className: 'sidebar-section-label' }, 'Infrastructure'),
+    h('div', { className: `sidebar-item ${activeItem === 'envs' ? 'active' : ''}` }, 'Environments'),
+    h('div', { className: 'sidebar-item' }, 'Resources'),
+    h('div', { className: 'sidebar-item' }, 'Backups'),
+    h('div', { className: 'sidebar-section-label' }, 'Account'),
+    h('div', { className: 'sidebar-item' }, 'Settings')
+  );
+
+const Breadcrumb = ({ items }) =>
+  h('div', { className: 'page-breadcrumb' },
+    ...items.flatMap((item, i) => [
+      i > 0 ? h('span', { key: `sep-${i}`, className: 'sep' }, '/') : null,
+      h('a', { key: `item-${i}` }, item)
+    ]).filter(Boolean)
+  );
+
+const StatusBadge = ({ status }) => {
+  const map = { Running: 'running', Installing: 'installing', Upgrading: 'upgrading', Starting: 'starting', Stopped: 'stopped', Failed: 'failed', Removing: 'removing', Ready: 'ready', Provisioning: 'provisioning', Degraded: 'degraded', Deleting: 'deleting' };
+  return h('span', { className: `badge badge-${map[status] || 'stopped'}` }, status);
+};
+
+const CatBadge = ({ cat }) =>
+  h('span', { className: `cat-badge cat-${cat}` }, cat);
+
+// ─── Screen divider ───
+const ScreenDiv = ({ label }) =>
+  h('div', { className: 'screen-divider' },
+    h('div', { className: 'screen-divider-line' }),
+    h('div', { className: 'screen-divider-label' }, label),
+    h('div', { className: 'screen-divider-line' })
+  );
+
+// ═══════════════════════════════════════════════
+//  SCREEN 1 — My Applications
+// ═══════════════════════════════════════════════
+const Screen1 = () => {
+  const apps = [
+    { icon: '🌐', name: 'my-blog', type: 'WordPress', status: 'Running', domain: 'my-blog.example.com', env: 'production', age: '5 days ago', primaryBtn: 'Open ↗' },
+    { icon: '🛒', name: 'shop', type: 'WooCommerce', status: 'Installing', domain: 'shop.example.com', env: 'production', age: '2 minutes ago', primaryBtn: 'Open ↗' },
+    { icon: '🎮', name: 'minecraft-server', type: 'Minecraft', status: 'Running', domain: null, env: 'staging', age: '1 day ago', primaryBtn: 'Connect' },
+    { icon: '📄', name: 'landing', type: 'Static Site', status: 'Stopped', domain: 'landing.example.com', env: 'production', age: '12 days ago', primaryBtn: 'Start' },
+  ];
+
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'myapps' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' }, 'My Applications'),
+          h('button', { className: 'btn btn-primary btn-lg' }, '+ Launch New App')
+        ),
+        h('div', { className: 'app-grid' },
+          ...apps.map(app =>
+            h('div', { key: app.name, className: 'app-card' },
+              h('div', { className: 'app-card-row1' },
+                h('div', { className: 'app-icon', style: { background: 'rgba(255,255,255,0.05)' } }, app.icon),
+                h('span', { className: 'app-name' }, app.name),
+                h(StatusBadge, { status: app.status })
+              ),
+              h('div', { className: 'app-card-row2' },
+                h('span', { className: 'type-label' }, app.type),
+                app.domain && h('span', { className: 'domain-link' }, app.domain)
+              ),
+              h('div', { className: 'app-card-row3' },
+                h('span', { className: 'launch-time' }, `Launched ${app.age}`),
+                h('span', { className: `env-pill ${app.env === 'staging' ? 'staging' : ''}` }, app.env),
+                h('div', { className: 'app-card-btns' },
+                  h('button', { className: 'btn btn-default' }, app.primaryBtn),
+                  h('button', { className: 'btn btn-default' }, 'Manage'),
+                  h('button', { className: 'btn btn-icon' }, '⋯')
+                )
+              )
+            )
+          )
+        ),
+        h('div', { className: 'summary-line' }, '4 applications · 2 running')
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 2 — Application Details
+// ═══════════════════════════════════════════════
+const Screen2 = () => {
+  const statusFields = [
+    ['Status', h(StatusBadge, { key: 'r', status: 'Running' })],
+    ['Environment', h('span', { key: 'e', className: 'env-pill' }, 'production')],
+    ['Template', 'WordPress'],
+    ['Domain', h('a', { key: 'd' }, 'my-blog.example.com')],
+    ['Created', 'January 10, 2024 at 14:32'],
+    ['Last updated', 'January 12, 2024 at 09:15'],
+  ];
+  const configFields = [
+    ['Site title', 'My Awesome Blog'],
+    ['Admin email', 'admin@example.com'],
+    ['Storage size', '10 GB'],
+    ['Enable cache', 'Yes'],
+  ];
+
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'myapps' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications', 'my-blog'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' },
+            h('span', null, 'my-blog'),
+            h(StatusBadge, { status: 'Running' })
+          ),
+          h('div', { className: 'rel' },
+            h('button', { className: 'btn btn-default btn-lg' }, 'Actions ▾'),
+            h('div', { className: 'dropdown-menu' },
+              h('div', { className: 'dropdown-item' }, '🔄 Restart'),
+              h('div', { className: 'dropdown-item' }, '📦 Create Backup'),
+              h('div', { className: 'dropdown-divider' }),
+              h('div', { className: 'dropdown-item danger' }, '🗑 Delete')
+            )
+          )
+        ),
+        h('div', { className: 'section-card' },
+          h('div', { className: 'section-card-header' },
+            h('span', { className: 'section-card-title' }, 'Status')
+          ),
+          h('div', { className: 'desc-table' },
+            ...statusFields.map(([k, v]) =>
+              h('div', { key: k, className: 'desc-row' },
+                h('div', { className: 'desc-label' }, k),
+                h('div', { className: 'desc-value' }, v)
+              )
+            )
+          )
+        ),
+        h('div', { className: 'section-card' },
+          h('div', { className: 'section-card-header' },
+            h('span', { className: 'section-card-title' }, 'Configuration'),
+            h('button', { className: 'btn btn-default' }, 'Edit')
+          ),
+          h('div', { className: 'desc-table' },
+            ...configFields.map(([k, v]) =>
+              h('div', { key: k, className: 'desc-row' },
+                h('div', { className: 'desc-label' }, k),
+                h('div', { className: 'desc-value' }, v)
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 3 — Action Modal (Backup)
+// ═══════════════════════════════════════════════
+const Screen3 = () => {
+  return h('div', { className: 'shell screen-shell-wrap' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'myapps' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications', 'my-blog'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' },
+            h('span', null, 'my-blog'),
+            h(StatusBadge, { status: 'Running' })
+          ),
+          h('div', { className: 'rel' },
+            h('button', { className: 'btn btn-default btn-lg' }, 'Actions ▾')
+          )
+        ),
+        h('div', { className: 'section-card', style: { opacity: 0.35 } },
+          h('div', { className: 'section-card-header' },
+            h('span', { className: 'section-card-title' }, 'Status')
+          ),
+          h('div', { className: 'desc-row' },
+            h('div', { className: 'desc-label' }, 'Status'),
+            h('div', { className: 'desc-value' }, h(StatusBadge, { status: 'Running' }))
+          ),
+          h('div', { className: 'desc-row' },
+            h('div', { className: 'desc-label' }, 'Environment'),
+            h('div', { className: 'desc-value' }, h('span', { className: 'env-pill' }, 'production'))
+          ),
+          h('div', { className: 'desc-row' },
+            h('div', { className: 'desc-label' }, 'Template'),
+            h('div', { className: 'desc-value' }, 'WordPress')
+          )
+        )
+      )
+    ),
+    // Modal overlay
+    h('div', { className: 'modal-overlay' },
+      h('div', { className: 'modal-box' },
+        h('div', { className: 'modal-header' },
+          h('div', { className: 'modal-title' }, 'Create Backup'),
+          h('div', { className: 'modal-subtitle' }, 'Create a backup of your WordPress site')
+        ),
+        h('div', { className: 'modal-body' },
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Backup name', h('span', { className: 'required' }, '*')),
+            h('input', { className: 'form-input', type: 'text', placeholder: 'before-update' }),
+            h('div', { className: 'form-hint' }, 'A short name to identify this backup')
+          )
+        ),
+        h('div', { className: 'modal-footer' },
+          h('button', { className: 'btn btn-default' }, 'Cancel'),
+          h('button', { className: 'btn btn-primary' }, 'Create Backup')
+        )
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 4 — App Store
+// ═══════════════════════════════════════════════
+const Screen4 = () => {
+  const apps = [
+    { icon: '🔵', name: 'WordPress', cats: ['cms'], desc: "The world's most popular CMS", iconBg: 'rgba(52,130,246,0.12)' },
+    { icon: '🟣', name: 'Drupal', cats: ['cms', 'php'], desc: 'Enterprise content management', iconBg: 'rgba(144,97,249,0.12)' },
+    { icon: '👻', name: 'Ghost', cats: ['cms'], desc: 'Modern publishing platform', iconBg: 'rgba(52,130,246,0.1)' },
+    { icon: '🟢', name: 'Node.js App', cats: ['nodejs'], desc: 'Deploy any Node.js application', iconBg: 'rgba(62,207,142,0.12)' },
+    { icon: '⚡', name: 'Next.js', cats: ['nodejs'], desc: 'Full-stack React framework', iconBg: 'rgba(62,207,142,0.1)' },
+    { icon: '📄', name: 'Static Site', cats: ['static'], desc: 'Fast static website with CDN', iconBg: 'rgba(245,166,35,0.1)' },
+    { icon: '🎮', name: 'Minecraft', cats: ['game'], desc: 'Vanilla Minecraft Java server', iconBg: 'rgba(248,113,113,0.1)' },
+    { icon: '🎯', name: 'CS2', cats: ['game'], desc: 'Counter-Strike 2 dedicated server', iconBg: 'rgba(248,113,113,0.1)' },
+  ];
+
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'appstore' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications', 'App Store'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' }, 'App Store')
+        ),
+        h('div', { className: 'store-toolbar' },
+          h('input', { className: 'search-input', type: 'text', placeholder: 'Search apps…' }),
+          ...['All', 'CMS', 'Node.js', 'PHP', 'Static', 'Games'].map((f, i) =>
+            h('button', { key: f, className: `filter-btn ${i === 0 ? 'active' : ''}` }, f)
+          )
+        ),
+        h('div', { className: 'store-grid' },
+          ...apps.map(app =>
+            h('div', { key: app.name, className: 'store-card' },
+              h('div', { className: 'store-card-icon', style: { background: app.iconBg } }, app.icon),
+              h('div', { className: 'store-card-name' }, app.name),
+              h('div', { className: 'store-card-cats' },
+                ...app.cats.map(c => h(CatBadge, { key: c, cat: c }))
+              ),
+              h('div', { className: 'store-card-desc' }, app.desc),
+              h('div', { className: 'store-card-footer' },
+                h('button', { className: 'btn btn-default' }, 'Launch →')
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 5 — Template Page (Minecraft)
+// ═══════════════════════════════════════════════
+const Screen5 = () => {
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'appstore' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications', 'App Store', 'Minecraft'] }),
+        h('div', { className: 'template-header' },
+          h('div', { className: 'template-header-left' },
+            h('div', { className: 'template-big-icon', style: { background: 'rgba(248,113,113,0.12)' } }, '🎮'),
+            h('div', { className: 'template-title-block' },
+              h('div', { className: 'title-row' },
+                h('h1', null, 'Minecraft'),
+                h(CatBadge, { cat: 'game' }),
+                h('span', { className: 'template-version' }, 'v1.20.4')
+              ),
+              h('p', { className: 'template-subtitle' }, 'Vanilla Minecraft Java Edition server')
+            )
+          ),
+          h('button', { className: 'btn btn-primary btn-lg' }, '🚀 Launch Minecraft →')
+        ),
+        h('div', { className: 'template-cols' },
+          h('div', null,
+            h('p', { style: { fontSize: 13, color: 'var(--text-secondary)', lineHeight: 1.6, marginTop: 0, marginBottom: 16 } },
+              'Host your own Minecraft server for you and your friends. Fully managed with automatic backups and easy configuration.'
+            ),
+            h('div', { className: 'desc-section-header' }, 'What\'s included'),
+            h('ul', { className: 'checklist' },
+              ...['Automatic world backups', 'Whitelist management', 'Server console access', 'Custom game modes'].map(item =>
+                h('li', { key: item }, h('span', { className: 'check' }, '✓'), item)
+              )
+            ),
+            h('div', { className: 'desc-section-header' }, 'Available actions'),
+            h('div', { className: 'actions-list' },
+              ...[
+                ['Restart', 'Restart the server process'],
+                ['Create Backup', 'Create a backup of world data'],
+                ['Restore Backup', 'Restore from a previous backup'],
+              ].map(([name, desc]) =>
+                h('div', { key: name, className: 'action-row' },
+                  h('span', { className: 'action-name' }, name),
+                  h('span', { className: 'action-desc' }, desc)
+                )
+              )
+            )
+          ),
+          h('div', null,
+            h('div', { className: 'meta-card' },
+              h('div', { className: 'section-card-header' },
+                h('span', { className: 'section-card-title' }, 'Details')
+              ),
+              ...[
+                ['Maintained by', 'Community'],
+                ['Latest version', '1.20.4'],
+                ['Last updated', '1 week ago'],
+                ['Min. storage', '10 GB'],
+              ].map(([k, v]) =>
+                h('div', { key: k, className: 'meta-row' },
+                  h('span', { className: 'meta-key' }, k),
+                  h('span', { className: 'meta-val' }, v)
+                )
+              ),
+              h('div', { style: { padding: '12px 16px', borderTop: '0.5px solid var(--border)' } },
+                h('div', { style: { fontSize: 11, color: 'var(--text-muted)', marginBottom: 8, fontWeight: 500, letterSpacing: '0.06em', textTransform: 'uppercase' } }, 'Resources'),
+                h('div', { className: 'resources-pills', style: { padding: 0 } },
+                  h('div', { className: 'resource-pill' }, '💻 2 CPU'),
+                  h('div', { className: 'resource-pill' }, '🧠 2 GB RAM'),
+                  h('div', { className: 'resource-pill' }, '💾 10 GB')
+                )
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 6 — Launch Form (Minecraft)
+// ═══════════════════════════════════════════════
+const Screen6 = () => {
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'appstore' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications', 'App Store', 'Minecraft', 'Launch'] }),
+        h('div', { className: 'page-header', style: { marginBottom: 6 } },
+          h('h1', { className: 'page-title' }, 'Launch Minecraft')
+        ),
+        h('p', { style: { fontSize: 13, color: 'var(--text-muted)', marginBottom: 22, marginTop: 0 } },
+          'Your server will be ready in about 3 minutes'
+        ),
+        h('div', { className: 'form-wrap' },
+          h('div', { className: 'form-section-title' }, 'Basic'),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'App name', h('span', { className: 'required' }, '*')),
+            h('input', { className: 'form-input', type: 'text', placeholder: 'my-minecraft' }),
+            h('div', { className: 'form-hint' }, 'Used as your app\'s identifier. Lowercase, no spaces.')
+          ),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Environment', h('span', { className: 'required' }, '*')),
+            h('select', { className: 'form-select' },
+              h('option', null, 'production'),
+              h('option', null, 'staging')
+            ),
+            h('div', { className: 'form-hint' }, 'Where your application will run')
+          ),
+
+          h('div', { className: 'form-section-title' }, 'Server Settings'),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Server name'),
+            h('input', { className: 'form-input', type: 'text', placeholder: 'My Minecraft Server' }),
+            h('div', { className: 'form-hint' }, 'Display name shown in server list')
+          ),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Max players'),
+            h('select', { className: 'form-select' },
+              h('option', null, '10'),
+              h('option', null, '20'),
+              h('option', null, '50'),
+              h('option', null, '100')
+            ),
+            h('div', { className: 'form-hint' }, 'Maximum concurrent players')
+          ),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Game mode'),
+            h('select', { className: 'form-select' },
+              h('option', null, 'Survival'),
+              h('option', null, 'Creative'),
+              h('option', null, 'Adventure'),
+              h('option', null, 'Spectator')
+            )
+          ),
+          h('div', { className: 'form-group' },
+            h('div', { className: 'toggle-row' },
+              h('div', { className: 'toggle-label-wrap' },
+                h('label', { className: 'form-label', style: { marginBottom: 2 } }, 'Enable whitelist'),
+                h('div', { className: 'form-hint', style: { marginTop: 0 } }, 'Only allow approved players to join')
+              ),
+              h('div', { className: 'toggle' }, h('div', { className: 'toggle-knob' }))
+            )
+          ),
+
+          h('div', { className: 'form-section-title' }, 'Resources'),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Storage size'),
+            h('select', { className: 'form-select' },
+              h('option', null, '10 GB'),
+              h('option', null, '20 GB'),
+              h('option', null, '50 GB')
+            )
+          ),
+
+          h('div', { className: 'form-footer' },
+            h('button', { className: 'btn btn-primary btn-lg' }, '🚀 Launch Minecraft'),
+            h('button', { className: 'btn btn-default btn-lg' }, 'Cancel')
+          ),
+          h('div', { className: 'form-footer-hint' }, 'You can change these settings later from the app dashboard.')
+        )
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 7 — Environments
+// ═══════════════════════════════════════════════
+const Screen7 = () => {
+  const envs = [
+    {
+      name: 'production', status: 'Ready', nodes: 3, cpu: 12, ram: 48, age: '2 weeks ago'
+    },
+    {
+      name: 'staging', status: 'Ready', nodes: 2, cpu: 8, ram: 32, age: '1 week ago'
+    }
+  ];
+
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'envs' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Environments'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' }, 'Environments'),
+          h('button', { className: 'btn btn-primary btn-lg' }, '+ Create Environment')
+        ),
+        ...envs.map(env =>
+          h('div', { key: env.name, className: 'env-card' },
+            h('div', { className: 'env-card-row1' },
+              h('span', { className: 'env-card-name' }, env.name),
+              h(StatusBadge, { status: env.status })
+            ),
+            h('div', { className: 'env-card-row2' },
+              h('span', { className: 'res-pill' }, `🖥 ${env.nodes} nodes`),
+              h('span', { className: 'res-pill' }, `💻 ${env.cpu} CPU`),
+              h('span', { className: 'res-pill' }, `🧠 ${env.ram} GB RAM`)
+            ),
+            h('div', { className: 'env-card-row3' },
+              h('span', { className: 'launch-time' }, `Created ${env.age}`),
+              h('div', { style: { display: 'flex', gap: 6 } },
+                h('button', { className: 'btn btn-default' }, 'Manage'),
+                h('button', { className: 'btn btn-icon' }, '⋯')
+              )
+            )
+          )
+        ),
+        h('div', { className: 'summary-line' }, '2 environments · 2 ready')
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 8 — Create Environment
+// ═══════════════════════════════════════════════
+const Screen8 = () => {
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'envs' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Environments', 'Create'] }),
+        h('div', { className: 'page-header', style: { marginBottom: 6 } },
+          h('h1', { className: 'page-title' }, 'Create Environment')
+        ),
+        h('p', { style: { fontSize: 13, color: 'var(--text-muted)', marginBottom: 22, marginTop: 0 } },
+          'Provisioning takes about 5–10 minutes'
+        ),
+        h('div', { className: 'form-wrap' },
+          h('div', { className: 'form-section-title' }, 'Basic'),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Environment name', h('span', { className: 'required' }, '*')),
+            h('input', { className: 'form-input', type: 'text', placeholder: 'development' }),
+            h('div', { className: 'form-hint' }, 'Used as identifier. Lowercase, no spaces.')
+          ),
+
+          h('div', { className: 'form-section-title' }, 'Resources'),
+          h('div', { className: 'info-box' },
+            'Leave empty for automatic sizing based on your workload. You can adjust resources later.'
+          ),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Max nodes'),
+            h('input', { className: 'form-input', type: 'number', placeholder: 'auto' }),
+            h('div', { className: 'form-hint' }, 'Maximum number of worker nodes')
+          ),
+          h('div', { className: 'form-group' },
+            h('label', { className: 'form-label' }, 'Node size'),
+            h('select', { className: 'form-select' },
+              h('option', null, 'Auto'),
+              h('option', null, 'Small (2 CPU, 4 GB)'),
+              h('option', null, 'Medium (4 CPU, 8 GB)'),
+              h('option', null, 'Large (8 CPU, 16 GB)')
+            )
+          ),
+
+          h('div', { className: 'form-footer' },
+            h('button', { className: 'btn btn-primary btn-lg' }, 'Create Environment'),
+            h('button', { className: 'btn btn-default btn-lg' }, 'Cancel')
+          )
+        )
+      )
+    )
+  );
+};
+
+// ─── App Root ───
+const App = () =>
+  h(Fragment, null,
+    // padding top
+    h('div', { style: { height: 40 } }),
+
+    h(ScreenDiv, { label: 'Screen 1 — My Applications' }),
+    h(Screen1),
+
+    h(ScreenDiv, { label: 'Screen 2 — Application Details' }),
+    h(Screen2),
+
+    h(ScreenDiv, { label: 'Screen 3 — Action Modal (Create Backup)' }),
+    h(Screen3),
+
+    h(ScreenDiv, { label: 'Screen 4 — App Store' }),
+    h(Screen4),
+
+    h(ScreenDiv, { label: 'Screen 5 — Template Page (Minecraft)' }),
+    h(Screen5),
+
+    h(ScreenDiv, { label: 'Screen 6 — Launch Form (Minecraft)' }),
+    h(Screen6),
+
+    h(ScreenDiv, { label: 'Screen 7 — Environments' }),
+    h(Screen7),
+
+    h(ScreenDiv, { label: 'Screen 8 — Create Environment' }),
+    h(Screen8),
+
+    h('div', { style: { height: 60 } })
+  );
+
+ReactDOM.createRoot(document.getElementById('root')).render(h(App));
+</script>
+</body>
+</html>
