@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cozy User Apps — Design Prototypes</title>
+  <style>
+    :root {
+      --bg-app: #1a1a1e;
+      --bg-sidebar: #16161a;
+      --bg-surface: #222226;
+      --bg-elevated: #2a2a2e;
+      --bg-hover: #2e2e34;
+      --text-primary: #e8e8ea;
+      --text-secondary: #9999a8;
+      --text-muted: #666672;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(255,255,255,0.14);
+      --accent-blue: #4c7ef3;
+      --accent-green: #3ecf8e;
+      --accent-purple: #a78bfa;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, system-ui, sans-serif;
+      background: var(--bg-app);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .logo {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      max-width: 640px;
+      width: 100%;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+    }
+
+    .card-icon.blue {
+      background: rgba(76, 126, 243, 0.15);
+    }
+
+    .card-icon.purple {
+      background: rgba(167, 139, 250, 0.15);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .card-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(62, 207, 142, 0.15);
+      color: var(--accent-green);
+    }
+
+    .card-badge.wip {
+      background: rgba(245, 166, 35, 0.15);
+      color: #f5a623;
+    }
+
+    .footer {
+      margin-top: 48px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">COZY≡TACK</div>
+    <div class="subtitle">User Apps — Design Prototypes</div>
+  </div>
+
+  <div class="cards">
+    <a href="cozy-apps.html" class="card">
+      <div class="card-icon blue">🎨</div>
+      <div class="card-title">Cozy Apps UI</div>
+      <div class="card-desc">
+        Full UI prototype with Ant Design. 8 screens: My Apps, App Details, App Store, Launch Form, Environments.
+      </div>
+      <span class="card-badge">AntD v5</span>
+    </a>
+
+    <a href="mock-ui.html" class="card">
+      <div class="card-icon purple">📐</div>
+      <div class="card-title">Mock UI</div>
+      <div class="card-desc">
+        Initial wireframe mockup. Static HTML/CSS prototype for early design exploration.
+      </div>
+      <span class="card-badge wip">Static HTML</span>
+    </a>
+  </div>
+
+  <div class="footer">
+    <a href="https://github.com/kitsunoff/cozyap-" target="_blank">GitHub Repository</a>
+    &nbsp;·&nbsp;
+    <a href="docs/architecture-narrative.md">Architecture</a>
+  </div>
+</body>
+</html>
