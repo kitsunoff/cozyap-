@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cozy User Apps — Presentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap');
+
+    :root {
+      --bg-slide:       #0f0f12;
+      --bg-card:        #1a1a1f;
+      --bg-elevated:    #222228;
+      --bg-code:        #0c0c10;
+      --text-primary:   #e8e8ea;
+      --text-secondary: #8888a0;
+      --text-muted:     #555566;
+      --border:         rgba(255,255,255,0.07);
+      --border-bright:  rgba(255,255,255,0.13);
+      --accent-blue:    #4c7ef3;
+      --accent-green:   #3ecf8e;
+      --accent-amber:   #f5a623;
+      --accent-red:     #f87171;
+      --accent-purple:  #a78bfa;
+      --accent-cyan:    #22d3ee;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--bg-slide);
+      color: var(--text-primary);
+      font-family: 'DM Sans', system-ui, sans-serif;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    /* ── PRESENTATION WRAPPER ── */
+    .presentation {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+
+    .slide {
+      height: 100vh;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 60px 80px;
+      overflow: hidden;
+    }
+
+    .slide-inner {
+      width: 100%;
+      max-width: 1100px;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ── BACKGROUND DECORATION ── */
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 80% 20%, rgba(76,126,243,0.06) 0%, transparent 70%),
+                  radial-gradient(ellipse 40% 40% at 20% 80%, rgba(62,207,142,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .slide-number {
+      position: absolute;
+      bottom: 32px;
+      right: 40px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── PROGRESS ── */
+    #progress-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+      transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+      z-index: 100;
+      box-shadow: 0 0 12px rgba(76,126,243,0.6);
+    }
+
+    /* ── SLIDE COUNTER ── */
+    #slide-counter {
+      position: fixed;
+      bottom: 18px;
+      right: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      z-index: 100;
+    }
+
+    /* ── NAV HINT ── */
+    #nav-hint {
+      position: fixed;
+      bottom: 18px;
+      left: 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+      z-index: 100;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .key-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+    }
+    .key {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-bright);
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-size: 10px;
+    }
+
+    /* ── TYPOGRAPHY ── */
+    .slide-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-blue);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .slide-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent-blue);
+      opacity: 0.6;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 52px;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      margin-bottom: 28px;
+    }
+    h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    p { font-size: 17px; line-height: 1.7; color: var(--text-secondary); }
+
+    /* ── LOGO ── */
+    .logo-block {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .logo-block .sep { color: var(--accent-blue); }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+    }
+    .card--elevated {
+      background: var(--bg-elevated);
+      border-color: var(--border-bright);
+    }
+
+    /* ── TABLES ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 16px;
+    }
+    th {
+      background: var(--bg-elevated);
+      font-family: 'Syne', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-secondary);
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-bright);
+    }
+    td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-primary);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.015); }
+
+    /* ── BULLET LISTS ── */
+    .list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+    .list li .bullet {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-blue);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+    .list li strong { color: var(--text-primary); font-weight: 500; }
+
+    /* ── NUMBERED LIST ── */
+    .numlist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .numlist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      font-size: 17px;
+      line-height: 1.55;
+      color: var(--text-secondary);
+    }
+    .numlist li .num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      background: rgba(76,126,243,0.12);
+      border-radius: 4px;
+      padding: 2px 7px;
+      margin-top: 2px;
+      flex-shrink: 0;
+      min-width: 28px;
+      text-align: center;
+    }
+    .numlist li strong { color: var(--text-primary); font-weight: 500; }
+
+    /* ── CODE ── */
+    .code-block {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      color: #c9c9d8;
+      overflow-x: auto;
+      tab-size: 2;
+      white-space: pre;
+    }
+    .code-block .kw  { color: var(--accent-blue); }
+    .code-block .str { color: var(--accent-green); }
+    .code-block .cm  { color: var(--text-muted); font-style: italic; }
+    .code-block .kn  { color: var(--accent-purple); }
+    .code-block .nm  { color: var(--accent-amber); }
+    .code-block .op  { color: var(--text-secondary); }
+
+    /* ── BADGE ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      height: 24px;
+      padding: 0 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+    .badge--blue   { background: rgba(76,126,243,0.15);  color: var(--accent-blue); }
+    .badge--green  { background: rgba(62,207,142,0.15);  color: var(--accent-green); }
+    .badge--amber  { background: rgba(245,166,35,0.15);  color: var(--accent-amber); }
+    .badge--purple { background: rgba(167,139,250,0.15); color: var(--accent-purple); }
+    .badge--red    { background: rgba(248,113,113,0.15); color: var(--accent-red); }
+    .badge--cyan   { background: rgba(34,211,238,0.15);  color: var(--accent-cyan); }
+
+    /* ── HIGHLIGHT BOX ── */
+    .highlight {
+      background: rgba(76,126,243,0.08);
+      border-left: 3px solid var(--accent-blue);
+      padding: 14px 20px;
+      border-radius: 0 8px 8px 0;
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    .highlight strong { color: var(--text-primary); }
+
+    /* ── TWO COLUMNS ── */
+    .cols {
+      display: grid;
+      gap: 40px;
+      align-items: start;
+    }
+    .cols--60-40 { grid-template-columns: 60fr 40fr; }
+    .cols--50-50 { grid-template-columns: 1fr 1fr; }
+    .cols--3     { grid-template-columns: repeat(3, 1fr); }
+
+    /* ── DIAGRAMS ── */
+    .diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .diagram--row {
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .dbox {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 10px;
+      padding: 18px 24px;
+      width: 100%;
+    }
+    .dbox--primary { border-color: rgba(76,126,243,0.4); }
+    .dbox--secondary { border-color: rgba(62,207,142,0.3); }
+    .dbox--amber { border-color: rgba(245,166,35,0.3); }
+
+    .dbox__title {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .dbox__sub {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .dbox__items {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .dbox__item {
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .dbox__item::before {
+      content: '';
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* Arrow */
+    .arr {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .arr--down {
+      flex-direction: column;
+      padding: 4px 0;
+    }
+    .arr svg { color: var(--text-muted); }
+
+    /* Nested diagram */
+    .nest-outer {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .nest-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+    .nest-inner {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+    }
+    .nest-inner__title {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+    .nest-inner__items {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .nest-inner__item {
+      font-size: 12px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nest-inner__item::before {
+      content: '';
+      width: 3px; height: 3px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* Flow diagram */
+    .flow {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: nowrap;
+    }
+    .flow-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-bright);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--text-primary);
+      white-space: nowrap;
+      font-family: 'IBM Plex Mono', monospace;
+      flex-shrink: 0;
+    }
+    .flow-step--accent {
+      border-color: rgba(76,126,243,0.4);
+      color: var(--accent-blue);
+    }
+    .flow-arrow {
+      flex-shrink: 0;
+      padding: 0 4px;
+    }
+    .flow-arrow svg { display: block; }
+
+    /* Step list */
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .step-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      background: rgba(76,126,243,0.12);
+      border: 1px solid rgba(76,126,243,0.25);
+      border-radius: 4px;
+      padding: 2px 8px;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .step-text {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+    }
+    .step-text strong { color: var(--text-primary); font-weight: 500; }
+
+    /* Tenant boxes */
+    .tenant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .tenant-box {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+    .tenant-box__name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--accent-amber);
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .tenant-box__resource {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 5px;
+    }
+    .tenant-box__resource .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      flex-shrink: 0;
+    }
+
+    /* Emoji items */
+    .emoji-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .emoji-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-secondary);
+    }
+    .emoji-item .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .emoji-item strong { color: var(--text-primary); font-weight: 500; }
+
+    /* Result callout */
+    .result-callout {
+      background: rgba(248,113,113,0.07);
+      border: 1px solid rgba(248,113,113,0.2);
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-top: 16px;
+      font-size: 15px;
+      color: var(--text-secondary);
+    }
+    .result-callout strong { color: var(--accent-red); }
+
+    /* Divider line */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+    }
+
+    /* Q&A centered */
+    .center { text-align: center; }
+
+    /* ── SLIDE 1: TITLE ── */
+    #slide-1 {
+      text-align: center;
+    }
+    #slide-1 .logo-main {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.2em;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+      text-transform: uppercase;
+    }
+    #slide-1 h1 {
+      font-size: 72px;
+      background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 16px;
+    }
+    #slide-1 .user-apps-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--accent-green);
+      letter-spacing: 0.06em;
+      margin-bottom: 28px;
+    }
+    #slide-1 .subtitle {
+      max-width: 520px;
+      margin: 0 auto;
+      color: var(--text-secondary);
+    }
+    #slide-1 .decorline {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+      margin: 28px auto;
+      border-radius: 2px;
+    }
+
+    /* ── GRID TAG CLOUD ── */
+    .tag-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    /* ── SUMMARY POINTS ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .summary-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .summary-item .num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      background: rgba(76,126,243,0.12);
+      border-radius: 5px;
+      padding: 3px 8px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .summary-item .title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .summary-item .desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* BENEFIT TABLE */
+    .benefit-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .benefit-col {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .benefit-col__head {
+      background: var(--bg-elevated);
+      padding: 12px 16px;
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border);
+    }
+    .benefit-col__items {
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .benefit-col__item {
+      font-size: 14px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
+    }
+
+    /* ── ANIMATION ── */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .slide-inner > * {
+      animation: fadeInUp 0.5s ease both;
+    }
+    .slide-inner > *:nth-child(1) { animation-delay: 0.05s; }
+    .slide-inner > *:nth-child(2) { animation-delay: 0.12s; }
+    .slide-inner > *:nth-child(3) { animation-delay: 0.19s; }
+    .slide-inner > *:nth-child(4) { animation-delay: 0.26s; }
+    .slide-inner > *:nth-child(5) { animation-delay: 0.33s; }
+
+    @media print {
+      .presentation { overflow: visible; }
+      .slide { page-break-after: always; height: 100vh; }
+      #progress-bar, #slide-counter, #nav-hint { display: none; }
+    }
+
+    /* ── SCROLLBAR ── */
+    .presentation::-webkit-scrollbar { width: 0; }
+  </style>
+</head>
+<body>
+
+<div class="presentation" id="pres">
+
+  <!-- SLIDE 1: TITLE -->
+  <section class="slide" id="slide-1">
+    <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="logo-main">COZY<span style="color:var(--accent-blue)">≡</span>TACK</div>
+      <h1>User Apps</h1>
+      <div class="user-apps-label">Application Platform</div>
+      <div class="decorline"></div>
+      <p class="subtitle">Self-service application catalog built on Cozystack — for ISPs, DevOps teams, and end users who just want things to work.</p>
+      <div class="tag-row" style="justify-content:center;margin-top:28px;">
+        <span class="badge badge--blue">Kubernetes-native</span>
+        <span class="badge badge--green">Multi-tenant</span>
+        <span class="badge badge--purple">Self-service</span>
+        <span class="badge badge--amber">Extensible</span>
+      </div>
+    </div>
+    <div class="slide-number">01 / 19</div>
+  </section>
+
+  <!-- SLIDE 2: PROBLEM -->
+  <section class="slide" id="slide-2">
+    <div class="slide-inner">
+      <div class="slide-label">Problem</div>
+      <h2>The Challenge</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div>
+          <p style="margin-bottom:20px;">Current Cozystack model has fundamental scaling limitations.</p>
+          <div class="emoji-list">
+            <div class="emoji-item"><span class="icon">❌</span><span>One CRD per application type — Postgres, Redis, Minecraft, WordPress…</span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>CRDs are cluster-wide — every new app pollutes the API server</span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>Adding a new app requires <strong>cluster-admin privileges</strong></span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>Tenants <strong>cannot create</strong> their own application types</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="display:flex;flex-direction:column;gap:12px;">
+            <div class="nest-label" style="margin:0;">Current State</div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+              <div class="flow-step" style="font-size:11px;">PostgresCluster CRD</div>
+              <div class="flow-step" style="font-size:11px;">RedisCluster CRD</div>
+              <div class="flow-step" style="font-size:11px;">MinecraftServer CRD</div>
+              <div class="flow-step" style="font-size:11px;">WordPressApp CRD</div>
+              <div class="flow-step" style="font-size:11px;color:var(--text-muted);">+ N more…</div>
+            </div>
+            <div style="font-size:12px;color:var(--text-muted);font-style:italic;">each = cluster-wide resource</div>
+          </div>
+        </div>
+      </div>
+      <div class="result-callout">
+        <strong>Result:</strong> Scaling the application catalog is expensive, inflexible, and requires constant cluster-admin involvement.
+      </div>
+    </div>
+    <div class="slide-number">02 / 19</div>
+  </section>
+
+  <!-- SLIDE 3: SOLUTION -->
+  <section class="slide" id="slide-3">
+    <div class="slide-inner">
+      <div class="slide-label">Solution</div>
+      <h2>Universal Application Abstraction</h2>
+      <p style="margin-bottom:28px;">Two resources replace hundreds of CRDs — regardless of how many apps you support.</p>
+      <div class="card" style="margin-bottom:24px;overflow:hidden;padding:0;">
+        <table>
+          <thead>
+            <tr>
+              <th>Resource</th>
+              <th>Scope</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code style="font-family:'IBM Plex Mono',monospace;font-size:13px;background:var(--bg-code);padding:2px 8px;border-radius:4px;color:var(--accent-purple);">ApplicationTemplate</code></td>
+              <td><span class="badge badge--blue">Cluster</span></td>
+              <td>How to install, manage and expose an app</td>
+            </tr>
+            <tr>
+              <td><code style="font-family:'IBM Plex Mono',monospace;font-size:13px;background:var(--bg-code);padding:2px 8px;border-radius:4px;color:var(--accent-green);">Application</code></td>
+              <td><span class="badge badge--green">Namespace</span></td>
+              <td>A deployed instance of a template</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols cols--3">
+        <div class="highlight" style="border-color:var(--accent-green);background:rgba(62,207,142,0.07);">
+          <strong>✅ One CRD pair</strong><br>for ALL application types
+        </div>
+        <div class="highlight">
+          <strong>✅ Templates reusable</strong><br>across all tenants
+        </div>
+        <div class="highlight" style="border-color:var(--accent-purple);background:rgba(167,139,250,0.07);">
+          <strong>✅ No cluster-admin</strong><br>to add new apps
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">03 / 19</div>
+  </section>
+
+  <!-- SLIDE 4: CORE CONCEPTS -->
+  <section class="slide" id="slide-4">
+    <div class="slide-inner">
+      <div class="slide-label">Core Concepts</div>
+      <h2>Resource Relationship</h2>
+      <div class="cols cols--60-40" style="align-items:center;">
+        <div class="diagram" style="gap:0;">
+          <div class="dbox dbox--primary" style="max-width:440px;">
+            <div class="dbox__title">ApplicationTemplate</div>
+            <div class="dbox__sub">cluster-scoped · read-only for tenants</div>
+            <div class="dbox__items">
+              <div class="dbox__item">Parameters schema (JSON Schema)</div>
+              <div class="dbox__item">Lifecycle hooks: install / upgrade / remove</div>
+              <div class="dbox__item">Custom actions (backup, restart…)</div>
+              <div class="dbox__item">Display metadata (name, icon, description)</div>
+            </div>
+          </div>
+          <div class="arr arr--down" style="padding:16px 0;">
+            <svg width="24" height="32" viewBox="0 0 24 32" fill="none" style="color:var(--accent-blue);">
+              <line x1="12" y1="0" x2="12" y2="24" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>
+              <path d="M6 20 L12 28 L18 20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);">references</span>
+          </div>
+          <div class="dbox dbox--secondary" style="max-width:440px;">
+            <div class="dbox__title">Application</div>
+            <div class="dbox__sub">namespace-scoped · per tenant</div>
+            <div class="dbox__items">
+              <div class="dbox__item">Template reference</div>
+              <div class="dbox__item">Target environment</div>
+              <div class="dbox__item">User-supplied parameter values</div>
+              <div class="dbox__item">Status & lifecycle state</div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">Template = Definition</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Describes <em>how</em> to deploy any instance. Written once, reused forever.</div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">Application = Instance</div>
+            <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">A user's specific deployment. Namespace-isolated, tenant-owned.</div>
+          </div>
+          <div class="card" style="border-color:rgba(76,126,243,0.25);">
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.6;">Analogy: Template is a Docker <strong style="color:var(--accent-blue);">image</strong>, Application is a running <strong style="color:var(--accent-green);">container</strong>.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">04 / 19</div>
+  </section>
+
+  <!-- SLIDE 5: ENVIRONMENT ABSTRACTION -->
+  <section class="slide" id="slide-5">
+    <div class="slide-inner">
+      <div class="slide-label">Environments</div>
+      <h2>Environment = Managed Cluster</h2>
+      <div class="cols cols--60-40">
+        <div>
+          <div class="nest-outer" style="margin-bottom:16px;">
+            <div class="nest-label">Tenant Namespace (host cluster)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="nest-inner" style="border-color:rgba(76,126,243,0.3);">
+                <div class="nest-inner__title" style="color:var(--accent-blue);">Environment: production</div>
+                <div class="nest-inner__items">
+                  <div class="nest-inner__item">→ ManagedKubernetes cluster</div>
+                  <div class="nest-inner__item">→ Argo Workflows pre-installed</div>
+                  <div class="nest-inner__item">→ Ingress + cert-manager</div>
+                </div>
+              </div>
+              <div class="nest-inner">
+                <div class="nest-inner__title">Application: my-minecraft</div>
+                <div class="nest-inner__items">
+                  <div class="nest-inner__item">→ runs in: production</div>
+                  <div class="nest-inner__item">→ status: <span class="badge badge--green" style="font-size:10px;height:18px;">Running</span></div>
+                </div>
+              </div>
+              <div class="nest-inner">
+                <div class="nest-inner__title">Application: my-webapp</div>
+                <div class="nest-inner__items">
+                  <div class="nest-inner__item">→ runs in: production</div>
+                  <div class="nest-inner__item">→ status: <span class="badge badge--blue" style="font-size:10px;height:18px;">Installing</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h3 style="font-size:16px;color:var(--text-secondary);font-weight:500;margin-bottom:16px;">What tenant gets:</h3>
+          <div class="emoji-list">
+            <div class="emoji-item"><span class="icon">🎯</span><span><strong>Real Kubernetes</strong> cluster, not a simulation</span></div>
+            <div class="emoji-item"><span class="icon">🔧</span><span>Pre-installed controllers &amp; tools ready to use</span></div>
+            <div class="emoji-item"><span class="icon">📊</span><span>Automatic scaling and health monitoring</span></div>
+            <div class="emoji-item"><span class="icon">🔑</span><span>Own kubeconfig — full kubectl access</span></div>
+            <div class="emoji-item"><span class="icon">🔒</span><span>Hard isolation from other tenants</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">05 / 19</div>
+  </section>
+
+  <!-- SLIDE 6: ARCHITECTURE -->
+  <section class="slide" id="slide-6">
+    <div class="slide-inner">
+      <div class="slide-label">Architecture</div>
+      <h2>Architecture Overview</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div>
+          <div class="nest-outer">
+            <div class="nest-label">HOST CLUSTER</div>
+            <div class="nest-inner" style="border-color:rgba(76,126,243,0.35);margin-bottom:12px;">
+              <div class="nest-inner__title" style="color:var(--accent-blue);">cozy-apps-operator</div>
+              <div class="nest-inner__items">
+                <div class="nest-inner__item">Environment Controller</div>
+                <div class="nest-inner__item">Application Controller</div>
+                <div class="nest-inner__item">Action Controller</div>
+              </div>
+            </div>
+            <div class="arr arr--down" style="padding:8px 0;align-items:flex-start;padding-left:40px;">
+              <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style="color:var(--text-muted);">
+                <line x1="10" y1="0" x2="10" y2="20" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
+                <path d="M4 16 L10 24 L16 16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);margin-top:4px;padding-left:4px;">creates workflows</span>
+            </div>
+            <div class="nest-inner" style="border-color:rgba(62,207,142,0.3);">
+              <div class="nest-inner__title" style="color:var(--accent-green);">Environment Cluster</div>
+              <div class="nest-inner__items">
+                <div class="nest-inner__item">Argo Workflows executor</div>
+                <div class="nest-inner__item">Ingress Controller (nginx)</div>
+                <div class="nest-inner__item">User Applications</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Host Cluster</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Runs the operators, stores CRDs, manages tenant namespaces and environments.</div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">Environment Cluster</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Isolated K8s cluster per environment. Runs actual workloads and Argo Workflows.</div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-purple);margin-bottom:6px;">Argo Workflows</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Executes install/upgrade/remove hooks as container-based DAG workflows.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">06 / 19</div>
+  </section>
+
+  <!-- SLIDE 7: INSTALL FLOW -->
+  <section class="slide" id="slide-7">
+    <div class="slide-inner">
+      <div class="slide-label">Deploy Flow</div>
+      <h2>How Deployment Works</h2>
+      <div style="margin-bottom:28px;overflow-x:auto;">
+        <div class="flow" style="gap:0;">
+          <div class="flow-step flow-step--accent">User</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step">Application CR</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step">Controller</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step">Argo Workflow</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step">Helm/kubectl</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--accent-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step" style="border-color:rgba(62,207,142,0.4);color:var(--accent-green);">Running ✓</div>
+        </div>
+      </div>
+      <div class="cols cols--50-50">
+        <div class="step-list">
+          <div class="step-item"><div class="step-num">01</div><div class="step-text">User creates Application (UI or kubectl)</div></div>
+          <div class="step-item"><div class="step-num">02</div><div class="step-text">Controller <strong>validates</strong> template &amp; parameters</div></div>
+          <div class="step-item"><div class="step-num">03</div><div class="step-text">Controller creates Argo Workflow in Environment</div></div>
+        </div>
+        <div class="step-list">
+          <div class="step-item"><div class="step-num">04</div><div class="step-text">Workflow executes <strong>install hook</strong> steps</div></div>
+          <div class="step-item"><div class="step-num">05</div><div class="step-text">Application status → <span class="badge badge--green" style="font-size:11px;height:20px;">Running</span></div></div>
+          <div class="step-item"><div class="step-num">06</div><div class="step-text">User accesses via <strong>Ingress</strong> or LoadBalancer</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">07 / 19</div>
+  </section>
+
+  <!-- SLIDE 8: TEMPLATE EXAMPLE -->
+  <section class="slide" id="slide-8">
+    <div class="slide-inner">
+      <div class="slide-label">Template Example</div>
+      <h2>ApplicationTemplate: Minecraft</h2>
+      <div class="cols cols--50-50">
+        <div class="code-block" style="font-size:12px;line-height:1.75;">
+<span class="kw">apiVersion</span>: <span class="str">apps.cozystack.io/v1alpha1</span>
+<span class="kw">kind</span>: <span class="kn">ApplicationTemplate</span>
+<span class="kw">metadata</span>:
+  <span class="kw">name</span>: <span class="str">minecraft</span>
+<span class="kw">spec</span>:
+  <span class="kw">displayName</span>: <span class="str">"Minecraft Server"</span>
+
+  <span class="kw">parameters</span>:
+    - <span class="kw">name</span>: <span class="nm">serverName</span>
+      <span class="kw">type</span>: string
+      <span class="kw">required</span>: <span class="kn">true</span>
+    - <span class="kw">name</span>: <span class="nm">maxPlayers</span>
+      <span class="kw">type</span>: int
+      <span class="kw">default</span>: <span class="nm">20</span>
+
+  <span class="kw">hooks</span>:
+    <span class="kw">install</span>:
+      <span class="kw">steps</span>:
+        - <span class="kw">name</span>: deploy
+          <span class="kw">image</span>: <span class="str">alpine/helm:3.14</span>
+          <span class="kw">args</span>: [helm, install, <span class="op">...</span>]
+
+  <span class="kw">actions</span>:
+    - <span class="kw">name</span>: <span class="nm">backup</span>
+      <span class="kw">displayName</span>: <span class="str">"Create Backup"</span>
+      <span class="kw">steps</span>: [<span class="op">...</span>]
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">📦 Parameters</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.55;">JSON Schema-defined inputs. Generate a form in the UI automatically.</div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">🔧 Hooks</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.55;">Container steps using <em>any tool</em> — Helm, kubectl, Ansible, bash scripts.</div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">🚀 Actions</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.55;">Custom operations beyond lifecycle: backup, restore, restart, export…</div>
+          </div>
+          <div class="highlight" style="font-size:13px;">
+            <strong>Any app can be templated</strong> — if it can be deployed by a container, it works here.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">08 / 19</div>
+  </section>
+
+  <!-- SLIDE 9: PERSONAS -->
+  <section class="slide" id="slide-9">
+    <div class="slide-inner">
+      <div class="slide-label">User Personas</div>
+      <h2>Four Personas, One Platform</h2>
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Persona</th>
+              <th>What they do</th>
+              <th>Technical level</th>
+              <th>Primary interface</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>👤 End User</strong></td>
+              <td>Deploy apps from catalog</td>
+              <td><span class="badge badge--green">Low</span></td>
+              <td>Web UI only</td>
+            </tr>
+            <tr>
+              <td><strong>📝 Template Author</strong></td>
+              <td>Create &amp; publish templates</td>
+              <td><span class="badge badge--red">High</span></td>
+              <td>kubectl / YAML</td>
+            </tr>
+            <tr>
+              <td><strong>🔧 ISP Operator</strong></td>
+              <td>Manage platform &amp; tenants</td>
+              <td><span class="badge badge--red">High</span></td>
+              <td>kubectl / Grafana</td>
+            </tr>
+            <tr>
+              <td><strong>💻 Developer</strong></td>
+              <td>Use as dev/staging platform</td>
+              <td><span class="badge badge--amber">Medium</span></td>
+              <td>UI + kubeconfig</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="highlight">
+        <strong>Key insight:</strong> Each persona interacts at their own level of abstraction. The platform meets them where they are.
+      </div>
+    </div>
+    <div class="slide-number">09 / 19</div>
+  </section>
+
+  <!-- SLIDE 10: END USER FLOW -->
+  <section class="slide" id="slide-10">
+    <div class="slide-inner">
+      <div class="slide-label">End User Flow</div>
+      <h2>Deploy Without Kubernetes Knowledge</h2>
+      <div style="margin-bottom:28px;">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
+          <div class="card" style="text-align:center;padding:20px 16px;">
+            <div style="font-size:28px;margin-bottom:8px;">🔍</div>
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Browse</div>
+            <div style="font-size:12px;color:var(--text-muted);">Open app catalog</div>
+          </div>
+          <div class="card" style="text-align:center;padding:20px 16px;border-color:rgba(76,126,243,0.25);">
+            <div style="font-size:28px;margin-bottom:8px;">🎯</div>
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Select</div>
+            <div style="font-size:12px;color:var(--text-muted);">Pick app &amp; version</div>
+          </div>
+          <div class="card" style="text-align:center;padding:20px 16px;border-color:rgba(76,126,243,0.35);">
+            <div style="font-size:28px;margin-bottom:8px;">📝</div>
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Configure</div>
+            <div style="font-size:12px;color:var(--text-muted);">Fill auto-generated form</div>
+          </div>
+          <div class="card" style="text-align:center;padding:20px 16px;border-color:rgba(62,207,142,0.35);">
+            <div style="font-size:28px;margin-bottom:8px;">🚀</div>
+            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent-green);margin-bottom:4px;">Deploy</div>
+            <div style="font-size:12px;color:var(--text-muted);">Click. Done.</div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="color:var(--text-muted);transform:rotate(90deg)"><path d="M12 4 L12 20 M6 14 L12 20 L18 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div class="card" style="text-align:center;padding:16px;border-color:rgba(62,207,142,0.2);">
+            <div style="font-size:22px;margin-bottom:6px;">📡</div>
+            <div style="font-size:13px;color:var(--text-secondary);">Watch progress</div>
+          </div>
+          <div class="card" style="text-align:center;padding:16px;border-color:rgba(62,207,142,0.3);">
+            <div style="font-size:22px;margin-bottom:6px;">✅</div>
+            <div style="font-size:13px;color:var(--accent-green);font-weight:500;">App Running</div>
+          </div>
+          <div class="card" style="text-align:center;padding:16px;border-color:rgba(62,207,142,0.4);">
+            <div style="font-size:22px;margin-bottom:6px;">🌐</div>
+            <div style="font-size:13px;color:var(--text-secondary);">Access via URL</div>
+          </div>
+        </div>
+      </div>
+      <div class="highlight" style="text-align:center;font-size:16px;">
+        <strong>No YAML. No kubectl. No Kubernetes knowledge required.</strong>
+      </div>
+    </div>
+    <div class="slide-number">10 / 19</div>
+  </section>
+
+  <!-- SLIDE 11: TEMPLATE AUTHOR -->
+  <section class="slide" id="slide-11">
+    <div class="slide-inner">
+      <div class="slide-label">Template Author Flow</div>
+      <h2>Creating a New Template</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-text">Study how the app is normally installed — Helm, manifests, operators</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">02</div>
+            <div class="step-text"><strong>Define parameters</strong> — what users configure (size, name, replicas, secrets)</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">03</div>
+            <div class="step-text">Write <strong>install / upgrade / remove</strong> hooks as container steps</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">04</div>
+            <div class="step-text">Add <strong>custom actions</strong> — backup, restart, config reload…</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">05</div>
+            <div class="step-text">Test in dev environment — apply template, create Application, validate</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">06</div>
+            <div class="step-text">Submit to catalog — available to all tenants immediately</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-amber);letter-spacing:0.08em;">MINIMAL TEMPLATE EXAMPLE</div>
+          <pre class="code-block" style="font-size:11px;line-height:1.7;"><span class="kw">apiVersion</span>: <span class="str">apps.cozystack.io/v1alpha1</span>
+<span class="kw">kind</span>: <span class="kn">ApplicationTemplate</span>
+<span class="kw">metadata</span>:
+  <span class="kw">name</span>: <span class="str">my-app</span>
+<span class="kw">spec</span>:
+  <span class="kw">parameters</span>:
+    - <span class="kw">name</span>: <span class="nm">replicas</span>
+      <span class="kw">type</span>: int
+      <span class="kw">default</span>: <span class="nm">1</span>
+
+  <span class="kw">hooks</span>:
+    <span class="kw">install</span>:
+      <span class="kw">steps</span>:
+        - <span class="kw">name</span>: deploy
+          <span class="cm"># any container image</span>
+          <span class="kw">image</span>: <span class="str">alpine/helm:3.14</span>
+          <span class="kw">args</span>:
+            - helm
+            - install
+            - my-app
+            - ./chart
+
+  <span class="kw">actions</span>:
+    - <span class="kw">name</span>: <span class="nm">restart</span>
+      <span class="kw">steps</span>: [<span class="op">...</span>]</pre>
+          <div class="highlight" style="font-size:12px;">
+            Hooks are <strong>container steps</strong> — Helm, kubectl, Ansible, bash. Any image works.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">11 / 19</div>
+  </section>
+
+  <!-- SLIDE 12: MULTI-TENANCY -->
+  <section class="slide" id="slide-12">
+    <div class="slide-inner">
+      <div class="slide-label">Multi-Tenancy</div>
+      <h2>Built-in Tenant Isolation</h2>
+      <div class="cols cols--50-50" style="align-items:start;">
+        <div>
+          <div class="nest-outer">
+            <div class="nest-label">COZYSTACK CLUSTER</div>
+            <div class="tenant-grid">
+              <div class="tenant-box">
+                <div class="tenant-box__name">tenant-acme</div>
+                <div class="tenant-box__resource"><div class="dot"></div>Environment</div>
+                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-blue);"></div>Application × 3</div>
+                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-purple);"></div>Action × 1</div>
+              </div>
+              <div class="tenant-box">
+                <div class="tenant-box__name">tenant-globex</div>
+                <div class="tenant-box__resource"><div class="dot"></div>Environment × 2</div>
+                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-blue);"></div>Application × 7</div>
+                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-purple);"></div>Action × 4</div>
+              </div>
+              <div class="tenant-box">
+                <div class="tenant-box__name">tenant-initech</div>
+                <div class="tenant-box__resource"><div class="dot"></div>Environment</div>
+                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-blue);"></div>Application × 2</div>
+                <div class="tenant-box__resource"><div class="dot" style="background:var(--text-muted);"></div>No actions yet</div>
+              </div>
+              <div class="tenant-box" style="border-style:dashed;opacity:0.5;">
+                <div class="tenant-box__name" style="color:var(--text-muted);">+ new tenant</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Provision in seconds</div>
+              </div>
+            </div>
+            <div style="margin-top:12px;padding:10px 12px;background:rgba(76,126,243,0.08);border-radius:6px;">
+              <div style="font-size:11px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;">ApplicationTemplates (shared, read-only)</div>
+              <div class="tag-row" style="margin-top:6px;">
+                <span class="badge badge--blue" style="font-size:10px;height:20px;">minecraft</span>
+                <span class="badge badge--blue" style="font-size:10px;height:20px;">wordpress</span>
+                <span class="badge badge--blue" style="font-size:10px;height:20px;">postgres</span>
+                <span class="badge badge--blue" style="font-size:10px;height:20px;">redis</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="emoji-list">
+            <div class="emoji-item"><span class="icon">🔲</span><span><strong>Tenant = Namespace</strong> — inherits Cozystack's isolation model</span></div>
+            <div class="emoji-item"><span class="icon">✅</span><span>Full access within own namespace</span></div>
+            <div class="emoji-item"><span class="icon">🔒</span><span>Zero cross-tenant access by default</span></div>
+            <div class="emoji-item"><span class="icon">📦</span><span>Templates shared cluster-wide, read-only</span></div>
+            <div class="emoji-item"><span class="icon">⚡</span><span>New tenant provisioning in seconds</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="highlight" style="font-size:13px;">
+            Reuses Cozystack's battle-tested multi-tenancy. No new security primitives needed.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">12 / 19</div>
+  </section>
+
+  <!-- SLIDE 13: NETWORKING -->
+  <section class="slide" id="slide-13">
+    <div class="slide-inner">
+      <div class="slide-label">Networking</div>
+      <h2>Network Stack per Environment</h2>
+      <div class="cols cols--50-50" style="align-items:start;">
+        <div>
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Component</th>
+                  <th>Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:2px 7px;border-radius:4px;">Ingress Controller</code></td>
+                  <td>HTTP/HTTPS routing</td>
+                </tr>
+                <tr>
+                  <td><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:2px 7px;border-radius:4px;">Cert-Manager</code></td>
+                  <td>Auto TLS (Let's Encrypt)</td>
+                </tr>
+                <tr>
+                  <td><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:2px 7px;border-radius:4px;">Cloud Controller</code></td>
+                  <td>LoadBalancer provisioning</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <h3 style="font-size:15px;color:var(--text-secondary);font-weight:500;">Standard Kubernetes primitives</h3>
+          <div class="card" style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
+            <span style="font-size:20px;">🌐</span>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text-primary);margin-bottom:3px;">Ingress</div>
+              <div style="font-size:12px;color:var(--text-muted);">HTTP/HTTPS with automatic TLS termination</div>
+            </div>
+          </div>
+          <div class="card" style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
+            <span style="font-size:20px;">🔌</span>
+            <div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text-primary);margin-bottom:3px;">Service type: LoadBalancer</div>
+              <div style="font-size:12px;color:var(--text-muted);">TCP/UDP direct access (game servers, databases…)</div>
+            </div>
+          </div>
+          <div class="highlight" style="font-size:13px;">
+            No vendor lock-in. Works with standard K8s tooling — any ingress-compatible app just works.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">13 / 19</div>
+  </section>
+
+  <!-- SLIDE 14: OBSERVABILITY -->
+  <section class="slide" id="slide-14">
+    <div class="slide-inner">
+      <div class="slide-label">Observability</div>
+      <h2>Observability &amp; Debugging</h2>
+      <div class="cols cols--50-50" style="align-items:start;">
+        <div>
+          <h3 style="font-size:15px;color:var(--text-secondary);font-weight:500;margin-bottom:14px;">Centralized (Platform Level)</h3>
+          <div class="emoji-list" style="margin-bottom:20px;">
+            <div class="emoji-item"><span class="icon">📊</span><span><strong>Grafana</strong> for logs &amp; metrics — per tenant dashboards</span></div>
+            <div class="emoji-item"><span class="icon">📈</span><span>Resource usage, request rates, error rates</span></div>
+            <div class="emoji-item"><span class="icon">🔔</span><span>Alerting via existing Cozystack alert stack</span></div>
+          </div>
+          <div class="divider"></div>
+          <h3 style="font-size:15px;color:var(--text-secondary);font-weight:500;margin:14px 0;">Direct Access (Tenant Level)</h3>
+          <div class="emoji-list">
+            <div class="emoji-item"><span class="icon">🔑</span><span><strong>Kubeconfig</strong> per Environment — full kubectl access</span></div>
+            <div class="emoji-item"><span class="icon">🐚</span><span><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:1px 6px;border-radius:3px;">kubectl exec</code> into any pod</span></div>
+            <div class="emoji-item"><span class="icon">🔭</span><span><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:1px 6px;border-radius:3px;">kubectl port-forward</code> local debugging</span></div>
+            <div class="emoji-item"><span class="icon">📋</span><span><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:1px 6px;border-radius:3px;">kubectl logs</code> real-time log streaming</span></div>
+          </div>
+        </div>
+        <div>
+          <div class="nest-outer">
+            <div class="nest-label">DEBUG FLOW</div>
+            <div class="step-list" style="gap:16px;">
+              <div class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-text">Check app status in <strong>UI</strong> or Grafana</div>
+              </div>
+              <div class="arr arr--down" style="padding:0 0 0 10px;">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
+                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1" fill="none"/>
+                </svg>
+              </div>
+              <div class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-text">Grab <strong>kubeconfig</strong> from Environment resource</div>
+              </div>
+              <div class="arr arr--down" style="padding:0 0 0 10px;">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
+                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1" fill="none"/>
+                </svg>
+              </div>
+              <div class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-text"><strong>kubectl exec</strong> / logs / port-forward as normal</div>
+              </div>
+              <div class="arr arr--down" style="padding:0 0 0 10px;">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--accent-green);">
+                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
+                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1" fill="none"/>
+                </svg>
+              </div>
+              <div class="step-item">
+                <div class="step-num" style="color:var(--accent-green);background:rgba(62,207,142,0.12);">✓</div>
+                <div class="step-text" style="color:var(--accent-green);">Issue resolved</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">14 / 19</div>
+  </section>
+
+  <!-- SLIDE 15: CUSTOM ACTIONS -->
+  <section class="slide" id="slide-15">
+    <div class="slide-inner">
+      <div class="slide-label">Custom Actions</div>
+      <h2>Beyond Install / Upgrade / Remove</h2>
+      <div class="cols cols--50-50" style="align-items:start;">
+        <pre class="code-block" style="font-size:12px;line-height:1.75;"><span class="kw">actions</span>:
+  - <span class="kw">name</span>: <span class="nm">backup</span>
+    <span class="kw">displayName</span>: <span class="str">"Create Backup"</span>
+    <span class="kw">parameters</span>:
+      - <span class="kw">name</span>: <span class="nm">backupName</span>
+        <span class="kw">type</span>: string
+        <span class="kw">required</span>: <span class="kn">true</span>
+      - <span class="kw">name</span>: <span class="nm">compress</span>
+        <span class="kw">type</span>: bool
+        <span class="kw">default</span>: <span class="kn">true</span>
+    <span class="kw">steps</span>:
+      - <span class="kw">name</span>: backup
+        <span class="kw">image</span>: <span class="str">restic/restic</span>
+        <span class="kw">args</span>:
+          - backup
+          - /data
+          - <span class="op">--tag</span>
+          - <span class="str">"{{backupName}}"</span></pre>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div>
+            <h3 style="font-size:15px;margin-bottom:12px;">Action flow</h3>
+            <div class="flow" style="flex-direction:column;align-items:flex-start;gap:8px;">
+              <div class="flow-step flow-step--accent">User triggers action</div>
+              <div class="flow-arrow" style="padding:2px 0 2px 16px;">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
+                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="flow-step">Action CR created</div>
+              <div class="flow-arrow" style="padding:2px 0 2px 16px;">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
+                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="flow-step">Argo Workflow executes</div>
+              <div class="flow-arrow" style="padding:2px 0 2px 16px;">
+                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--accent-green);">
+                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+                </svg>
+              </div>
+              <div class="flow-step" style="border-color:rgba(62,207,142,0.4);color:var(--accent-green);">Status reported ✓</div>
+            </div>
+          </div>
+          <div class="highlight" style="font-size:13px;">
+            <strong>Examples:</strong> backup/restore, user import, cache flush, config reload, DB migration, scaling…
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">15 / 19</div>
+  </section>
+
+  <!-- SLIDE 16: TEMPLATE CATALOG -->
+  <section class="slide" id="slide-16">
+    <div class="slide-inner">
+      <div class="slide-label">Catalog Storage</div>
+      <h2>Template Catalog Architecture</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div>
+          <div class="nest-outer">
+            <div class="nest-label">STORAGE LAYER</div>
+            <div class="nest-inner" style="border-color:rgba(76,126,243,0.3);margin-bottom:10px;">
+              <div class="nest-inner__title" style="color:var(--accent-blue);">Kubernetes API</div>
+              <div class="nest-inner__items">
+                <div class="nest-inner__item">Standard K8s API surface</div>
+                <div class="nest-inner__item">kubectl apply / get / list</div>
+              </div>
+            </div>
+            <div class="arr arr--down" style="padding:6px 0;align-items:flex-start;padding-left:40px;">
+              <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
+                <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+                <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);padding-left:4px;">aggregated API</span>
+            </div>
+            <div class="nest-inner" style="border-color:rgba(167,139,250,0.3);margin-bottom:10px;">
+              <div class="nest-inner__title" style="color:var(--accent-purple);">cozy-apps-apiserver</div>
+              <div class="nest-inner__items">
+                <div class="nest-inner__item">Aggregated API extension</div>
+                <div class="nest-inner__item">Version history management</div>
+                <div class="nest-inner__item">Template validation</div>
+              </div>
+            </div>
+            <div class="arr arr--down" style="padding:6px 0;align-items:flex-start;padding-left:40px;">
+              <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
+                <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
+                <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              </svg>
+            </div>
+            <div class="nest-inner" style="border-color:rgba(245,166,35,0.3);">
+              <div class="nest-inner__title" style="color:var(--accent-amber);">PostgreSQL</div>
+              <div class="nest-inner__items">
+                <div class="nest-inner__item">Versioned template storage</div>
+                <div class="nest-inner__item">Full revision history</div>
+                <div class="nest-inner__item">Scales independently</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Native K8s API</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Works with standard kubectl, client-go, any K8s tooling. No special SDK needed.</div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-purple);margin-bottom:6px;">Version History</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Full revision tracking. Apps can pin to specific template versions.</div>
+          </div>
+          <div class="card">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-amber);margin-bottom:6px;">Independent Scaling</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">API server and storage scale separately from the operator plane.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">16 / 19</div>
+  </section>
+
+  <!-- SLIDE 17: BENEFITS -->
+  <section class="slide" id="slide-17">
+    <div class="slide-inner">
+      <div class="slide-label">Key Benefits</div>
+      <h2>Value for Every Stakeholder</h2>
+      <div class="benefit-grid">
+        <div class="benefit-col">
+          <div class="benefit-col__head">👤 End Users</div>
+          <div class="benefit-col__items">
+            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Simple web UI — no YAML</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> No Kubernetes knowledge needed</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Full self-service experience</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Direct kubectl access when needed</div>
+          </div>
+        </div>
+        <div class="benefit-col">
+          <div class="benefit-col__head">🔧 ISP Operators</div>
+          <div class="benefit-col__items">
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Controlled, versioned templates</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Hard multi-tenant isolation</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Central monitoring via Grafana</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> No CRD sprawl in API server</div>
+          </div>
+        </div>
+        <div class="benefit-col">
+          <div class="benefit-col__head">🏗️ Platform</div>
+          <div class="benefit-col__items">
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Single CRD pair — any app type</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Community template catalog</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Plug any tool into hooks</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> K8s-native, no lock-in</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:20px;" class="highlight">
+        <strong>Bottom line:</strong> ISPs can offer a Heroku-like self-service platform on their own infrastructure — without building it from scratch.
+      </div>
+    </div>
+    <div class="slide-number">17 / 19</div>
+  </section>
+
+  <!-- SLIDE 18: SUMMARY -->
+  <section class="slide" id="slide-18">
+    <div class="slide-inner">
+      <div class="slide-label">Summary</div>
+      <h2>Cozystack → Application Platform</h2>
+      <p style="margin-bottom:28px;">Five principles that transform a PaaS into a full application platform.</p>
+      <div class="summary-grid">
+        <div class="summary-item">
+          <div class="num">01</div>
+          <div>
+            <div class="title">Universal Abstraction</div>
+            <div class="desc">One template for any app — Helm, Ansible, custom scripts. No new CRD per service.</div>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="num">02</div>
+          <div>
+            <div class="title">Self-Service</div>
+            <div class="desc">Users deploy without K8s expertise. Forms generated from schema. Click and go.</div>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="num">03</div>
+          <div>
+            <div class="title">Extensible</div>
+            <div class="desc">Community contributes templates. AUR-style catalog. Authors need Helm, not K8s admin.</div>
+          </div>
+        </div>
+        <div class="summary-item">
+          <div class="num">04</div>
+          <div>
+            <div class="title">Isolated by Design</div>
+            <div class="desc">Multi-tenant from day one. Environment per tenant. Zero cross-contamination.</div>
+          </div>
+        </div>
+        <div class="summary-item" style="grid-column: 1 / -1;border-color:rgba(76,126,243,0.25);">
+          <div class="num" style="background:rgba(76,126,243,0.18);">05</div>
+          <div>
+            <div class="title">Observable</div>
+            <div class="desc">Centralized Grafana dashboards + full kubectl access. Every layer debuggable.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">18 / 19</div>
+  </section>
+
+  <!-- SLIDE 19: Q&A -->
+  <section class="slide" id="slide-19" style="text-align:center;">
+    <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;">
+      <div class="logo-main" style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--text-muted);margin-bottom:40px;text-transform:uppercase;">COZY<span style="color:var(--accent-blue)">≡</span>TACK</div>
+      <h1 style="font-size:64px;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary) 40%,var(--accent-purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Questions?</h1>
+      <div style="width:50px;height:2px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));margin:24px auto;border-radius:2px;"></div>
+      <p class="subtitle" style="max-width:480px;margin-bottom:36px;">Cozy User Apps — Application Platform for Cozystack</p>
+      <div class="tag-row" style="justify-content:center;margin-bottom:40px;">
+        <span class="badge badge--blue">github.com/cozystack</span>
+        <span class="badge badge--green">CNCF Sandbox</span>
+        <span class="badge badge--purple">Apache 2.0</span>
+      </div>
+      <div style="display:flex;gap:24px;justify-content:center;">
+        <div class="card" style="padding:14px 24px;text-align:center;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:4px;">DOCS</div>
+          <div style="font-size:14px;color:var(--accent-blue);">cozystack.io/docs</div>
+        </div>
+        <div class="card" style="padding:14px 24px;text-align:center;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:4px;">GITHUB</div>
+          <div style="font-size:14px;color:var(--accent-green);">github.com/cozystack</div>
+        </div>
+        <div class="card" style="padding:14px 24px;text-align:center;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:4px;">SLACK</div>
+          <div style="font-size:14px;color:var(--accent-purple);">cncf.slack.com #cozystack</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">19 / 19</div>
+  </section>
+
+</div>
+
+<!-- PROGRESS BAR -->
+<div id="progress-bar"></div>
+
+<!-- SLIDE COUNTER -->
+<div id="slide-counter">01 / 19</div>
+
+<!-- NAV HINT -->
+<div id="nav-hint">
+  <span class="key-hint"><span class="key">↑</span><span class="key">↓</span> navigate</span>
+  <span class="key-hint"><span class="key">Space</span> next</span>
+</div>
+
+<script>
+  const pres = document.getElementById('pres');
+  const slides = document.querySelectorAll('.slide');
+  const progressBar = document.getElementById('progress-bar');
+  const slideCounter = document.getElementById('slide-counter');
+  const total = slides.length;
+  let current = 0;
+  let isScrolling = false;
+
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function updateUI(idx) {
+    current = idx;
+    const pct = ((idx + 1) / total) * 100;
+    progressBar.style.width = pct + '%';
+    slideCounter.textContent = pad(idx + 1) + ' / ' + pad(total);
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total) return;
+    isScrolling = true;
+    slides[idx].scrollIntoView({ behavior: 'smooth' });
+    updateUI(idx);
+    setTimeout(() => { isScrolling = false; }, 700);
+  }
+
+  function nextSlide() { goTo(current + 1); }
+  function prevSlide() { goTo(current - 1); }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); prevSlide(); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); nextSlide(); }
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  });
+
+  // Track current slide via IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        updateUI(idx);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => observer.observe(s));
+
+  // Touch support
+  let touchStartY = 0;
+  pres.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
+  pres.addEventListener('touchend', (e) => {
+    const dy = touchStartY - e.changedTouches[0].clientY;
+    if (Math.abs(dy) > 50) { dy > 0 ? nextSlide() : prevSlide(); }
+  }, { passive: true });
+
+  // Init
+  updateUI(0);
+</script>
+</body>
+</html>
