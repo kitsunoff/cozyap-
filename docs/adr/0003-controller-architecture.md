@@ -2,7 +2,13 @@
 
 ## Status
 
-Proposed
+Superseded by `docs/cozya-new-notes.md` (pending new ADR series, 0008+).
+
+The four-controller layout (Environment / Application / Action / Cleanup) and
+its install/upgrade/remove state machines are replaced by a reconcile-driven
+controller that compiles atom graphs into Argo Workflows. The new control
+plane is covered by ADR-0010 (Reconcile Engine) and ADR-0013 (Platform
+Integration). Kept for historical context.
 
 ## Context
 

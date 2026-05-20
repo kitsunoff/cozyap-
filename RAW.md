@@ -1,5 +1,11 @@
 # Cozystack User Apps
 
+> **Status: Superseded.** This document describes the original PKGBUILD-style
+> design with `install`/`upgrade`/`remove` hooks and a periodic `suggestUpgrade`.
+> The current design is the reactive reconcile model captured in
+> `docs/cozya-new-notes.md` and the ADR series starting at
+> `docs/adr/0008-*` (pending). Kept here for historical context.
+
 ## What is it
 
 An application catalog for end-user tenant clusters built on top of Cozystack. A Pterodactyl-like management panel for ISP customers. Users don't need to know Kubernetes — they just install apps from the catalog.

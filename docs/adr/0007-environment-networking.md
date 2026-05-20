@@ -2,7 +2,15 @@
 
 ## Status
 
-Proposed
+Superseded by `docs/cozya-new-notes.md` (pending new ADR series, 0008+).
+
+Networking primitives (Ingress, LoadBalancer Services, cert-manager,
+External-DNS) survive the reactive redesign largely unchanged. What changes is
+how applications request them: instead of Helm `--set` flags inside an install
+hook, ingress and TLS become atoms in the graph (`Ingress` consumes
+`service-ref` + `tls-secret-ref`, `TLSCert` outputs `tls-secret-ref`). Revisited
+in ADR-0009 (Atom Contract) and ADR-0011 (Application Graph). Kept for
+historical context.
 
 ## Context
 

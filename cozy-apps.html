@@ -26,7 +26,6 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { font-size: 16px; }
 
     body {
@@ -38,7 +37,6 @@
       width: 100vw;
     }
 
-    /* ── PRESENTATION WRAPPER ── */
     .presentation {
       height: 100vh;
       overflow-y: scroll;
@@ -65,7 +63,6 @@
       z-index: 2;
     }
 
-    /* ── BACKGROUND DECORATION ── */
     .slide::before {
       content: '';
       position: absolute;
@@ -85,11 +82,9 @@
       letter-spacing: 0.1em;
     }
 
-    /* ── PROGRESS ── */
     #progress-bar {
       position: fixed;
-      bottom: 0;
-      left: 0;
+      bottom: 0; left: 0;
       height: 2px;
       background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
       transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
@@ -97,11 +92,9 @@
       box-shadow: 0 0 12px rgba(76,126,243,0.6);
     }
 
-    /* ── SLIDE COUNTER ── */
     #slide-counter {
       position: fixed;
-      bottom: 18px;
-      right: 24px;
+      bottom: 18px; right: 24px;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
       color: var(--text-muted);
@@ -109,11 +102,9 @@
       z-index: 100;
     }
 
-    /* ── NAV HINT ── */
     #nav-hint {
       position: fixed;
-      bottom: 18px;
-      left: 24px;
+      bottom: 18px; left: 24px;
       font-size: 11px;
       color: var(--text-muted);
       z-index: 100;
@@ -121,22 +112,10 @@
       gap: 12px;
       align-items: center;
     }
-    .key-hint {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 10px;
-    }
-    .key {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border-bright);
-      border-radius: 3px;
-      padding: 1px 5px;
-      font-size: 10px;
-    }
+    .key-hint { display: inline-flex; align-items: center; gap: 4px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; }
+    .key { background: var(--bg-elevated); border: 1px solid var(--border-bright); border-radius: 3px; padding: 1px 5px; font-size: 10px; }
 
-    /* ── TYPOGRAPHY ── */
+    /* Typography */
     .slide-label {
       font-family: 'IBM Plex Mono', monospace;
       font-size: 11px;
@@ -151,170 +130,51 @@
     .slide-label::before {
       content: '';
       display: inline-block;
-      width: 20px;
-      height: 1px;
+      width: 20px; height: 1px;
       background: var(--accent-blue);
       opacity: 0.6;
     }
 
-    h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: 52px;
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      margin-bottom: 20px;
-    }
-    h2 {
-      font-family: 'Syne', sans-serif;
-      font-size: 38px;
-      font-weight: 700;
-      line-height: 1.15;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
-      margin-bottom: 28px;
-    }
-    h3 {
-      font-family: 'Syne', sans-serif;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 12px;
-    }
+    h1 { font-family: 'Syne', sans-serif; font-size: 52px; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 20px; }
+    h2 { font-family: 'Syne', sans-serif; font-size: 38px; font-weight: 700; line-height: 1.15; letter-spacing: -0.02em; color: var(--text-primary); margin-bottom: 28px; }
+    h3 { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 600; color: var(--text-primary); margin-bottom: 12px; }
 
-    .subtitle {
-      font-size: 20px;
-      font-weight: 300;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
+    .subtitle { font-size: 20px; font-weight: 300; color: var(--text-secondary); line-height: 1.5; }
     p { font-size: 17px; line-height: 1.7; color: var(--text-secondary); }
 
-    /* ── LOGO ── */
     .logo-block {
       font-family: 'IBM Plex Mono', monospace;
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: 0.15em;
+      font-size: 15px; font-weight: 600; letter-spacing: 0.15em;
       color: var(--text-secondary);
       margin-bottom: 40px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      display: flex; align-items: center; gap: 6px;
     }
     .logo-block .sep { color: var(--accent-blue); }
 
-    /* ── CARDS ── */
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 24px 28px;
-    }
-    .card--elevated {
-      background: var(--bg-elevated);
-      border-color: var(--border-bright);
-    }
+    /* Cards */
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; }
+    .card--elevated { background: var(--bg-elevated); border-color: var(--border-bright); }
 
-    /* ── TABLES ── */
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 16px;
-    }
-    th {
-      background: var(--bg-elevated);
-      font-family: 'Syne', sans-serif;
-      font-weight: 600;
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-secondary);
-      padding: 12px 16px;
-      text-align: left;
-      border-bottom: 1px solid var(--border-bright);
-    }
-    td {
-      padding: 13px 16px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-primary);
-      font-size: 15px;
-      line-height: 1.5;
-    }
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 16px; }
+    th { background: var(--bg-elevated); font-family: 'Syne', sans-serif; font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--border-bright); }
+    td { padding: 13px 16px; border-bottom: 1px solid var(--border); color: var(--text-primary); font-size: 15px; line-height: 1.5; }
     tr:last-child td { border-bottom: none; }
     tr:hover td { background: rgba(255,255,255,0.015); }
 
-    /* ── BULLET LISTS ── */
-    .list {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 17px;
-      line-height: 1.55;
-      color: var(--text-secondary);
-    }
-    .list li .bullet {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--accent-blue);
-      margin-top: 8px;
-      flex-shrink: 0;
-    }
+    /* Lists */
+    .list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .list li { display: flex; align-items: flex-start; gap: 12px; font-size: 17px; line-height: 1.55; color: var(--text-secondary); }
+    .list li .bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-blue); margin-top: 8px; flex-shrink: 0; }
     .list li strong { color: var(--text-primary); font-weight: 500; }
 
-    /* ── NUMBERED LIST ── */
-    .numlist {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .numlist li {
-      display: flex;
-      align-items: flex-start;
-      gap: 14px;
-      font-size: 17px;
-      line-height: 1.55;
-      color: var(--text-secondary);
-    }
-    .numlist li .num {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent-blue);
-      background: rgba(76,126,243,0.12);
-      border-radius: 4px;
-      padding: 2px 7px;
-      margin-top: 2px;
-      flex-shrink: 0;
-      min-width: 28px;
-      text-align: center;
-    }
+    .numlist { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .numlist li { display: flex; align-items: flex-start; gap: 14px; font-size: 17px; line-height: 1.55; color: var(--text-secondary); }
+    .numlist li .num { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-blue); background: rgba(76,126,243,0.12); border-radius: 4px; padding: 2px 7px; margin-top: 2px; flex-shrink: 0; min-width: 28px; text-align: center; }
     .numlist li strong { color: var(--text-primary); font-weight: 500; }
 
-    /* ── CODE ── */
-    .code-block {
-      background: var(--bg-code);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px 24px;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      line-height: 1.8;
-      color: #c9c9d8;
-      overflow-x: auto;
-      tab-size: 2;
-      white-space: pre;
-    }
+    /* Code */
+    .code-block { background: var(--bg-code); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.8; color: #c9c9d8; overflow-x: auto; tab-size: 2; white-space: pre; }
     .code-block .kw  { color: var(--accent-blue); }
     .code-block .str { color: var(--accent-green); }
     .code-block .cm  { color: var(--text-muted); font-style: italic; }
@@ -322,18 +182,8 @@
     .code-block .nm  { color: var(--accent-amber); }
     .code-block .op  { color: var(--text-secondary); }
 
-    /* ── BADGE ── */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      height: 24px;
-      padding: 0 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      font-family: 'IBM Plex Mono', monospace;
-      letter-spacing: 0.04em;
-    }
+    /* Badges */
+    .badge { display: inline-flex; align-items: center; height: 24px; padding: 0 10px; border-radius: 6px; font-size: 12px; font-weight: 500; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.04em; }
     .badge--blue   { background: rgba(76,126,243,0.15);  color: var(--accent-blue); }
     .badge--green  { background: rgba(62,207,142,0.15);  color: var(--accent-green); }
     .badge--amber  { background: rgba(245,166,35,0.15);  color: var(--accent-amber); }
@@ -341,423 +191,116 @@
     .badge--red    { background: rgba(248,113,113,0.15); color: var(--accent-red); }
     .badge--cyan   { background: rgba(34,211,238,0.15);  color: var(--accent-cyan); }
 
-    /* ── HIGHLIGHT BOX ── */
-    .highlight {
-      background: rgba(76,126,243,0.08);
-      border-left: 3px solid var(--accent-blue);
-      padding: 14px 20px;
-      border-radius: 0 8px 8px 0;
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
+    /* Highlight */
+    .highlight { background: rgba(76,126,243,0.08); border-left: 3px solid var(--accent-blue); padding: 14px 20px; border-radius: 0 8px 8px 0; font-size: 15px; color: var(--text-secondary); line-height: 1.6; }
     .highlight strong { color: var(--text-primary); }
+    .highlight.green { background: rgba(62,207,142,0.08); border-left-color: var(--accent-green); }
+    .highlight.amber { background: rgba(245,166,35,0.08); border-left-color: var(--accent-amber); }
 
-    /* ── TWO COLUMNS ── */
-    .cols {
-      display: grid;
-      gap: 40px;
-      align-items: start;
-    }
+    /* Columns */
+    .cols { display: grid; gap: 40px; align-items: start; }
     .cols--60-40 { grid-template-columns: 60fr 40fr; }
     .cols--50-50 { grid-template-columns: 1fr 1fr; }
     .cols--3     { grid-template-columns: repeat(3, 1fr); }
+    .cols--4     { grid-template-columns: repeat(4, 1fr); }
 
-    /* ── DIAGRAMS ── */
-    .diagram {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
-    }
-    .diagram--row {
-      flex-direction: row;
-      align-items: center;
-    }
-
-    .dbox {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      border-radius: 10px;
-      padding: 18px 24px;
-      width: 100%;
-    }
-    .dbox--primary { border-color: rgba(76,126,243,0.4); }
+    /* Diagram boxes */
+    .dbox { background: var(--bg-card); border: 1px solid var(--border-bright); border-radius: 10px; padding: 18px 24px; width: 100%; }
+    .dbox--primary   { border-color: rgba(76,126,243,0.4); }
     .dbox--secondary { border-color: rgba(62,207,142,0.3); }
-    .dbox--amber { border-color: rgba(245,166,35,0.3); }
+    .dbox--amber     { border-color: rgba(245,166,35,0.3); }
+    .dbox--purple    { border-color: rgba(167,139,250,0.3); }
 
-    .dbox__title {
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .dbox__sub {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-    .dbox__items {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-    .dbox__item {
-      font-size: 13px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .dbox__item::before {
-      content: '';
-      display: inline-block;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--text-muted);
-      flex-shrink: 0;
-    }
+    .dbox__title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+    .dbox__sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); margin-bottom: 12px; }
+    .dbox__items { display: flex; flex-direction: column; gap: 6px; }
+    .dbox__item { font-size: 13px; color: var(--text-secondary); display: flex; align-items: center; gap: 8px; }
+    .dbox__item::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
 
     /* Arrow */
-    .arr {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .arr--down {
-      flex-direction: column;
-      padding: 4px 0;
-    }
+    .arr--down { display: flex; flex-direction: column; align-items: center; padding: 4px 0; }
     .arr svg { color: var(--text-muted); }
 
-    /* Nested diagram */
-    .nest-outer {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .nest-label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-      margin-bottom: 14px;
-    }
-    .nest-inner {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 16px 20px;
-    }
-    .nest-inner__title {
-      font-family: 'Syne', sans-serif;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 10px;
-    }
-    .nest-inner__items {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-    .nest-inner__item {
-      font-size: 12px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .nest-inner__item::before {
-      content: '';
-      width: 3px; height: 3px;
-      border-radius: 50%;
-      background: var(--text-muted);
-      flex-shrink: 0;
-    }
+    /* Nested */
+    .nest-outer { background: var(--bg-card); border: 1px solid var(--border-bright); border-radius: 12px; padding: 20px; }
+    .nest-label { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 0.1em; margin-bottom: 14px; }
+    .nest-inner { background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; }
+    .nest-inner__title { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 600; color: var(--text-primary); margin-bottom: 10px; }
+    .nest-inner__items { display: flex; flex-direction: column; gap: 5px; }
+    .nest-inner__item { font-size: 12px; color: var(--text-secondary); display: flex; align-items: center; gap: 6px; }
+    .nest-inner__item::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: var(--text-muted); flex-shrink: 0; }
 
-    /* Flow diagram */
-    .flow {
-      display: flex;
-      align-items: center;
-      gap: 0;
-      flex-wrap: nowrap;
-    }
-    .flow-step {
-      background: var(--bg-card);
-      border: 1px solid var(--border-bright);
-      border-radius: 8px;
-      padding: 10px 16px;
-      font-size: 13px;
-      color: var(--text-primary);
-      white-space: nowrap;
-      font-family: 'IBM Plex Mono', monospace;
-      flex-shrink: 0;
-    }
-    .flow-step--accent {
-      border-color: rgba(76,126,243,0.4);
-      color: var(--accent-blue);
-    }
-    .flow-arrow {
-      flex-shrink: 0;
-      padding: 0 4px;
-    }
+    /* Flow */
+    .flow { display: flex; align-items: center; gap: 0; flex-wrap: nowrap; }
+    .flow-step { background: var(--bg-card); border: 1px solid var(--border-bright); border-radius: 8px; padding: 10px 16px; font-size: 13px; color: var(--text-primary); white-space: nowrap; font-family: 'IBM Plex Mono', monospace; flex-shrink: 0; }
+    .flow-step--accent { border-color: rgba(76,126,243,0.4); color: var(--accent-blue); }
+    .flow-arrow { flex-shrink: 0; padding: 0 4px; }
     .flow-arrow svg { display: block; }
 
     /* Step list */
-    .step-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .step-item {
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-    .step-num {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--accent-blue);
-      background: rgba(76,126,243,0.12);
-      border: 1px solid rgba(76,126,243,0.25);
-      border-radius: 4px;
-      padding: 2px 8px;
-      margin-top: 2px;
-      flex-shrink: 0;
-    }
-    .step-text {
-      font-size: 15px;
-      color: var(--text-secondary);
-      line-height: 1.55;
-    }
+    .step-list { display: flex; flex-direction: column; gap: 12px; }
+    .step-item { display: flex; gap: 14px; align-items: flex-start; }
+    .step-num { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; color: var(--accent-blue); background: rgba(76,126,243,0.12); border: 1px solid rgba(76,126,243,0.25); border-radius: 4px; padding: 2px 8px; margin-top: 2px; flex-shrink: 0; }
+    .step-text { font-size: 15px; color: var(--text-secondary); line-height: 1.55; }
     .step-text strong { color: var(--text-primary); font-weight: 500; }
 
-    /* Tenant boxes */
-    .tenant-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .tenant-box {
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 14px 16px;
-    }
-    .tenant-box__name {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11px;
-      color: var(--accent-amber);
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-    .tenant-box__resource {
-      font-size: 12px;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 5px;
-    }
-    .tenant-box__resource .dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--accent-green);
-      flex-shrink: 0;
-    }
-
-    /* Emoji items */
-    .emoji-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .emoji-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 16px;
-      line-height: 1.5;
-      color: var(--text-secondary);
-    }
+    /* Emoji list */
+    .emoji-list { display: flex; flex-direction: column; gap: 12px; }
+    .emoji-item { display: flex; align-items: flex-start; gap: 12px; font-size: 16px; line-height: 1.5; color: var(--text-secondary); }
     .emoji-item .icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
     .emoji-item strong { color: var(--text-primary); font-weight: 500; }
 
     /* Result callout */
-    .result-callout {
-      background: rgba(248,113,113,0.07);
-      border: 1px solid rgba(248,113,113,0.2);
-      border-radius: 10px;
-      padding: 16px 20px;
-      margin-top: 16px;
-      font-size: 15px;
-      color: var(--text-secondary);
-    }
+    .result-callout { background: rgba(248,113,113,0.07); border: 1px solid rgba(248,113,113,0.2); border-radius: 10px; padding: 16px 20px; margin-top: 16px; font-size: 15px; color: var(--text-secondary); }
     .result-callout strong { color: var(--accent-red); }
 
-    /* Divider line */
-    .divider {
-      height: 1px;
-      background: var(--border);
-      margin: 20px 0;
-    }
+    /* Divider */
+    .divider { height: 1px; background: var(--border); margin: 20px 0; }
 
-    /* Q&A centered */
-    .center { text-align: center; }
+    /* Tag row */
+    .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
 
-    /* ── SLIDE 1: TITLE ── */
-    #slide-1 {
-      text-align: center;
-    }
-    #slide-1 .logo-main {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 13px;
-      letter-spacing: 0.2em;
-      color: var(--text-muted);
-      margin-bottom: 48px;
-      text-transform: uppercase;
-    }
-    #slide-1 h1 {
-      font-size: 72px;
-      background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent-blue) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 16px;
-    }
-    #slide-1 .user-apps-label {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 22px;
-      font-weight: 600;
-      color: var(--accent-green);
-      letter-spacing: 0.06em;
-      margin-bottom: 28px;
-    }
-    #slide-1 .subtitle {
-      max-width: 520px;
-      margin: 0 auto;
-      color: var(--text-secondary);
-    }
-    #slide-1 .decorline {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
-      margin: 28px auto;
-      border-radius: 2px;
-    }
+    /* Summary grid */
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .summary-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; }
+    .summary-item .num { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent-blue); background: rgba(76,126,243,0.12); border-radius: 5px; padding: 3px 8px; flex-shrink: 0; margin-top: 2px; }
+    .summary-item .title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px; color: var(--text-primary); margin-bottom: 4px; }
+    .summary-item .desc { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
 
-    /* ── GRID TAG CLOUD ── */
-    .tag-row {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
+    /* Benefit grid */
+    .benefit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .benefit-col { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .benefit-col__head { background: var(--bg-elevated); padding: 12px 16px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600; color: var(--text-primary); border-bottom: 1px solid var(--border); }
+    .benefit-col__items { padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; }
+    .benefit-col__item { font-size: 14px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
 
-    /* ── SUMMARY POINTS ── */
-    .summary-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .summary-item {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 20px;
-      display: flex;
-      gap: 14px;
-      align-items: flex-start;
-    }
-    .summary-item .num {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--accent-blue);
-      background: rgba(76,126,243,0.12);
-      border-radius: 5px;
-      padding: 3px 8px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .summary-item .title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 15px;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .summary-item .desc {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
+    /* Comparison grid */
+    .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .compare-col { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+    .compare-col__head { padding: 14px 18px; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; border-bottom: 1px solid var(--border); }
+    .compare-col__head.temporal { background: rgba(76,126,243,0.1); color: var(--accent-blue); border-color: rgba(76,126,243,0.2); }
+    .compare-col__head.pods { background: rgba(62,207,142,0.1); color: var(--accent-green); border-color: rgba(62,207,142,0.2); }
+    .compare-col__items { padding: 14px 18px; display: flex; flex-direction: column; gap: 10px; }
+    .compare-col__item { font-size: 14px; color: var(--text-secondary); display: flex; align-items: flex-start; gap: 8px; line-height: 1.4; }
 
-    /* BENEFIT TABLE */
-    .benefit-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-    .benefit-col {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .benefit-col__head {
-      background: var(--bg-elevated);
-      padding: 12px 16px;
-      font-family: 'Syne', sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-primary);
-      border-bottom: 1px solid var(--border);
-    }
-    .benefit-col__items {
-      padding: 12px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .benefit-col__item {
-      font-size: 14px;
-      color: var(--text-secondary);
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-      line-height: 1.4;
-    }
-
-    /* ── ANIMATION ── */
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .slide-inner > * {
-      animation: fadeInUp 0.5s ease both;
-    }
+    /* Animation */
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+    .slide-inner > * { animation: fadeInUp 0.5s ease both; }
     .slide-inner > *:nth-child(1) { animation-delay: 0.05s; }
     .slide-inner > *:nth-child(2) { animation-delay: 0.12s; }
     .slide-inner > *:nth-child(3) { animation-delay: 0.19s; }
     .slide-inner > *:nth-child(4) { animation-delay: 0.26s; }
     .slide-inner > *:nth-child(5) { animation-delay: 0.33s; }
 
-    @media print {
-      .presentation { overflow: visible; }
-      .slide { page-break-after: always; height: 100vh; }
-      #progress-bar, #slide-counter, #nav-hint { display: none; }
-    }
-
-    /* ── SCROLLBAR ── */
+    @media print { .presentation { overflow: visible; } .slide { page-break-after: always; height: 100vh; } #progress-bar, #slide-counter, #nav-hint { display: none; } }
     .presentation::-webkit-scrollbar { width: 0; }
+
+    /* Title slide */
+    #slide-1 { text-align: center; }
+    #slide-1 .logo-main { font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.2em; color: var(--text-muted); margin-bottom: 48px; text-transform: uppercase; }
+    #slide-1 h1 { font-size: 72px; background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent-blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; }
+    #slide-1 .user-apps-label { font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; color: var(--accent-green); letter-spacing: 0.06em; margin-bottom: 28px; }
+    #slide-1 .decorline { width: 60px; height: 2px; background: linear-gradient(90deg, var(--accent-blue), var(--accent-green)); margin: 28px auto; border-radius: 2px; }
   </style>
 </head>
 <body>
@@ -769,14 +312,14 @@
     <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;">
       <div class="logo-main">COZY<span style="color:var(--accent-blue)">≡</span>TACK</div>
       <h1>User Apps</h1>
-      <div class="user-apps-label">Application Platform</div>
+      <div class="user-apps-label">Reactive Application Platform</div>
       <div class="decorline"></div>
-      <p class="subtitle">Self-service application catalog built on Cozystack — for ISPs, DevOps teams, and end users who just want things to work.</p>
+      <p class="subtitle" style="max-width:520px;margin:0 auto;">Composable atoms, fingerprint-driven cascade, single reconcile operation. Self-service app catalog for ISPs and their tenants.</p>
       <div class="tag-row" style="justify-content:center;margin-top:28px;">
         <span class="badge badge--blue">Kubernetes-native</span>
-        <span class="badge badge--green">Multi-tenant</span>
-        <span class="badge badge--purple">Self-service</span>
-        <span class="badge badge--amber">Extensible</span>
+        <span class="badge badge--green">Reactive reconcile</span>
+        <span class="badge badge--purple">Composable atoms</span>
+        <span class="badge badge--amber">Multi-tenant</span>
       </div>
     </div>
     <div class="slide-number">01 / 19</div>
@@ -786,128 +329,102 @@
   <section class="slide" id="slide-2">
     <div class="slide-inner">
       <div class="slide-label">Problem</div>
-      <h2>The Challenge</h2>
-      <div class="cols cols--60-40" style="align-items:start;">
+      <h2>Two Problems, One Root Cause</h2>
+      <div class="cols cols--50-50" style="align-items:start;">
         <div>
-          <p style="margin-bottom:20px;">Current Cozystack model has fundamental scaling limitations.</p>
+          <h3 style="font-size:17px;margin-bottom:16px;">Cozystack today</h3>
           <div class="emoji-list">
-            <div class="emoji-item"><span class="icon">❌</span><span>One CRD per application type — Postgres, Redis, Minecraft, WordPress…</span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>One CRD per app type — Postgres, Redis, Minecraft, WordPress…</span></div>
             <div class="emoji-item"><span class="icon">❌</span><span>CRDs are cluster-wide — every new app pollutes the API server</span></div>
-            <div class="emoji-item"><span class="icon">❌</span><span>Adding a new app requires <strong>cluster-admin privileges</strong></span></div>
-            <div class="emoji-item"><span class="icon">❌</span><span>Tenants <strong>cannot create</strong> their own application types</span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>Adding a new app type requires <strong>cluster-admin</strong></span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>Tenants cannot create their own app types</span></div>
           </div>
         </div>
         <div>
-          <div class="card" style="display:flex;flex-direction:column;gap:12px;">
-            <div class="nest-label" style="margin:0;">Current State</div>
-            <div style="display:flex;flex-direction:column;gap:6px;">
-              <div class="flow-step" style="font-size:11px;">PostgresCluster CRD</div>
-              <div class="flow-step" style="font-size:11px;">RedisCluster CRD</div>
-              <div class="flow-step" style="font-size:11px;">MinecraftServer CRD</div>
-              <div class="flow-step" style="font-size:11px;">WordPressApp CRD</div>
-              <div class="flow-step" style="font-size:11px;color:var(--text-muted);">+ N more…</div>
-            </div>
-            <div style="font-size:12px;color:var(--text-muted);font-style:italic;">each = cluster-wide resource</div>
+          <h3 style="font-size:17px;margin-bottom:16px;">Old Cozyap design (ADR-0001–0007)</h3>
+          <div class="emoji-list">
+            <div class="emoji-item"><span class="icon">❌</span><span>install / upgrade / remove hooks — drift heal was <strong>not built in</strong></span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>Monolithic templates — replacing one DB backend required rewriting the template</span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>Argo Workflows as DAG engine — runs once, archives; we need a continuous reconciler</span></div>
+            <div class="emoji-item"><span class="icon">❌</span><span>cluster-admin SA per workflow — unscoped power for template authors</span></div>
           </div>
         </div>
       </div>
-      <div class="result-callout">
-        <strong>Result:</strong> Scaling the application catalog is expensive, inflexible, and requires constant cluster-admin involvement.
+      <div class="result-callout" style="margin-top:24px;">
+        <strong>Root cause:</strong> imperative lifecycle hooks model. Each lifecycle event is a different operation — but they're all the same thing: <em>make actual match desired.</em>
       </div>
     </div>
     <div class="slide-number">02 / 19</div>
   </section>
 
-  <!-- SLIDE 3: SOLUTION -->
+  <!-- SLIDE 3: THE SHIFT -->
   <section class="slide" id="slide-3">
     <div class="slide-inner">
-      <div class="slide-label">Solution</div>
-      <h2>Universal Application Abstraction</h2>
-      <p style="margin-bottom:28px;">Two resources replace hundreds of CRDs — regardless of how many apps you support.</p>
-      <div class="card" style="margin-bottom:24px;overflow:hidden;padding:0;">
-        <table>
-          <thead>
-            <tr>
-              <th>Resource</th>
-              <th>Scope</th>
-              <th>Purpose</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code style="font-family:'IBM Plex Mono',monospace;font-size:13px;background:var(--bg-code);padding:2px 8px;border-radius:4px;color:var(--accent-purple);">ApplicationTemplate</code></td>
-              <td><span class="badge badge--blue">Cluster</span></td>
-              <td>How to install, manage and expose an app</td>
-            </tr>
-            <tr>
-              <td><code style="font-family:'IBM Plex Mono',monospace;font-size:13px;background:var(--bg-code);padding:2px 8px;border-radius:4px;color:var(--accent-green);">Application</code></td>
-              <td><span class="badge badge--green">Namespace</span></td>
-              <td>A deployed instance of a template</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="slide-label">The Shift</div>
+      <h2>One Operation to Rule Them All</h2>
+      <div style="text-align:center;margin-bottom:36px;">
+        <div style="display:inline-flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:center;">
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="flow-step" style="color:var(--accent-red);border-color:rgba(248,113,113,0.3);">install</div>
+            <div class="flow-step" style="color:var(--accent-red);border-color:rgba(248,113,113,0.3);">upgrade</div>
+            <div class="flow-step" style="color:var(--accent-red);border-color:rgba(248,113,113,0.3);">remove</div>
+            <div class="flow-step" style="color:var(--accent-red);border-color:rgba(248,113,113,0.3);">suggestUpgrade</div>
+            <div class="flow-step" style="color:var(--accent-red);border-color:rgba(248,113,113,0.3);">drift heal</div>
+          </div>
+          <div style="font-size:36px;color:var(--text-muted);">→</div>
+          <div class="flow-step" style="font-size:22px;padding:20px 36px;border-color:rgba(76,126,243,0.5);color:var(--accent-blue);font-family:'Syne',sans-serif;font-weight:700;">reconcile</div>
+        </div>
       </div>
       <div class="cols cols--3">
-        <div class="highlight" style="border-color:var(--accent-green);background:rgba(62,207,142,0.07);">
-          <strong>✅ One CRD pair</strong><br>for ALL application types
-        </div>
         <div class="highlight">
-          <strong>✅ Templates reusable</strong><br>across all tenants
+          <strong>Triggered by</strong><br>cron (4–24h drift safety net), spec change, upstream fingerprint change
         </div>
-        <div class="highlight" style="border-color:var(--accent-purple);background:rgba(167,139,250,0.07);">
-          <strong>✅ No cluster-admin</strong><br>to add new apps
+        <div class="highlight" style="border-color:var(--accent-green);background:rgba(62,207,142,0.08);">
+          <strong>Detects removal</strong><br>via <code style="font-size:12px;background:var(--bg-code);padding:1px 5px;border-radius:3px;">deletionTimestamp</code> inside the reconcile DAG — no separate remove hook
+        </div>
+        <div class="highlight" style="border-color:var(--accent-purple);background:rgba(167,139,250,0.08);">
+          <strong>Drift heal is default</strong><br>not a feature — reconcile runs on cron and restores desired state
         </div>
       </div>
     </div>
     <div class="slide-number">03 / 19</div>
   </section>
 
-  <!-- SLIDE 4: CORE CONCEPTS -->
+  <!-- SLIDE 4: ATOMS -->
   <section class="slide" id="slide-4">
     <div class="slide-inner">
-      <div class="slide-label">Core Concepts</div>
-      <h2>Resource Relationship</h2>
+      <div class="slide-label">Building Block</div>
+      <h2>The Atom</h2>
       <div class="cols cols--60-40" style="align-items:center;">
-        <div class="diagram" style="gap:0;">
-          <div class="dbox dbox--primary" style="max-width:440px;">
-            <div class="dbox__title">ApplicationTemplate</div>
-            <div class="dbox__sub">cluster-scoped · read-only for tenants</div>
+        <div>
+          <div class="dbox dbox--primary" style="margin-bottom:20px;">
+            <div class="dbox__title">Atom</div>
+            <div class="dbox__sub">versioned · community-writable · black box</div>
             <div class="dbox__items">
-              <div class="dbox__item">Parameters schema (JSON Schema)</div>
-              <div class="dbox__item">Lifecycle hooks: install / upgrade / remove</div>
-              <div class="dbox__item">Custom actions (backup, restart…)</div>
-              <div class="dbox__item">Display metadata (name, icon, description)</div>
+              <div class="dbox__item">Typed <strong style="color:var(--accent-blue);">input ports</strong> — what it needs from siblings</div>
+              <div class="dbox__item">Typed <strong style="color:var(--accent-green);">output ports</strong> — what it exposes downstream</div>
+              <div class="dbox__item">Parameter schema — what users configure</div>
+              <div class="dbox__item"><code style="font-size:12px;">reconcile</code> — the only lifecycle operation</div>
+              <div class="dbox__item"><code style="font-size:12px;">status</code> — read-only health probe (30–60s cron)</div>
+              <div class="dbox__item">Actions — user-triggered one-shots (backup, restart…)</div>
             </div>
           </div>
-          <div class="arr arr--down" style="padding:16px 0;">
-            <svg width="24" height="32" viewBox="0 0 24 32" fill="none" style="color:var(--accent-blue);">
-              <line x1="12" y1="0" x2="12" y2="24" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/>
-              <path d="M6 20 L12 28 L18 20" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);">references</span>
-          </div>
-          <div class="dbox dbox--secondary" style="max-width:440px;">
-            <div class="dbox__title">Application</div>
-            <div class="dbox__sub">namespace-scoped · per tenant</div>
-            <div class="dbox__items">
-              <div class="dbox__item">Template reference</div>
-              <div class="dbox__item">Target environment</div>
-              <div class="dbox__item">User-supplied parameter values</div>
-              <div class="dbox__item">Status & lifecycle state</div>
-            </div>
+          <div class="highlight" style="font-size:14px;">
+            <strong>Black box:</strong> internal k8s objects are not visible to tenants. The contract surface is typed outputs + named conditions only.
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">Template = Definition</div>
-            <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">Describes <em>how</em> to deploy any instance. Written once, reused forever.</div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">AtomTemplate</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Cluster-scoped CRD. Read-only for tenants. Written by catalog. Semver-versioned.</div>
           </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">Application = Instance</div>
-            <div style="font-size:13px;color:var(--text-secondary);line-height:1.5;">A user's specific deployment. Namespace-isolated, tenant-owned.</div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">AtomInstance</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Namespace-scoped. Created by the controller per graph node. Holds outputs + conditions in status.</div>
           </div>
-          <div class="card" style="border-color:rgba(76,126,243,0.25);">
-            <div style="font-size:12px;color:var(--text-muted);line-height:1.6;">Analogy: Template is a Docker <strong style="color:var(--accent-blue);">image</strong>, Application is a running <strong style="color:var(--accent-green);">container</strong>.</div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-amber);margin-bottom:6px;">Application</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">A wired graph of atoms. Tenant-owned. References an ApplicationTemplate version.</div>
           </div>
         </div>
       </div>
@@ -915,49 +432,45 @@
     <div class="slide-number">04 / 19</div>
   </section>
 
-  <!-- SLIDE 5: ENVIRONMENT ABSTRACTION -->
+  <!-- SLIDE 5: PORT TYPES -->
   <section class="slide" id="slide-5">
     <div class="slide-inner">
-      <div class="slide-label">Environments</div>
-      <h2>Environment = Managed Cluster</h2>
-      <div class="cols cols--60-40">
-        <div>
-          <div class="nest-outer" style="margin-bottom:16px;">
-            <div class="nest-label">Tenant Namespace (host cluster)</div>
-            <div style="display:flex;flex-direction:column;gap:8px;">
-              <div class="nest-inner" style="border-color:rgba(76,126,243,0.3);">
-                <div class="nest-inner__title" style="color:var(--accent-blue);">Environment: production</div>
-                <div class="nest-inner__items">
-                  <div class="nest-inner__item">→ ManagedKubernetes cluster</div>
-                  <div class="nest-inner__item">→ Argo Workflows pre-installed</div>
-                  <div class="nest-inner__item">→ Ingress + cert-manager</div>
-                </div>
-              </div>
-              <div class="nest-inner">
-                <div class="nest-inner__title">Application: my-minecraft</div>
-                <div class="nest-inner__items">
-                  <div class="nest-inner__item">→ runs in: production</div>
-                  <div class="nest-inner__item">→ status: <span class="badge badge--green" style="font-size:10px;height:18px;">Running</span></div>
-                </div>
-              </div>
-              <div class="nest-inner">
-                <div class="nest-inner__title">Application: my-webapp</div>
-                <div class="nest-inner__items">
-                  <div class="nest-inner__item">→ runs in: production</div>
-                  <div class="nest-inner__item">→ status: <span class="badge badge--blue" style="font-size:10px;height:18px;">Installing</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="slide-label">Typed Ports</div>
+      <h2>13 Port Types, One Vocabulary</h2>
+      <div class="cols cols--50-50" style="align-items:start;gap:24px;">
+        <div class="card" style="padding:0;overflow:hidden;">
+          <table>
+            <thead><tr><th>Type</th><th>Carries</th></tr></thead>
+            <tbody>
+              <tr><td><code style="font-size:12px;">secret-ref</code></td><td>Kubernetes Secret reference</td></tr>
+              <tr><td><code style="font-size:12px;">tls-secret-ref</code></td><td>TLS Secret (tls.crt / tls.key)</td></tr>
+              <tr><td><code style="font-size:12px;">configmap-ref</code></td><td>ConfigMap reference</td></tr>
+              <tr><td><code style="font-size:12px;">service-ref</code></td><td>Service reference (+ optional port)</td></tr>
+              <tr><td><code style="font-size:12px;">pvc-ref</code></td><td>PersistentVolumeClaim</td></tr>
+              <tr><td><code style="font-size:12px;">serviceaccount-ref</code></td><td>ServiceAccount</td></tr>
+              <tr><td><code style="font-size:12px;">workload-ref</code></td><td>Deployment / StatefulSet</td></tr>
+            </tbody>
+          </table>
         </div>
-        <div>
-          <h3 style="font-size:16px;color:var(--text-secondary);font-weight:500;margin-bottom:16px;">What tenant gets:</h3>
-          <div class="emoji-list">
-            <div class="emoji-item"><span class="icon">🎯</span><span><strong>Real Kubernetes</strong> cluster, not a simulation</span></div>
-            <div class="emoji-item"><span class="icon">🔧</span><span>Pre-installed controllers &amp; tools ready to use</span></div>
-            <div class="emoji-item"><span class="icon">📊</span><span>Automatic scaling and health monitoring</span></div>
-            <div class="emoji-item"><span class="icon">🔑</span><span>Own kubeconfig — full kubectl access</span></div>
-            <div class="emoji-item"><span class="icon">🔒</span><span>Hard isolation from other tenants</span></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="padding:0;overflow:hidden;">
+            <table>
+              <thead><tr><th>Type</th><th>Carries</th></tr></thead>
+              <tbody>
+                <tr><td><code style="font-size:12px;">image-ref</code></td><td>Container image with tag/digest</td></tr>
+                <tr><td><code style="font-size:12px;">ingress-host</code></td><td>Hostname for Ingress rule</td></tr>
+                <tr><td><code style="font-size:12px;">string</code></td><td>Arbitrary UTF-8 string</td></tr>
+                <tr><td><code style="font-size:12px;">number</code></td><td>Integer or float</td></tr>
+                <tr><td><code style="font-size:12px;">boolean</code></td><td>True / false</td></tr>
+                <tr><td><code style="font-size:12px;">any</code></td><td>Opaque payload (escape hatch)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="highlight" style="font-size:13px;">
+            <strong>Subtyping (one-way):</strong><br>
+            <code style="font-size:12px;">tls-secret-ref</code> → <code style="font-size:12px;">secret-ref</code><br>
+            <code style="font-size:12px;">image-ref</code> → <code style="font-size:12px;">string</code><br>
+            <code style="font-size:12px;">ingress-host</code> → <code style="font-size:12px;">string</code>
           </div>
         </div>
       </div>
@@ -965,52 +478,57 @@
     <div class="slide-number">05 / 19</div>
   </section>
 
-  <!-- SLIDE 6: ARCHITECTURE -->
+  <!-- SLIDE 6: APPLICATION GRAPH -->
   <section class="slide" id="slide-6">
     <div class="slide-inner">
-      <div class="slide-label">Architecture</div>
-      <h2>Architecture Overview</h2>
+      <div class="slide-label">Composition</div>
+      <h2>Application = Atom Graph</h2>
       <div class="cols cols--60-40" style="align-items:start;">
-        <div>
-          <div class="nest-outer">
-            <div class="nest-label">HOST CLUSTER</div>
-            <div class="nest-inner" style="border-color:rgba(76,126,243,0.35);margin-bottom:12px;">
-              <div class="nest-inner__title" style="color:var(--accent-blue);">cozy-apps-operator</div>
-              <div class="nest-inner__items">
-                <div class="nest-inner__item">Environment Controller</div>
-                <div class="nest-inner__item">Application Controller</div>
-                <div class="nest-inner__item">Action Controller</div>
-              </div>
-            </div>
-            <div class="arr arr--down" style="padding:8px 0;align-items:flex-start;padding-left:40px;">
-              <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style="color:var(--text-muted);">
-                <line x1="10" y1="0" x2="10" y2="20" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 3"/>
-                <path d="M4 16 L10 24 L16 16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);margin-top:4px;padding-left:4px;">creates workflows</span>
-            </div>
-            <div class="nest-inner" style="border-color:rgba(62,207,142,0.3);">
-              <div class="nest-inner__title" style="color:var(--accent-green);">Environment Cluster</div>
-              <div class="nest-inner__items">
-                <div class="nest-inner__item">Argo Workflows executor</div>
-                <div class="nest-inner__item">Ingress Controller (nginx)</div>
-                <div class="nest-inner__item">User Applications</div>
-              </div>
-            </div>
-          </div>
+        <div class="code-block" style="font-size:12px;line-height:1.7;">
+<span class="cm"># ApplicationTemplate "wordpress"</span>
+<span class="kw">atoms</span>:
+  <span class="nm">userInput</span>:
+    <span class="kw">template</span>: <span class="str">user-input</span>
+    <span class="kw">outputs</span>: [hostname, adminPassword]
+
+  <span class="nm">db</span>:
+    <span class="kw">template</span>: <span class="str">postgres@1.2.0</span>
+    <span class="kw">inputs</span>:
+      backupBucket: <span class="op">s3.bucketSecret</span>
+    <span class="kw">params</span>: { version: <span class="str">"16"</span>, replicas: <span class="nm">3</span> }
+
+  <span class="nm">s3</span>:
+    <span class="kw">template</span>: <span class="str">minio@1.0.4</span>
+
+  <span class="nm">app</span>:
+    <span class="kw">template</span>: <span class="str">container@2.1.0</span>
+    <span class="kw">inputs</span>:
+      db:     <span class="op">db.credentials</span>
+      dbHost: <span class="op">db.service</span>
+
+  <span class="nm">tls</span>:
+    <span class="kw">template</span>: <span class="str">tls-cert@1.1.0</span>
+    <span class="kw">inputs</span>:
+      hostname: <span class="op">userInput.hostname</span>
+
+  <span class="nm">ingress</span>:
+    <span class="kw">template</span>: <span class="str">ingress@1.3.0</span>
+    <span class="kw">inputs</span>:
+      backend: <span class="op">app.workload</span>
+      tls:     <span class="op">tls.cert</span>
         </div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Host Cluster</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Runs the operators, stores CRDs, manages tenant namespaces and environments.</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Backend swap is free</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Replace <code style="font-size:11px;">postgres@1.2.0</code> with <code style="font-size:11px;">rds@1.0.0</code> — the Container atom doesn't care, it reads the same <code style="font-size:11px;">secret-ref</code> port.</div>
           </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">Environment Cluster</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Isolated K8s cluster per environment. Runs actual workloads and Argo Workflows.</div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">Patch-pinned atoms</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;"><code style="font-size:11px;">postgres@1.2.0</code> — explicit. No implicit upgrades. Security fixes are a catalog UI concern, not an auto-bump.</div>
           </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-purple);margin-bottom:6px;">Argo Workflows</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Executes install/upgrade/remove hooks as container-based DAG workflows.</div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-amber);margin-bottom:6px;">UserInput atom</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Special system atom with no executor. Its outputs are values from <code style="font-size:11px;">Application.spec.values</code> — generates the UI form.</div>
           </div>
         </div>
       </div>
@@ -1018,324 +536,318 @@
     <div class="slide-number">06 / 19</div>
   </section>
 
-  <!-- SLIDE 7: INSTALL FLOW -->
+  <!-- SLIDE 7: CASCADE DETECTION -->
   <section class="slide" id="slide-7">
     <div class="slide-inner">
-      <div class="slide-label">Deploy Flow</div>
-      <h2>How Deployment Works</h2>
-      <div style="margin-bottom:28px;overflow-x:auto;">
-        <div class="flow" style="gap:0;">
-          <div class="flow-step flow-step--accent">User</div>
-          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="flow-step">Application CR</div>
-          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="flow-step">Controller</div>
-          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="flow-step">Argo Workflow</div>
-          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="flow-step">Helm/kubectl</div>
-          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--accent-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-          <div class="flow-step" style="border-color:rgba(62,207,142,0.4);color:var(--accent-green);">Running ✓</div>
+      <div class="slide-label">Cascade</div>
+      <h2>Fingerprint-Driven Cascade</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div>
+          <p style="margin-bottom:20px;">Every output carries a <strong>fingerprint</strong> — SHA-256 of the materialised content, not <code style="font-size:13px;">resourceVersion</code>.</p>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-text">Postgres reconcile finishes. Rotates the credentials Secret.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-text">Writes new <strong>fingerprint</strong> to <code style="font-size:13px;">AtomInstance.status.outputs.credentials</code>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-text">Controller diffs fingerprint — changed. Enqueues reconcile for every downstream <code style="font-size:13px;">AtomInstance</code> that binds this output.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-text">Container atom reconciles, picks up the new credential. No manual trigger needed.</div>
+            </div>
+          </div>
+          <div class="highlight" style="margin-top:20px;font-size:14px;">
+            <strong>No Argo Events. No Kafka.</strong> Pure controller watch loop on <code style="font-size:12px;">AtomInstance.status</code>.
+          </div>
         </div>
-      </div>
-      <div class="cols cols--50-50">
-        <div class="step-list">
-          <div class="step-item"><div class="step-num">01</div><div class="step-text">User creates Application (UI or kubectl)</div></div>
-          <div class="step-item"><div class="step-num">02</div><div class="step-text">Controller <strong>validates</strong> template &amp; parameters</div></div>
-          <div class="step-item"><div class="step-num">03</div><div class="step-text">Controller creates Argo Workflow in Environment</div></div>
-        </div>
-        <div class="step-list">
-          <div class="step-item"><div class="step-num">04</div><div class="step-text">Workflow executes <strong>install hook</strong> steps</div></div>
-          <div class="step-item"><div class="step-num">05</div><div class="step-text">Application status → <span class="badge badge--green" style="font-size:11px;height:20px;">Running</span></div></div>
-          <div class="step-item"><div class="step-num">06</div><div class="step-text">User accesses via <strong>Ingress</strong> or LoadBalancer</div></div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="dbox dbox--primary">
+            <div class="dbox__title" style="font-size:13px;">Fingerprint rules</div>
+            <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;"><code style="font-size:11px;">secret-ref</code> → SHA-256 of Secret <code style="font-size:11px;">data</code></div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;"><code style="font-size:11px;">service-ref</code> → SHA-256 of <code style="font-size:11px;">{clusterIP, ports}</code></div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;"><code style="font-size:11px;">image-ref</code> → SHA-256 of resolved digest</div>
+              <div style="font-size:12px;color:var(--text-secondary);line-height:1.5;"><code style="font-size:11px;">string/number</code> → SHA-256 of value</div>
+            </div>
+          </div>
+          <div class="highlight" style="font-size:13px;border-color:var(--accent-green);background:rgba(62,207,142,0.08);">
+            <strong>Identical fingerprints do not propagate</strong> — no-op reconciles don't cascade.
+          </div>
         </div>
       </div>
     </div>
     <div class="slide-number">07 / 19</div>
   </section>
 
-  <!-- SLIDE 8: TEMPLATE EXAMPLE -->
+  <!-- SLIDE 8: RECONCILE FLOW -->
   <section class="slide" id="slide-8">
     <div class="slide-inner">
-      <div class="slide-label">Template Example</div>
-      <h2>ApplicationTemplate: Minecraft</h2>
-      <div class="cols cols--50-50">
-        <div class="code-block" style="font-size:12px;line-height:1.75;">
-<span class="kw">apiVersion</span>: <span class="str">apps.cozystack.io/v1alpha1</span>
-<span class="kw">kind</span>: <span class="kn">ApplicationTemplate</span>
-<span class="kw">metadata</span>:
-  <span class="kw">name</span>: <span class="str">minecraft</span>
-<span class="kw">spec</span>:
-  <span class="kw">displayName</span>: <span class="str">"Minecraft Server"</span>
-
-  <span class="kw">parameters</span>:
-    - <span class="kw">name</span>: <span class="nm">serverName</span>
-      <span class="kw">type</span>: string
-      <span class="kw">required</span>: <span class="kn">true</span>
-    - <span class="kw">name</span>: <span class="nm">maxPlayers</span>
-      <span class="kw">type</span>: int
-      <span class="kw">default</span>: <span class="nm">20</span>
-
-  <span class="kw">hooks</span>:
-    <span class="kw">install</span>:
-      <span class="kw">steps</span>:
-        - <span class="kw">name</span>: deploy
-          <span class="kw">image</span>: <span class="str">alpine/helm:3.14</span>
-          <span class="kw">args</span>: [helm, install, <span class="op">...</span>]
-
-  <span class="kw">actions</span>:
-    - <span class="kw">name</span>: <span class="nm">backup</span>
-      <span class="kw">displayName</span>: <span class="str">"Create Backup"</span>
-      <span class="kw">steps</span>: [<span class="op">...</span>]
+      <div class="slide-label">Reconcile Flow</div>
+      <h2>From Trigger to Status Update</h2>
+      <div style="margin-bottom:28px;overflow-x:auto;">
+        <div class="flow" style="gap:0;">
+          <div class="flow-step flow-step--accent">Trigger</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step">Operator enqueues</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step">Execution layer</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step">Atom reconcile runs</div>
+          <div class="flow-arrow"><svg width="28" height="14" viewBox="0 0 28 14" fill="none"><path d="M0 7 H22 M18 2 L26 7 L18 12" stroke="var(--accent-green)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="flow-step" style="border-color:rgba(62,207,142,0.4);color:var(--accent-green);">status patched ✓</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">📦 Parameters</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.55;">JSON Schema-defined inputs. Generate a form in the UI automatically.</div>
-          </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">🔧 Hooks</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.55;">Container steps using <em>any tool</em> — Helm, kubectl, Ansible, bash scripts.</div>
-          </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">🚀 Actions</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.55;">Custom operations beyond lifecycle: backup, restore, restart, export…</div>
-          </div>
-          <div class="highlight" style="font-size:13px;">
-            <strong>Any app can be templated</strong> — if it can be deployed by a container, it works here.
+      </div>
+      <div class="cols cols--3">
+        <div class="card" style="padding:16px 18px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-amber);margin-bottom:8px;">TRIGGERS</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
+            Cron (4–24h)<br>
+            spec changed<br>
+            upstream fingerprint diff
           </div>
         </div>
+        <div class="card" style="padding:16px 18px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-blue);margin-bottom:8px;">SERIALISATION</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
+            Exactly one reconcile per AtomInstance at a time.<br>
+            Enforced by execution layer.
+          </div>
+        </div>
+        <div class="card" style="padding:16px 18px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-green);margin-bottom:8px;">OUTPUT</div>
+          <div style="font-size:13px;color:var(--text-secondary);line-height:1.6;">
+            Atom returns typed result.<br>
+            Operator patches AtomInstance.status.<br>
+            Atom never writes CRDs directly.
+          </div>
+        </div>
+      </div>
+      <div class="highlight" style="margin-top:16px;font-size:14px;">
+        Removal: detected via <code style="font-size:12px;">deletionTimestamp</code> inside reconcile. Finalizer holds CR until reconcile exits cleanly.
       </div>
     </div>
     <div class="slide-number">08 / 19</div>
   </section>
 
-  <!-- SLIDE 9: PERSONAS -->
+  <!-- SLIDE 9: ATOM TEMPLATE EXAMPLE -->
   <section class="slide" id="slide-9">
     <div class="slide-inner">
-      <div class="slide-label">User Personas</div>
-      <h2>Four Personas, One Platform</h2>
-      <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px;">
-        <table>
-          <thead>
-            <tr>
-              <th>Persona</th>
-              <th>What they do</th>
-              <th>Technical level</th>
-              <th>Primary interface</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><strong>👤 End User</strong></td>
-              <td>Deploy apps from catalog</td>
-              <td><span class="badge badge--green">Low</span></td>
-              <td>Web UI only</td>
-            </tr>
-            <tr>
-              <td><strong>📝 Template Author</strong></td>
-              <td>Create &amp; publish templates</td>
-              <td><span class="badge badge--red">High</span></td>
-              <td>kubectl / YAML</td>
-            </tr>
-            <tr>
-              <td><strong>🔧 ISP Operator</strong></td>
-              <td>Manage platform &amp; tenants</td>
-              <td><span class="badge badge--red">High</span></td>
-              <td>kubectl / Grafana</td>
-            </tr>
-            <tr>
-              <td><strong>💻 Developer</strong></td>
-              <td>Use as dev/staging platform</td>
-              <td><span class="badge badge--amber">Medium</span></td>
-              <td>UI + kubeconfig</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="highlight">
-        <strong>Key insight:</strong> Each persona interacts at their own level of abstraction. The platform meets them where they are.
+      <div class="slide-label">AtomTemplate</div>
+      <h2>AtomTemplate: Postgres</h2>
+      <div class="cols cols--50-50">
+        <div class="code-block" style="font-size:11.5px;line-height:1.75;">
+<span class="kw">apiVersion</span>: <span class="str">cozyapps.cozystack.io/v1alpha1</span>
+<span class="kw">kind</span>: <span class="kn">AtomTemplate</span>
+<span class="kw">metadata</span>:
+  <span class="kw">name</span>: <span class="str">postgres</span>
+  <span class="kw">labels</span>:
+    <span class="nm">cozyapps.cozystack.io/version</span>: <span class="str">"1.2.0"</span>
+<span class="kw">spec</span>:
+  <span class="kw">inputs</span>:
+    backupBucket: { <span class="kw">type</span>: <span class="str">secret-ref</span>, <span class="kw">required</span>: <span class="kn">false</span> }
+  <span class="kw">outputs</span>:
+    credentials: { <span class="kw">type</span>: <span class="str">secret-ref</span> }
+    service:     { <span class="kw">type</span>: <span class="str">service-ref</span> }
+
+  <span class="kw">params</span>:
+    - <span class="kw">name</span>: <span class="nm">version</span>
+      <span class="kw">type</span>: enum
+      <span class="kw">enum</span>: [<span class="str">"14"</span>, <span class="str">"15"</span>, <span class="str">"16"</span>]
+      <span class="kw">default</span>: <span class="str">"16"</span>
+
+  <span class="kw">executor</span>:
+    <span class="kw">image</span>: <span class="str">ghcr.io/cozystack/cozyap-atoms/postgres:1.2.0</span>
+    <span class="cm"># invocation: ADR-0010 (Temporal) or ADR-0011 (Pods)</span>
+
+  <span class="kw">reconcile</span>:
+    <span class="kw">timeout</span>: <span class="nm">30m</span>
+    <span class="kw">cron</span>: <span class="nm">4h</span>
+
+  <span class="kw">status</span>:
+    <span class="kw">cron</span>: <span class="nm">60s</span>
+    <span class="kw">publishes</span>: [ClusterReady, BackupOk, StorageHealthy]
+
+  <span class="kw">actions</span>:
+    - <span class="kw">name</span>: <span class="nm">backup</span>
+      <span class="kw">displayName</span>: <span class="str">"Create backup"</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Executor-neutral</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">The <code style="font-size:11px;">executor</code> block carries only image + resources. Invocation mechanism (Temporal workflowType vs stdin/stdout command) is added by ADR-0010 or 0011.</div>
+          </div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">Versioning</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Semver on a label. Same <code style="font-size:11px;">metadata.name</code> across versions. Running apps continue pinned at <code style="font-size:11px;">1.2.0</code> after <code style="font-size:11px;">1.2.1</code> ships.</div>
+          </div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-amber);margin-bottom:6px;">Status publishes</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Named conditions are the atom's public API. Removing or renaming them is a major version bump.</div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="slide-number">09 / 19</div>
   </section>
 
-  <!-- SLIDE 10: END USER FLOW -->
+  <!-- SLIDE 10: STATUS & CONDITIONS -->
   <section class="slide" id="slide-10">
     <div class="slide-inner">
-      <div class="slide-label">End User Flow</div>
-      <h2>Deploy Without Kubernetes Knowledge</h2>
-      <div style="margin-bottom:28px;">
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;">
-          <div class="card" style="text-align:center;padding:20px 16px;">
-            <div style="font-size:28px;margin-bottom:8px;">🔍</div>
-            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Browse</div>
-            <div style="font-size:12px;color:var(--text-muted);">Open app catalog</div>
-          </div>
-          <div class="card" style="text-align:center;padding:20px 16px;border-color:rgba(76,126,243,0.25);">
-            <div style="font-size:28px;margin-bottom:8px;">🎯</div>
-            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Select</div>
-            <div style="font-size:12px;color:var(--text-muted);">Pick app &amp; version</div>
-          </div>
-          <div class="card" style="text-align:center;padding:20px 16px;border-color:rgba(76,126,243,0.35);">
-            <div style="font-size:28px;margin-bottom:8px;">📝</div>
-            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Configure</div>
-            <div style="font-size:12px;color:var(--text-muted);">Fill auto-generated form</div>
-          </div>
-          <div class="card" style="text-align:center;padding:20px 16px;border-color:rgba(62,207,142,0.35);">
-            <div style="font-size:28px;margin-bottom:8px;">🚀</div>
-            <div style="font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent-green);margin-bottom:4px;">Deploy</div>
-            <div style="font-size:12px;color:var(--text-muted);">Click. Done.</div>
-          </div>
-        </div>
-        <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" style="color:var(--text-muted);transform:rotate(90deg)"><path d="M12 4 L12 20 M6 14 L12 20 L18 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
-          <div class="card" style="text-align:center;padding:16px;border-color:rgba(62,207,142,0.2);">
-            <div style="font-size:22px;margin-bottom:6px;">📡</div>
-            <div style="font-size:13px;color:var(--text-secondary);">Watch progress</div>
-          </div>
-          <div class="card" style="text-align:center;padding:16px;border-color:rgba(62,207,142,0.3);">
-            <div style="font-size:22px;margin-bottom:6px;">✅</div>
-            <div style="font-size:13px;color:var(--accent-green);font-weight:500;">App Running</div>
-          </div>
-          <div class="card" style="text-align:center;padding:16px;border-color:rgba(62,207,142,0.4);">
-            <div style="font-size:22px;margin-bottom:6px;">🌐</div>
-            <div style="font-size:13px;color:var(--text-secondary);">Access via URL</div>
+      <div class="slide-label">Status API</div>
+      <h2>Status &amp; Conditions</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div>
+          <p style="margin-bottom:20px;">Each <code>AtomInstance</code> carries conditions following the k8s Condition API with one extension — the <code>state</code> field.</p>
+          <div class="code-block" style="font-size:12px;line-height:1.7;">
+<span class="kw">status</span>:
+  <span class="kw">phase</span>: <span class="nm">Ready</span>
+  <span class="kw">conditions</span>:
+    - <span class="kw">type</span>: <span class="str">Reconciled</span>         <span class="cm"># platform-reserved</span>
+      <span class="kw">status</span>: <span class="str">"True"</span>
+      <span class="kw">state</span>: <span class="nm">ok</span>
+      <span class="kw">reason</span>: <span class="str">ReconcileSucceeded</span>
+      <span class="kw">message</span>: <span class="str">"no changes applied"</span>
+
+    - <span class="kw">type</span>: <span class="str">ClusterReady</span>       <span class="cm"># atom-declared</span>
+      <span class="kw">status</span>: <span class="str">"True"</span>
+      <span class="kw">state</span>: <span class="nm">ok</span>
+      <span class="kw">reason</span>: <span class="str">ClusterHealthy</span>
+      <span class="kw">message</span>: <span class="str">"3 instances streaming WAL"</span>
+
+    - <span class="kw">type</span>: <span class="str">BackupOk</span>            <span class="cm"># atom-declared</span>
+      <span class="kw">status</span>: <span class="str">"False"</span>
+      <span class="kw">state</span>: <span class="nm">warn</span>
+      <span class="kw">reason</span>: <span class="str">BackupStale</span>
+      <span class="kw">message</span>: <span class="str">"no backup in last 36h"</span>
           </div>
         </div>
-      </div>
-      <div class="highlight" style="text-align:center;font-size:16px;">
-        <strong>No YAML. No kubectl. No Kubernetes knowledge required.</strong>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:8px;">state field</div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px;">
+              <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge--green" style="font-size:10px;height:20px;">ok</span><span style="color:var(--text-muted);">all good</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge--amber" style="font-size:10px;height:20px;">warn</span><span style="color:var(--text-muted);">degraded but running</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge--red" style="font-size:10px;height:20px;">error</span><span style="color:var(--text-muted);">broken</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge--blue" style="font-size:10px;height:20px;">info</span><span style="color:var(--text-muted);">transient</span></div>
+              <div style="display:flex;align-items:center;gap:8px;"><span class="badge badge--purple" style="font-size:10px;height:20px;">unknown</span><span style="color:var(--text-muted);">not probed yet</span></div>
+            </div>
+          </div>
+          <div class="highlight" style="font-size:13px;border-color:var(--accent-green);background:rgba(62,207,142,0.08);">
+            <strong>Aggregation:</strong> worst state wins<br>
+            <code style="font-size:11px;">error > warn > info > ok > unknown</code>
+          </div>
+          <div class="highlight" style="font-size:13px;">
+            <strong>kubectl-compatible:</strong> standard <code style="font-size:11px;">status</code> field means <code style="font-size:11px;">kubectl wait --for=condition=ClusterReady</code> just works.
+          </div>
+        </div>
       </div>
     </div>
     <div class="slide-number">10 / 19</div>
   </section>
 
-  <!-- SLIDE 11: TEMPLATE AUTHOR -->
+  <!-- SLIDE 11: EXECUTION LAYER -->
   <section class="slide" id="slide-11">
     <div class="slide-inner">
-      <div class="slide-label">Template Author Flow</div>
-      <h2>Creating a New Template</h2>
-      <div class="cols cols--60-40" style="align-items:start;">
-        <div class="step-list">
-          <div class="step-item">
-            <div class="step-num">01</div>
-            <div class="step-text">Study how the app is normally installed — Helm, manifests, operators</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">02</div>
-            <div class="step-text"><strong>Define parameters</strong> — what users configure (size, name, replicas, secrets)</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">03</div>
-            <div class="step-text">Write <strong>install / upgrade / remove</strong> hooks as container steps</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">04</div>
-            <div class="step-text">Add <strong>custom actions</strong> — backup, restart, config reload…</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">05</div>
-            <div class="step-text">Test in dev environment — apply template, create Application, validate</div>
-          </div>
-          <div class="step-item">
-            <div class="step-num">06</div>
-            <div class="step-text">Submit to catalog — available to all tenants immediately</div>
+      <div class="slide-label">Execution Layer</div>
+      <h2>Two Options, One Atom Contract</h2>
+      <p style="margin-bottom:24px;">The atom contract (ports, outputs, conditions) is identical for both. Only the invocation mechanism differs.</p>
+      <div class="compare-grid">
+        <div class="compare-col">
+          <div class="compare-col__head temporal">Option A — Temporal (ADR-0010)</div>
+          <div class="compare-col__items">
+            <div class="compare-col__item"><span style="color:var(--accent-blue);">✓</span> Durable workflows survive worker restart</div>
+            <div class="compare-col__item"><span style="color:var(--accent-blue);">✓</span> Transition tracking via activity IDs — no re-execution of committed side effects</div>
+            <div class="compare-col__item"><span style="color:var(--accent-blue);">✓</span> Temporal UI: full workflow history per tenant</div>
+            <div class="compare-col__item"><span style="color:var(--accent-blue);">✓</span> Native long-running operation support</div>
+            <div class="compare-col__item"><span style="color:var(--accent-red);">✗</span> Temporal cluster: stateful operational dependency</div>
+            <div class="compare-col__item"><span style="color:var(--accent-red);">✗</span> Wide blast radius — outage suspends all tenants</div>
+            <div class="compare-col__item"><span style="color:var(--accent-red);">✗</span> Atom authors must learn Temporal determinism rules</div>
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-amber);letter-spacing:0.08em;">MINIMAL TEMPLATE EXAMPLE</div>
-          <pre class="code-block" style="font-size:11px;line-height:1.7;"><span class="kw">apiVersion</span>: <span class="str">apps.cozystack.io/v1alpha1</span>
-<span class="kw">kind</span>: <span class="kn">ApplicationTemplate</span>
-<span class="kw">metadata</span>:
-  <span class="kw">name</span>: <span class="str">my-app</span>
-<span class="kw">spec</span>:
-  <span class="kw">parameters</span>:
-    - <span class="kw">name</span>: <span class="nm">replicas</span>
-      <span class="kw">type</span>: int
-      <span class="kw">default</span>: <span class="nm">1</span>
-
-  <span class="kw">hooks</span>:
-    <span class="kw">install</span>:
-      <span class="kw">steps</span>:
-        - <span class="kw">name</span>: deploy
-          <span class="cm"># any container image</span>
-          <span class="kw">image</span>: <span class="str">alpine/helm:3.14</span>
-          <span class="kw">args</span>:
-            - helm
-            - install
-            - my-app
-            - ./chart
-
-  <span class="kw">actions</span>:
-    - <span class="kw">name</span>: <span class="nm">restart</span>
-      <span class="kw">steps</span>: [<span class="op">...</span>]</pre>
-          <div class="highlight" style="font-size:12px;">
-            Hooks are <strong>container steps</strong> — Helm, kubectl, Ansible, bash. Any image works.
+        <div class="compare-col">
+          <div class="compare-col__head pods">Option B — Pods stdin/stdout (ADR-0011)</div>
+          <div class="compare-col__items">
+            <div class="compare-col__item"><span style="color:var(--accent-green);">✓</span> No external server — only Kubernetes Jobs</div>
+            <div class="compare-col__item"><span style="color:var(--accent-green);">✓</span> Zero idle resource cost — Jobs are ephemeral</div>
+            <div class="compare-col__item"><span style="color:var(--accent-green);">✓</span> Any language: read stdin, write stdout, exit 0</div>
+            <div class="compare-col__item"><span style="color:var(--accent-green);">✓</span> Narrow blast radius — broken atom fails its own Job only</div>
+            <div class="compare-col__item"><span style="color:var(--accent-red);">✗</span> Durability is DIY via <code style="font-size:11px;">transitionId</code> in status</div>
+            <div class="compare-col__item"><span style="color:var(--accent-red);">✗</span> Long-running ops need re-entrant logic across Job invocations</div>
+            <div class="compare-col__item"><span style="color:var(--accent-red);">✗</span> stdout contamination = operator parse failure</div>
           </div>
         </div>
+      </div>
+      <div class="highlight" style="margin-top:16px;font-size:14px;border-color:var(--accent-amber);background:rgba(245,166,35,0.07);">
+        <strong>Decision pending (ADR-0012).</strong> Both options remain Proposed. The decision is made before any atom SDK work begins.
       </div>
     </div>
     <div class="slide-number">11 / 19</div>
   </section>
 
-  <!-- SLIDE 12: MULTI-TENANCY -->
+  <!-- SLIDE 12: TEMPORAL ARCHITECTURE -->
   <section class="slide" id="slide-12">
     <div class="slide-inner">
-      <div class="slide-label">Multi-Tenancy</div>
-      <h2>Built-in Tenant Isolation</h2>
-      <div class="cols cols--50-50" style="align-items:start;">
+      <div class="slide-label">Option A</div>
+      <h2>Temporal Topology</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
         <div>
           <div class="nest-outer">
-            <div class="nest-label">COZYSTACK CLUSTER</div>
-            <div class="tenant-grid">
-              <div class="tenant-box">
-                <div class="tenant-box__name">tenant-acme</div>
-                <div class="tenant-box__resource"><div class="dot"></div>Environment</div>
-                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-blue);"></div>Application × 3</div>
-                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-purple);"></div>Action × 1</div>
+            <div class="nest-label">HOST CLUSTER</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="nest-inner" style="border-color:rgba(76,126,243,0.3);">
+                <div class="nest-inner__title" style="color:var(--accent-blue);">Temporal Server (shared)</div>
+                <div class="nest-inner__items">
+                  <div class="nest-inner__item">PostgreSQL backend (Cozystack-managed)</div>
+                  <div class="nest-inner__item">Temporal namespace per tenant</div>
+                </div>
               </div>
-              <div class="tenant-box">
-                <div class="tenant-box__name">tenant-globex</div>
-                <div class="tenant-box__resource"><div class="dot"></div>Environment × 2</div>
-                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-blue);"></div>Application × 7</div>
-                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-purple);"></div>Action × 4</div>
-              </div>
-              <div class="tenant-box">
-                <div class="tenant-box__name">tenant-initech</div>
-                <div class="tenant-box__resource"><div class="dot"></div>Environment</div>
-                <div class="tenant-box__resource"><div class="dot" style="background:var(--accent-blue);"></div>Application × 2</div>
-                <div class="tenant-box__resource"><div class="dot" style="background:var(--text-muted);"></div>No actions yet</div>
-              </div>
-              <div class="tenant-box" style="border-style:dashed;opacity:0.5;">
-                <div class="tenant-box__name" style="color:var(--text-muted);">+ new tenant</div>
-                <div style="font-size:12px;color:var(--text-muted);margin-top:8px;">Provision in seconds</div>
+              <div class="nest-inner">
+                <div class="nest-inner__title">cozyap-operator + platform-worker</div>
+                <div class="nest-inner__items">
+                  <div class="nest-inner__item">Schedules workflow runs</div>
+                  <div class="nest-inner__item">Reads results, patches AtomInstance.status</div>
+                </div>
               </div>
             </div>
-            <div style="margin-top:12px;padding:10px 12px;background:rgba(76,126,243,0.08);border-radius:6px;">
-              <div style="font-size:11px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;">ApplicationTemplates (shared, read-only)</div>
-              <div class="tag-row" style="margin-top:6px;">
-                <span class="badge badge--blue" style="font-size:10px;height:20px;">minecraft</span>
-                <span class="badge badge--blue" style="font-size:10px;height:20px;">wordpress</span>
-                <span class="badge badge--blue" style="font-size:10px;height:20px;">postgres</span>
-                <span class="badge badge--blue" style="font-size:10px;height:20px;">redis</span>
+          </div>
+          <div style="text-align:center;padding:8px 0;">
+            <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style="color:var(--text-muted);"><line x1="10" y1="0" x2="10" y2="20" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M4 16 L10 24 L16 16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="nest-outer">
+            <div class="nest-label">TENANT CONTROL PLANE (per tenant)</div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div class="nest-inner" style="border-color:rgba(62,207,142,0.3);">
+                <div class="nest-inner__title" style="color:var(--accent-green);">atom-worker-postgres</div>
+                <div class="nest-inner__items">
+                  <div class="nest-inner__item">Deployment — one per referenced AtomTemplate</div>
+                  <div class="nest-inner__item">KEDA ScaledObject for scale-to-zero</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="emoji-list">
-            <div class="emoji-item"><span class="icon">🔲</span><span><strong>Tenant = Namespace</strong> — inherits Cozystack's isolation model</span></div>
-            <div class="emoji-item"><span class="icon">✅</span><span>Full access within own namespace</span></div>
-            <div class="emoji-item"><span class="icon">🔒</span><span>Zero cross-tenant access by default</span></div>
-            <div class="emoji-item"><span class="icon">📦</span><span>Templates shared cluster-wide, read-only</span></div>
-            <div class="emoji-item"><span class="icon">⚡</span><span>New tenant provisioning in seconds</span></div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Workflow ID scheme</div>
+            <div style="font-size:12px;color:var(--text-muted);line-height:1.7;font-family:'IBM Plex Mono',monospace;">
+              ns/name/reconcile<br>
+              ns/name/status<br>
+              ns/name/action/name
+            </div>
           </div>
-          <div class="divider"></div>
-          <div class="highlight" style="font-size:13px;">
-            Reuses Cozystack's battle-tested multi-tenancy. No new security primitives needed.
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">Transition tracking</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">SDK <code style="font-size:11px;">Transitions.Attempt("migrate-v14-v16")</code> — built-in activity deduplication. Exactly-once side effects.</div>
+          </div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-amber);margin-bottom:6px;">Outage behaviour</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">In-flight workflows pause at last activity. Replays on recovery. Pending reconciles start immediately.</div>
           </div>
         </div>
       </div>
@@ -1343,56 +855,59 @@
     <div class="slide-number">12 / 19</div>
   </section>
 
-  <!-- SLIDE 13: NETWORKING -->
+  <!-- SLIDE 13: PODS ARCHITECTURE -->
   <section class="slide" id="slide-13">
     <div class="slide-inner">
-      <div class="slide-label">Networking</div>
-      <h2>Network Stack per Environment</h2>
+      <div class="slide-label">Option B</div>
+      <h2>Pods with stdin/stdout</h2>
       <div class="cols cols--50-50" style="align-items:start;">
         <div>
-          <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;">
-            <table>
-              <thead>
-                <tr>
-                  <th>Component</th>
-                  <th>Purpose</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:2px 7px;border-radius:4px;">Ingress Controller</code></td>
-                  <td>HTTP/HTTPS routing</td>
-                </tr>
-                <tr>
-                  <td><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:2px 7px;border-radius:4px;">Cert-Manager</code></td>
-                  <td>Auto TLS (Let's Encrypt)</td>
-                </tr>
-                <tr>
-                  <td><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:2px 7px;border-radius:4px;">Cloud Controller</code></td>
-                  <td>LoadBalancer provisioning</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="step-list" style="margin-bottom:20px;">
+            <div class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-text">Reconcile trigger fires. Operator creates a <strong>Kubernetes Job</strong>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-text">JSON payload (params, inputs, kubeconfig, previous state) written to <strong>stdin</strong>.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-text">Atom runs reconcile logic. Writes JSON result to <strong>stdout</strong>. Logs to stderr.</div>
+            </div>
+            <div class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-text">Job exits 0. Operator reads stdout, patches <code style="font-size:12px;">AtomInstance.status</code>.</div>
+            </div>
+          </div>
+          <div class="highlight" style="font-size:13px;border-color:var(--accent-green);background:rgba(62,207,142,0.08);">
+            <strong>Any language.</strong> The atom just needs to read stdin and write stdout. No SDK required beyond the JSON contract.
           </div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <h3 style="font-size:15px;color:var(--text-secondary);font-weight:500;">Standard Kubernetes primitives</h3>
-          <div class="card" style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
-            <span style="font-size:20px;">🌐</span>
-            <div>
-              <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text-primary);margin-bottom:3px;">Ingress</div>
-              <div style="font-size:12px;color:var(--text-muted);">HTTP/HTTPS with automatic TLS termination</div>
-            </div>
-          </div>
-          <div class="card" style="display:flex;align-items:center;gap:12px;padding:14px 16px;">
-            <span style="font-size:20px;">🔌</span>
-            <div>
-              <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--text-primary);margin-bottom:3px;">Service type: LoadBalancer</div>
-              <div style="font-size:12px;color:var(--text-muted);">TCP/UDP direct access (game servers, databases…)</div>
-            </div>
-          </div>
-          <div class="highlight" style="font-size:13px;">
-            No vendor lock-in. Works with standard K8s tooling — any ingress-compatible app just works.
+        <div>
+          <div class="code-block" style="font-size:11px;line-height:1.7;">
+<span class="cm"># stdout result</span>
+{
+  <span class="kw">"outputs"</span>: {
+    <span class="kw">"credentials"</span>: {
+      <span class="kw">"kind"</span>: <span class="str">"Secret"</span>,
+      <span class="kw">"name"</span>: <span class="str">"my-app-postgres-creds"</span>
+    }
+  },
+  <span class="kw">"conditions"</span>: [{
+    <span class="kw">"type"</span>:    <span class="str">"ClusterReady"</span>,
+    <span class="kw">"status"</span>:  <span class="str">"True"</span>,
+    <span class="kw">"state"</span>:   <span class="str">"ok"</span>,
+    <span class="kw">"reason"</span>:  <span class="str">"Healthy"</span>,
+    <span class="kw">"message"</span>: <span class="str">"3 instances streaming WAL"</span>
+  }],
+  <span class="kw">"state"</span>: {
+    <span class="cm">// durability token — passed back</span>
+    <span class="cm">// on next invocation so atom</span>
+    <span class="cm">// can skip committed side effects</span>
+    <span class="kw">"transitionId"</span>: <span class="str">"migrate-pg14-to-pg16-done"</span>
+  }
+}
           </div>
         </div>
       </div>
@@ -1400,128 +915,86 @@
     <div class="slide-number">13 / 19</div>
   </section>
 
-  <!-- SLIDE 14: OBSERVABILITY -->
+  <!-- SLIDE 14: PERSONAS -->
   <section class="slide" id="slide-14">
     <div class="slide-inner">
-      <div class="slide-label">Observability</div>
-      <h2>Observability &amp; Debugging</h2>
-      <div class="cols cols--50-50" style="align-items:start;">
-        <div>
-          <h3 style="font-size:15px;color:var(--text-secondary);font-weight:500;margin-bottom:14px;">Centralized (Platform Level)</h3>
-          <div class="emoji-list" style="margin-bottom:20px;">
-            <div class="emoji-item"><span class="icon">📊</span><span><strong>Grafana</strong> for logs &amp; metrics — per tenant dashboards</span></div>
-            <div class="emoji-item"><span class="icon">📈</span><span>Resource usage, request rates, error rates</span></div>
-            <div class="emoji-item"><span class="icon">🔔</span><span>Alerting via existing Cozystack alert stack</span></div>
-          </div>
-          <div class="divider"></div>
-          <h3 style="font-size:15px;color:var(--text-secondary);font-weight:500;margin:14px 0;">Direct Access (Tenant Level)</h3>
-          <div class="emoji-list">
-            <div class="emoji-item"><span class="icon">🔑</span><span><strong>Kubeconfig</strong> per Environment — full kubectl access</span></div>
-            <div class="emoji-item"><span class="icon">🐚</span><span><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:1px 6px;border-radius:3px;">kubectl exec</code> into any pod</span></div>
-            <div class="emoji-item"><span class="icon">🔭</span><span><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:1px 6px;border-radius:3px;">kubectl port-forward</code> local debugging</span></div>
-            <div class="emoji-item"><span class="icon">📋</span><span><code style="font-family:'IBM Plex Mono',monospace;font-size:12px;background:var(--bg-code);padding:1px 6px;border-radius:3px;">kubectl logs</code> real-time log streaming</span></div>
-          </div>
-        </div>
-        <div>
-          <div class="nest-outer">
-            <div class="nest-label">DEBUG FLOW</div>
-            <div class="step-list" style="gap:16px;">
-              <div class="step-item">
-                <div class="step-num">1</div>
-                <div class="step-text">Check app status in <strong>UI</strong> or Grafana</div>
-              </div>
-              <div class="arr arr--down" style="padding:0 0 0 10px;">
-                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
-                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
-                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1" fill="none"/>
-                </svg>
-              </div>
-              <div class="step-item">
-                <div class="step-num">2</div>
-                <div class="step-text">Grab <strong>kubeconfig</strong> from Environment resource</div>
-              </div>
-              <div class="arr arr--down" style="padding:0 0 0 10px;">
-                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
-                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
-                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1" fill="none"/>
-                </svg>
-              </div>
-              <div class="step-item">
-                <div class="step-num">3</div>
-                <div class="step-text"><strong>kubectl exec</strong> / logs / port-forward as normal</div>
-              </div>
-              <div class="arr arr--down" style="padding:0 0 0 10px;">
-                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--accent-green);">
-                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1" stroke-dasharray="3 2"/>
-                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1" fill="none"/>
-                </svg>
-              </div>
-              <div class="step-item">
-                <div class="step-num" style="color:var(--accent-green);background:rgba(62,207,142,0.12);">✓</div>
-                <div class="step-text" style="color:var(--accent-green);">Issue resolved</div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="slide-label">User Personas</div>
+      <h2>Four Personas, One Platform</h2>
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:20px;">
+        <table>
+          <thead>
+            <tr><th>Persona</th><th>What they do</th><th>Technical level</th><th>Primary interface</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>👤 End User</strong></td><td>Deploy apps from catalog</td><td><span class="badge badge--green">Low</span></td><td>Web UI only</td></tr>
+            <tr>
+              <td><strong>📝 Atom Author</strong></td>
+              <td>Write atoms: implement reconcile + status, publish to catalog</td>
+              <td><span class="badge badge--red">High</span></td>
+              <td>SDK + kubectl</td>
+            </tr>
+            <tr>
+              <td><strong>🔧 Template Author</strong></td>
+              <td>Wire atoms into ApplicationTemplates in builder UI or YAML</td>
+              <td><span class="badge badge--amber">Medium</span></td>
+              <td>Builder UI / YAML</td>
+            </tr>
+            <tr><td><strong>🏢 ISP Operator</strong></td><td>Manage platform, tenant provisioning, catalog curation</td><td><span class="badge badge--red">High</span></td><td>kubectl / Grafana</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="highlight" style="font-size:14px;">
+        <strong>Key change from old design:</strong> Template Author no longer writes three hooks — they wire existing atoms in a UI. Writing a new atom is a separate, higher-barrier task.
       </div>
     </div>
     <div class="slide-number">14 / 19</div>
   </section>
 
-  <!-- SLIDE 15: CUSTOM ACTIONS -->
+  <!-- SLIDE 15: ATOM AUTHOR FLOW -->
   <section class="slide" id="slide-15">
     <div class="slide-inner">
-      <div class="slide-label">Custom Actions</div>
-      <h2>Beyond Install / Upgrade / Remove</h2>
-      <div class="cols cols--50-50" style="align-items:start;">
-        <pre class="code-block" style="font-size:12px;line-height:1.75;"><span class="kw">actions</span>:
-  - <span class="kw">name</span>: <span class="nm">backup</span>
-    <span class="kw">displayName</span>: <span class="str">"Create Backup"</span>
-    <span class="kw">parameters</span>:
-      - <span class="kw">name</span>: <span class="nm">backupName</span>
-        <span class="kw">type</span>: string
-        <span class="kw">required</span>: <span class="kn">true</span>
-      - <span class="kw">name</span>: <span class="nm">compress</span>
-        <span class="kw">type</span>: bool
-        <span class="kw">default</span>: <span class="kn">true</span>
-    <span class="kw">steps</span>:
-      - <span class="kw">name</span>: backup
-        <span class="kw">image</span>: <span class="str">restic/restic</span>
-        <span class="kw">args</span>:
-          - backup
-          - /data
-          - <span class="op">--tag</span>
-          - <span class="str">"{{backupName}}"</span></pre>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <h3 style="font-size:15px;margin-bottom:12px;">Action flow</h3>
-            <div class="flow" style="flex-direction:column;align-items:flex-start;gap:8px;">
-              <div class="flow-step flow-step--accent">User triggers action</div>
-              <div class="flow-arrow" style="padding:2px 0 2px 16px;">
-                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
-                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
-                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="flow-step">Action CR created</div>
-              <div class="flow-arrow" style="padding:2px 0 2px 16px;">
-                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
-                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
-                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="flow-step">Argo Workflow executes</div>
-              <div class="flow-arrow" style="padding:2px 0 2px 16px;">
-                <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--accent-green);">
-                  <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
-                  <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="flow-step" style="border-color:rgba(62,207,142,0.4);color:var(--accent-green);">Status reported ✓</div>
+      <div class="slide-label">Atom Author Flow</div>
+      <h2>Writing a New Atom</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div class="step-list">
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-text">Declare typed input/output ports in <code style="font-size:12px;">AtomTemplate</code></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">02</div>
+            <div class="step-text">Implement <strong>reconcile</strong> — idempotent, detects deletion via <code style="font-size:12px;">deletionTimestamp</code>, returns typed <code style="font-size:12px;">ReconcileResult</code></div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">03</div>
+            <div class="step-text">Implement <strong>status</strong> — read-only health probe, publishes every declared condition on every run</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">04</div>
+            <div class="step-text">Add <strong>actions</strong> for user-triggered one-shots: backup, restore, restart</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">05</div>
+            <div class="step-text">Run <strong>catalog linter</strong> — idempotence check (reconcile twice, expect same fingerprints), condition completeness</div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">06</div>
+            <div class="step-text">Publish to catalog with semver tag — available in all ApplicationTemplates immediately</div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Must guarantee</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.6;">
+              Idempotence<br>
+              Output stability<br>
+              Condition completeness<br>
+              No cross-namespace writes<br>
+              Cleanup on deletion
             </div>
           </div>
-          <div class="highlight" style="font-size:13px;">
-            <strong>Examples:</strong> backup/restore, user import, cache flush, config reload, DB migration, scaling…
+          <div class="highlight" style="font-size:13px;border-color:var(--accent-amber);background:rgba(245,166,35,0.08);">
+            <strong>Higher barrier</strong> than old "write three hooks" model — but enables backend swap and drift heal by design.
           </div>
         </div>
       </div>
@@ -1529,65 +1002,50 @@
     <div class="slide-number">15 / 19</div>
   </section>
 
-  <!-- SLIDE 16: TEMPLATE CATALOG -->
+  <!-- SLIDE 16: CATALOG -->
   <section class="slide" id="slide-16">
     <div class="slide-inner">
-      <div class="slide-label">Catalog Storage</div>
-      <h2>Template Catalog Architecture</h2>
+      <div class="slide-label">Catalog</div>
+      <h2>Catalog &amp; Versioning</h2>
       <div class="cols cols--60-40" style="align-items:start;">
         <div>
-          <div class="nest-outer">
-            <div class="nest-label">STORAGE LAYER</div>
-            <div class="nest-inner" style="border-color:rgba(76,126,243,0.3);margin-bottom:10px;">
-              <div class="nest-inner__title" style="color:var(--accent-blue);">Kubernetes API</div>
-              <div class="nest-inner__items">
-                <div class="nest-inner__item">Standard K8s API surface</div>
-                <div class="nest-inner__item">kubectl apply / get / list</div>
-              </div>
+          <div class="card" style="padding:0;overflow:hidden;margin-bottom:16px;">
+            <table>
+              <thead><tr><th>Artifact</th><th>Scope</th><th>Versioning</th></tr></thead>
+              <tbody>
+                <tr><td><code style="font-size:12px;">AtomTemplate</code></td><td><span class="badge badge--blue">Cluster</span></td><td>Semver on label</td></tr>
+                <tr><td><code style="font-size:12px;">ApplicationTemplate</code></td><td><span class="badge badge--blue">Cluster</span></td><td>Semver; pins atoms by patch version</td></tr>
+                <tr><td><code style="font-size:12px;">Application</code></td><td><span class="badge badge--green">Namespace</span></td><td>References ApplicationTemplate version</td></tr>
+                <tr><td><code style="font-size:12px;">AtomInstance</code></td><td><span class="badge badge--green">Namespace</span></td><td>Created by controller; pins AtomTemplate version</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="step-list">
+            <div class="step-item">
+              <div class="step-num" style="background:rgba(76,126,243,0.12);min-width:32px;">M</div>
+              <div class="step-text"><strong>Major:</strong> removed output, renamed port, param type change</div>
             </div>
-            <div class="arr arr--down" style="padding:6px 0;align-items:flex-start;padding-left:40px;">
-              <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
-                <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
-                <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              </svg>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);padding-left:4px;">aggregated API</span>
+            <div class="step-item">
+              <div class="step-num" style="background:rgba(62,207,142,0.12);color:var(--accent-green);min-width:32px;">m</div>
+              <div class="step-text"><strong>Minor:</strong> added outputs, conditions, optional params</div>
             </div>
-            <div class="nest-inner" style="border-color:rgba(167,139,250,0.3);margin-bottom:10px;">
-              <div class="nest-inner__title" style="color:var(--accent-purple);">cozy-apps-apiserver</div>
-              <div class="nest-inner__items">
-                <div class="nest-inner__item">Aggregated API extension</div>
-                <div class="nest-inner__item">Version history management</div>
-                <div class="nest-inner__item">Template validation</div>
-              </div>
-            </div>
-            <div class="arr arr--down" style="padding:6px 0;align-items:flex-start;padding-left:40px;">
-              <svg width="14" height="20" viewBox="0 0 14 20" fill="none" style="color:var(--text-muted);">
-                <line x1="7" y1="0" x2="7" y2="14" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2"/>
-                <path d="M2 10 L7 16 L12 10" stroke="currentColor" stroke-width="1.5" fill="none"/>
-              </svg>
-            </div>
-            <div class="nest-inner" style="border-color:rgba(245,166,35,0.3);">
-              <div class="nest-inner__title" style="color:var(--accent-amber);">PostgreSQL</div>
-              <div class="nest-inner__items">
-                <div class="nest-inner__item">Versioned template storage</div>
-                <div class="nest-inner__item">Full revision history</div>
-                <div class="nest-inner__item">Scales independently</div>
-              </div>
+            <div class="step-item">
+              <div class="step-num" style="background:rgba(245,166,35,0.12);color:var(--accent-amber);min-width:32px;">p</div>
+              <div class="step-text"><strong>Patch:</strong> internal change, bug fix in reconcile logic</div>
             </div>
           </div>
         </div>
         <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Native K8s API</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Works with standard kubectl, client-go, any K8s tooling. No special SDK needed.</div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">No auto-upgrades</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;"><code style="font-size:11px;">postgres@1.2.1</code> ships. Running apps stay on <code style="font-size:11px;">1.2.0</code>. Catalog UI flags "newer available".</div>
           </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-purple);margin-bottom:6px;">Version History</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Full revision tracking. Apps can pin to specific template versions.</div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">Git-backed</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Catalog syncs from git repo (ADR-0016). Versions are immutable once published.</div>
           </div>
-          <div class="card">
-            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-amber);margin-bottom:6px;">Independent Scaling</div>
-            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">API server and storage scale separately from the operator plane.</div>
+          <div class="highlight" style="font-size:13px;border-color:var(--accent-amber);background:rgba(245,166,35,0.08);">
+            <strong>Security patches</strong> do not propagate automatically. The ISP operator needs a bulk-update flow (deferred, flagged in ADR-0009).
           </div>
         </div>
       </div>
@@ -1604,33 +1062,33 @@
         <div class="benefit-col">
           <div class="benefit-col__head">👤 End Users</div>
           <div class="benefit-col__items">
-            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Simple web UI — no YAML</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> No Kubernetes knowledge needed</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Full self-service experience</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Simple web UI — no YAML, no Kubernetes</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Full self-service deployment</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Drift healed automatically — things stay running</div>
             <div class="benefit-col__item"><span style="color:var(--accent-green);">✅</span> Direct kubectl access when needed</div>
           </div>
         </div>
         <div class="benefit-col">
           <div class="benefit-col__head">🔧 ISP Operators</div>
           <div class="benefit-col__items">
-            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Controlled, versioned templates</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Hard multi-tenant isolation</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Central monitoring via Grafana</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> No CRD sprawl in API server</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Composable managed services — swap backends freely</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Hard multi-tenant isolation inherited from Cozystack</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> Observable: conditions, Grafana, kubectl</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-blue);">✅</span> No CRD sprawl — two CRD pairs for everything</div>
           </div>
         </div>
         <div class="benefit-col">
           <div class="benefit-col__head">🏗️ Platform</div>
           <div class="benefit-col__items">
-            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Single CRD pair — any app type</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Community template catalog</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Plug any tool into hooks</div>
-            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> K8s-native, no lock-in</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Fingerprint cascade — no external event bus</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Executor-neutral atom contract</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> Community catalog — AUR-style contribution</div>
+            <div class="benefit-col__item"><span style="color:var(--accent-purple);">✅</span> K8s-native, no external workflow dependency in Option B</div>
           </div>
         </div>
       </div>
       <div style="margin-top:20px;" class="highlight">
-        <strong>Bottom line:</strong> ISPs can offer a Heroku-like self-service platform on their own infrastructure — without building it from scratch.
+        <strong>Bottom line:</strong> ISPs can offer Heroku-like self-service on their own infrastructure — with backend composability and drift healing built in from day one.
       </div>
     </div>
     <div class="slide-number">17 / 19</div>
@@ -1640,42 +1098,42 @@
   <section class="slide" id="slide-18">
     <div class="slide-inner">
       <div class="slide-label">Summary</div>
-      <h2>Cozystack → Application Platform</h2>
-      <p style="margin-bottom:28px;">Five principles that transform a PaaS into a full application platform.</p>
+      <h2>Reactive Application Platform</h2>
+      <p style="margin-bottom:28px;">Five principles that make the design work.</p>
       <div class="summary-grid">
         <div class="summary-item">
           <div class="num">01</div>
           <div>
-            <div class="title">Universal Abstraction</div>
-            <div class="desc">One template for any app — Helm, Ansible, custom scripts. No new CRD per service.</div>
+            <div class="title">One Operation</div>
+            <div class="desc">reconcile replaces install / upgrade / remove / drift heal. Triggered by cron, spec change, or upstream fingerprint diff.</div>
           </div>
         </div>
         <div class="summary-item">
           <div class="num">02</div>
           <div>
-            <div class="title">Self-Service</div>
-            <div class="desc">Users deploy without K8s expertise. Forms generated from schema. Click and go.</div>
+            <div class="title">Composable Atoms</div>
+            <div class="desc">Typed ports + fingerprint outputs. Backend swap is free — the graph doesn't change when CNPG becomes Zalando.</div>
           </div>
         </div>
         <div class="summary-item">
           <div class="num">03</div>
           <div>
-            <div class="title">Extensible</div>
-            <div class="desc">Community contributes templates. AUR-style catalog. Authors need Helm, not K8s admin.</div>
+            <div class="title">Cascade Without a Bus</div>
+            <div class="desc">Fingerprint diff in controller watch loop. No Argo Events, no Kafka. No-op reconciles don't propagate.</div>
           </div>
         </div>
         <div class="summary-item">
           <div class="num">04</div>
           <div>
-            <div class="title">Isolated by Design</div>
-            <div class="desc">Multi-tenant from day one. Environment per tenant. Zero cross-contamination.</div>
+            <div class="title">Executor-Neutral Contract</div>
+            <div class="desc">Atom ports, outputs, conditions are the same for Temporal and Pods. Execution layer decision doesn't change the atom API.</div>
           </div>
         </div>
         <div class="summary-item" style="grid-column: 1 / -1;border-color:rgba(76,126,243,0.25);">
           <div class="num" style="background:rgba(76,126,243,0.18);">05</div>
           <div>
-            <div class="title">Observable</div>
-            <div class="desc">Centralized Grafana dashboards + full kubectl access. Every layer debuggable.</div>
+            <div class="title">Drift Heal by Default</div>
+            <div class="desc">Cron reconcile runs every 4–24h on every atom. Drift is corrected automatically, not as a special feature.</div>
           </div>
         </div>
       </div>
@@ -1686,19 +1144,19 @@
   <!-- SLIDE 19: Q&A -->
   <section class="slide" id="slide-19" style="text-align:center;">
     <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;">
-      <div class="logo-main" style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--text-muted);margin-bottom:40px;text-transform:uppercase;">COZY<span style="color:var(--accent-blue)">≡</span>TACK</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--text-muted);margin-bottom:40px;text-transform:uppercase;">COZY<span style="color:var(--accent-blue)">≡</span>TACK</div>
       <h1 style="font-size:64px;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary) 40%,var(--accent-purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Questions?</h1>
       <div style="width:50px;height:2px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));margin:24px auto;border-radius:2px;"></div>
-      <p class="subtitle" style="max-width:480px;margin-bottom:36px;">Cozy User Apps — Application Platform for Cozystack</p>
+      <p class="subtitle" style="max-width:480px;margin-bottom:36px;">Cozy User Apps — Reactive Application Platform for Cozystack</p>
       <div class="tag-row" style="justify-content:center;margin-bottom:40px;">
-        <span class="badge badge--blue">github.com/cozystack</span>
-        <span class="badge badge--green">CNCF Sandbox</span>
-        <span class="badge badge--purple">Apache 2.0</span>
+        <span class="badge badge--blue">ADR-0008 — 0012</span>
+        <span class="badge badge--green">Proposed</span>
+        <span class="badge badge--purple">Decision pending</span>
       </div>
       <div style="display:flex;gap:24px;justify-content:center;">
         <div class="card" style="padding:14px 24px;text-align:center;">
           <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:4px;">DOCS</div>
-          <div style="font-size:14px;color:var(--accent-blue);">cozystack.io/docs</div>
+          <div style="font-size:14px;color:var(--accent-blue);">architecture.html</div>
         </div>
         <div class="card" style="padding:14px 24px;text-align:center;">
           <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-muted);margin-bottom:4px;">GITHUB</div>
@@ -1715,13 +1173,8 @@
 
 </div>
 
-<!-- PROGRESS BAR -->
 <div id="progress-bar"></div>
-
-<!-- SLIDE COUNTER -->
 <div id="slide-counter">01 / 19</div>
-
-<!-- NAV HINT -->
 <div id="nav-hint">
   <span class="key-hint"><span class="key">↑</span><span class="key">↓</span> navigate</span>
   <span class="key-hint"><span class="key">Space</span> next</span>
@@ -1763,7 +1216,6 @@
     if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
   });
 
-  // Track current slide via IntersectionObserver
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
@@ -1775,7 +1227,6 @@
 
   slides.forEach(s => observer.observe(s));
 
-  // Touch support
   let touchStartY = 0;
   pres.addEventListener('touchstart', (e) => { touchStartY = e.touches[0].clientY; }, { passive: true });
   pres.addEventListener('touchend', (e) => {
@@ -1783,7 +1234,6 @@
     if (Math.abs(dy) > 50) { dy > 0 ? nextSlide() : prevSlide(); }
   }, { passive: true });
 
-  // Init
   updateUI(0);
 </script>
 </body>

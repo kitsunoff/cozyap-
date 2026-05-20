@@ -2,7 +2,12 @@
 
 ## Status
 
-Proposed
+Superseded by `docs/cozya-new-notes.md` (pending new ADR series, 0008+).
+
+The install/upgrade/remove hook model and Action CR described here are replaced
+by a single reactive `reconcile` workflow per atom plus a separate read-only
+`status` workflow. Application becomes a graph of atoms rather than an instance
+of one template. Kept for historical context.
 
 ## Context
 

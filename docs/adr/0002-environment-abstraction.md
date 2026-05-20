@@ -2,7 +2,12 @@
 
 ## Status
 
-Proposed
+Superseded by `docs/cozya-new-notes.md` (pending new ADR series, 0008+).
+
+The Environment abstraction itself survives the reactive redesign, but the
+fixed controller set, kubeconfig wiring, and "Argo per Environment" decisions
+will be revisited in ADR-0013 (Platform Integration). Kept for historical
+context.
 
 ## Context
 

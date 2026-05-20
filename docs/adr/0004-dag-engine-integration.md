@@ -2,7 +2,13 @@
 
 ## Status
 
-Proposed
+Superseded by `docs/cozya-new-notes.md` (pending new ADR series, 0008+).
+
+The per-hook workflow mapping (`install`/`upgrade`/`remove` → separate Argo
+Workflows) is replaced by a single reactive `reconcile` workflow per atom
+plus a read-only `status` workflow. Platform secret mounts, retry/timeout,
+and step-spec contracts are revisited in ADR-0010 (Reconcile Engine).
+Kept for historical context.
 
 ## Context
 

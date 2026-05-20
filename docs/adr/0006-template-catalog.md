@@ -2,7 +2,13 @@
 
 ## Status
 
-Proposed
+Superseded by `docs/cozya-new-notes.md` (pending new ADR series, 0008+).
+
+The catalog now has to store two artefact kinds (`AtomTemplate` and
+`ApplicationTemplate`), both versioned with semver, with explicit policies for
+how versions flow into running Applications. The aggregated API server vs CRD
+question is revisited in ADR-0014 (Catalog and Versioning). Kept for
+historical context.
 
 ## Context
 

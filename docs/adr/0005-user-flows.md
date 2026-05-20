@@ -2,7 +2,13 @@
 
 ## Status
 
-Proposed
+Superseded by `docs/cozya-new-notes.md` (pending new ADR series, 0008+).
+
+End-user, operator, and developer flows largely survive the reactive redesign,
+but the template-author flow changes substantially: authors now compose atoms
+into a graph (or write a single atom) instead of writing install/upgrade/remove
+hooks. Updated flows belong with ADR-0011 (Application Graph) and the
+forthcoming builder UX ADR. Kept for historical context.
 
 ## Context
 
