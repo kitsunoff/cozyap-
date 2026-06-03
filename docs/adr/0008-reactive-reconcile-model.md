@@ -139,6 +139,7 @@ both options.
 | 0014 Status and Conditions API | Status workflow contract, condition publishing, aggregation rules | Proposed |
 | 0015 Platform Integration | Execution placement, platform wiring injection (observability, Vault, identity), tenant SA scope, dataplane kubeconfig flow. Refines based on 0012 outcome. | Pending 0012 |
 | 0016 Catalog and Versioning | `AtomTemplate` + `ApplicationTemplate` storage, semver policy, sync from git | Proposed |
+| 0017 Programmable Generators | Higher-order `CreateApplication` atom, programmable generators, dynamic fan-out ("N from data"), merge-key identity, fan-out vs feedback | Proposed |
 
 ### What survives from the old ADRs
 
