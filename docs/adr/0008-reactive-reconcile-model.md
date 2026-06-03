@@ -137,7 +137,7 @@ both options.
 | 0012 Execution Layer Decision | Side-by-side comparison of 0010 vs 0011 with trade-off analysis and a recorded choice | Proposed (decision pending) |
 | 0013 Application Graph | Composition rules, cycle detection, cross-Application references, `UserInput` / `Constant` semantics | Proposed |
 | 0014 Status and Conditions API | Status workflow contract, condition publishing, aggregation rules | Proposed |
-| 0015 Platform Integration | Execution placement, platform wiring injection (observability, Vault, identity), tenant SA scope, dataplane kubeconfig flow. Refines based on 0012 outcome. | Pending 0012 |
+| 0015 Execution Placement and Granularity | Two-plane model (shared declaration / placed execution), `atomRunnerPlacement` + `targetPlacement` axes, credential bridging, `execution.mode` enum (ephemeral/warm/stateful), per-tenant same-type pooling | Proposed |
 | 0016 Catalog and Versioning | `AtomTemplate` + `ApplicationTemplate` storage, semver policy, sync from git | Proposed |
 | 0017 Programmable Generators | Higher-order `CreateApplication` atom, programmable generators, dynamic fan-out ("N from data"), merge-key identity, fan-out vs feedback | Proposed |
 
