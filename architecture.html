@@ -291,6 +291,13 @@
     <a href="#execution">Execution Layer</a>
     <a href="#temporal" class="sub">Option A: Temporal</a>
     <a href="#pods" class="sub">Option B: Pods stdin/stdout</a>
+    <a href="#placement">Размещение и исполнение</a>
+    <a href="#planes" class="sub">Два плана</a>
+    <a href="#placement-axes" class="sub">Оси placement</a>
+    <a href="#execution-modes" class="sub">Режимы исполнения</a>
+    <a href="#generators">Генераторы и fan-out</a>
+    <a href="#create-application" class="sub">CreateApplication</a>
+    <a href="#generator-contract" class="sub">Контракт генератора</a>
     <a href="#conditions">Статус и условия</a>
     <a href="#conditions-schema" class="sub">Схема conditions</a>
     <a href="#aggregation" class="sub">Агрегация</a>
@@ -572,6 +579,109 @@ ingress-host    →  string</code></pre>
       <p><strong>Минусы:</strong> durability DIY — atom author обязан правильно реализовать transitionId, долгоживущие операции требуют re-entrant логики через несколько Job-вызовов.</p>
     </section>
 
+    <section id="placement">
+      <h2>Размещение и исполнение</h2>
+      <p>Атомы — произвольные образы, написанные сообществом или тенантом. ADR-0015 отвечает на два вопроса, оставленных открытыми в ADR-0009: <strong>где</strong> запускается reconcile-контейнер атома и <strong>как</strong> запуски упаковываются в Pod'ы. Эта ADR предполагает выбор Pods/stdin-stdout (ADR-0011) в роли runner'а.</p>
+
+      <div class="info-box">
+        <strong>Главный принцип:</strong> использование атома — это <em>запуск образа</em>, а не <em>установка пакета</em>. Crossplane-подход (установка runtime, CRD, RBAC в control plane на каждое расширение) и Temporal как runner отвергнуты: первый несовместим с динамическим мультитенантным каталогом, второй — stateful-зависимость с широким blast radius.
+      </div>
+
+      <h3 id="planes">Два плана: общая декларация, размещённое исполнение</h3>
+      <ul>
+        <li><strong>Общий host API server</strong> хранит каталог (<code>AtomTemplate</code>, OCI-distributed) и desired-state (<code>AtomInstance</code>) — только лёгкие данные.</li>
+        <li><strong>Код тенанта по умолчанию не выполняется в host-плоскости.</strong> Исполнение направляется через <em>placement</em> в принадлежащую тенанту зону исполнения.</li>
+      </ul>
+      <p>Это даёт одну панель над всеми <code>AtomInstance</code> (fleet/governance-вид) без отдельного API server на каждого тенанта.</p>
+
+      <h3 id="placement-axes">Оси placement (две, не схлопывать)</h3>
+      <p>Словарь согласован с Open Cluster Management <code>Placement</code> / Karmada.</p>
+      <ul>
+        <li><strong>atomRunnerPlacement</strong> — <em>где запускается reconcile-контейнер</em>. Скрытое поле, по умолчанию — <code>system</code>-placement тенанта. Переопределение на <code>host-system</code> разрешено <strong>только платформенно-подписанным атомам</strong> (например, атом, заказывающий managed-сервис у host'а). Community/tenant-атомы принудительно остаются в tenant-system; host-placement закрыт политикой.</li>
+        <li><strong>targetPlacement</strong> — <em>где приземляется произведённый workload</em>. Явный на атомах, создающих workload (например, <code>Container</code>), и <strong>распространяется по графу</strong>: <code>Service</code> → <code>Container</code>, <code>Ingress</code> → <code>Service</code> наследуют placement того, на что ссылаются. Builder <strong>валидирует</strong>, что ребро типизированного порта не пересекает границу placement незаметно — это аналог cycle detection для placement.</li>
+        <li><strong>Credential bridging</strong> — когда runner-placement ≠ target-placement, платформа прокидывает <em>scoped-креденшелы</em> от runner к target. Контракт из трёх частей: <em>где выполняюсь / где приземляюсь / какие креды их связывают</em>.</li>
+      </ul>
+
+      <h3 id="execution-modes">Режимы исполнения (enum)</h3>
+      <p>Режим — это enum, а не два булевых флага: <code>stateful</code> требует warm-процесс, поэтому комбинация «stateful + cold» нелегальна, и enum делает её невыразимой.</p>
+
+      <pre><code>execution:
+  mode: ephemeral | warm | stateful   # default: ephemeral</code></pre>
+
+      <table>
+        <thead>
+          <tr><th>mode</th><th>Образ</th><th>Процесс</th><th>Scale-to-zero</th><th>Типично</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>ephemeral</code></td><td>pull на каждый запуск</td><td>свежий Job</td><td>—</td><td>container, service, ingress</td></tr>
+          <tr><td><code>warm</code></td><td>горячий</td><td>exec на запрос</td><td>да</td><td>git-repo, buildpacks (важна latency старта)</td></tr>
+          <tr><td><code>stateful</code></td><td>горячий</td><td>долгоживущий, держит state</td><td>нет</td><td>watch/webhook-источники, пулы соединений</td></tr>
+        </tbody>
+      </table>
+
+      <div class="info-box amber">
+        <strong>Жёсткое правило для stateful:</strong> in-memory state — это <em>кэш</em>; источник истины — кластер. Pod может умереть в любой момент, поэтому stateful-атом обязан холодно пересобрать своё состояние из объектов кластера при рестарте. Каталожный линтер требует kill-restart-converge тест <strong>только</strong> для <code>mode: stateful</code>.
+      </div>
+
+      <p><strong>Один образ на Pod; пулинг — по типу, в рамках тенанта.</strong> Атом — это образ, поэтому Pod запускает <em>один</em> образ. «Один Pod, много AtomInstance» означает много экземпляров <em>одного типа атома</em>, никогда не разные атомы вместе. Пулинг <strong>никогда не пересекает тенантов</strong> (изоляция памяти и креденшелов) — максимум per <code>(тип атома, тенант)</code>.</p>
+    </section>
+
+    <section id="generators">
+      <h2>Генераторы и fan-out</h2>
+      <p>Реактивная модель (ADR-0008) описывает <strong>статический</strong> граф: <code>ApplicationTemplate</code> — фиксированный набор атомов, инстанцируемый как один <code>Application</code>. ADR-0017 добавляет три недостающих примитива, не нарушая ацикличность.</p>
+      <ul>
+        <li><strong>Динамический fan-out — «N экземпляров из данных».</strong> Один открытый PR → одно preview-окружение; одна запись тенанта → один Application; один регион → один деплой. Количество неизвестно на этапе авторинга — оно выводится из данных в рантайме.</li>
+        <li><strong>Шаринг между Application.</strong> Прямые рёбра между независимыми Application ломают изоляцию; но потребность «один компонент провижинит, другие потребляют» реальна.</li>
+        <li><strong>Application как композируемая единица.</strong> Нет способа, чтобы граф <em>произвёл</em> другой Application — это блокирует и fan-out, и шаринг.</li>
+      </ul>
+
+      <div class="info-box red">
+        Соблазнительная, но неверная трактовка — «поддержать циклы в графе». Fan-out (<code>map</code> по списку) — это не feedback (<code>A.out → … → A.in</code>). Feedback возвращает ровно ту проблему reconcile-штормов, ради которой вводилась ацикличность. Эта ADR даёт fan-out <strong>без</strong> ослабления ацикличного инварианта.
+      </div>
+
+      <h3 id="create-application">Higher-order атом: CreateApplication</h3>
+      <p>Платформенный атом, чей reconcile создаёт и непрерывно реконсайлит <strong>дочерний Application</strong>, передавая в него значения:</p>
+      <ul>
+        <li><strong>inputs/params:</strong> <code>templateRef</code> (какой <code>ApplicationTemplate</code> + версию инстанцировать) и bundle <code>values</code> (<code>spec.values</code> дочернего), плюс обязательный <strong>merge key</strong> (стабильная идентичность).</li>
+        <li><strong>outputs:</strong> опционально ре-экспортирует выбранные выходы дочернего (типизированные порты) — это санкционированный ответ на шаринг между Application: родитель владеет дочерним, поэтому cross-tenant-ребра нет.</li>
+        <li><strong>ownership:</strong> дочерний несёт <code>ownerReference</code> на создающий <code>AtomInstance</code>/<code>Application</code>. Teardown каскадирует; финализатор родителя держит, пока дочерние не удалены.</li>
+      </ul>
+      <p>Это делает <code>Application</code> композируемой единицей: граф может производить графы.</p>
+
+      <div class="diagram">
+        <pre><code>[источник данных]
+      │
+      ▼
+┌──────────────────────┐   программируемое отображение:  data -> []paramBundle
+│  Generator           │   каждый bundle несёт СТАБИЛЬНЫЙ merge key
+└──────────────────────┘
+      │  collection (граничное значение, не тип порта)
+      ▼
+┌──────────────────────┐   для каждого bundle:
+│  Fan-out boundary    │     CreateApplication(templateRef, values = bundle)
+└──────────────────────┘
+      │
+      ▼
+   N × Application      (каждый — обычный статический граф; экземпляр
+                         не знает, что он один из N)</code></pre>
+      </div>
+
+      <h3 id="generator-contract">Контракт генератора (нормативный)</h3>
+      <p>Отображение генератора — <strong>авторская логика</strong> в двух уровнях: <em>декларативный</em> (JQ/template-выражение <code>data -> []paramBundle</code>, предпочтительный default) и <em>кодовый</em> (атом на произвольном языке: JSON in → JSON array out, переиспользует execution layer ADR-0012).</p>
+      <ul>
+        <li><strong>Идентичность обязательна (merge key).</strong> Каждый bundle несёт стабильный ключ (PR → номер PR; запись → id записи; регион → имя региона). Новый ключ → создать; существующий с изменённым bundle → обновить; ключ исчез → кандидат на teardown. Назначение ключа — ответственность автора и главный footgun.</li>
+        <li><strong>Cardinality cap.</strong> Жёсткий верхний предел на число экземпляров. Неограниченные источники (история, события) обязаны объявить window/filter.</li>
+        <li><strong>Lifecycle-политика на исчезновение ключа:</strong> явная per-generator — <code>teardown</code> (PR закрыт → удалить preview) или <code>retain</code> (запись вышла из окна → сохранить экземпляр). Дефолта нет.</li>
+        <li><strong>Контроль blast radius:</strong> sandbox исполнения, per-tenant квота на число дочерних, whitelist инстанцируемых <code>templateRef</code>, ограничение глубины вложенности.</li>
+      </ul>
+
+      <div class="info-box green">
+        <strong>Collection — граничный тип, не порт.</strong> Список, произведённый генератором, потребляется только fan-out-границей и НЕ добавляется в словарь из 13 типов портов. Порты внутри графа экземпляра остаются скалярными/одиночными ссылками — статическая типизация сохраняется. Ацикличный инвариант остаётся: cycle detection не меняется, feedback-рёбра по-прежнему запрещены.
+      </div>
+
+      <p><strong>Prior art:</strong> Crossplane Composition Functions (программируемый pipeline ресурсов, DAG без циклов) и Argo CD ApplicationSet (генераторы List/Git/Pull Request/Plugin/Matrix). Оба подтверждают раздел: <em>программируемость — да; feedback-циклы — намеренно нет</em>.</p>
+    </section>
+
     <section id="conditions">
       <h2>Статус и условия</h2>
       <p>Status — отдельный, read-only workflow per atom. Работает чаще, чем reconcile (30–60 s cron), публикует список типизированных условий в <code>Application.status.atoms[&lt;name&gt;].conditions</code>.</p>
@@ -678,7 +788,7 @@ Tenant Dataplane (actual workloads)
     </section>
 
     <footer class="doc-footer">
-      <p>Основано на <a href="docs/adr/0008-reactive-reconcile-model.md">ADR-0008</a> — <a href="docs/adr/0012-execution-layer-decision.md">ADR-0012</a> · <a href="https://github.com/kitsunoff/cozyap-" target="_blank">GitHub</a></p>
+      <p>Основано на <a href="docs/adr/0008-reactive-reconcile-model.md">ADR-0008</a> — <a href="docs/adr/0012-execution-layer-decision.md">ADR-0012</a>, <a href="docs/adr/0015-execution-placement-and-granularity.md">ADR-0015</a>, <a href="docs/adr/0017-programmable-generators.md">ADR-0017</a> · <a href="https://github.com/kitsunoff/cozyap-" target="_blank">GitHub</a></p>
     </footer>
   </article>
 </main>
