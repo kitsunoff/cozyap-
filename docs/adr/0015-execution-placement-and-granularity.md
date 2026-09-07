@@ -2,9 +2,26 @@
 
 ## Status
 
-Proposed. Follows ADR-0008 (Reactive Reconcile Model) and ADR-0009 (Atom
-Contract). Fills the slot reserved as "Platform Integration / execution
-placement" in the ADR-0008 index.
+**Largely superseded by ADR-0018 (Platform Instance Model).**
+
+With one plane per tenant, both placement axes collapse, and the following
+parts of this ADR no longer apply: `atomRunnerPlacement` and its trust gating,
+`host-system` placement, credential bridging between runner and target planes,
+host scheduler hardening, shared-etcd scale, and output materialisation across
+placements.
+
+What survives: the `execution.mode` gradation (`ephemeral` / `warm`), and the
+one-image-per-Pod and per-tenant pooling rules. The `stateful` tier is out of
+scope for v1 per requirement 5.14.
+
+Its §2 rejection of Crossplane is **void** and is reversed in ADR-0019: that
+rejection assumed a shared plane and a dynamic community catalog, and neither
+holds — the plane is per tenant, and requirement R6 states the catalog is
+curated by the Customer.
+
+Original status: Proposed. Follows ADR-0008 (Reactive Reconcile Model) and
+ADR-0009 (Atom Contract). Fills the slot reserved as "Platform Integration /
+execution placement" in the ADR-0008 index.
 
 This ADR **assumes the Pods/stdin-stdout execution layer** (ADR-0011) and
 records, as motivation, why Crossplane-as-engine and Temporal were rejected

@@ -134,12 +134,15 @@ both options.
 | 0009 Atom Contract | Port types, output materialisation, conditions schema, atom-version compatibility. Executor-neutral. | Proposed |
 | 0010 Reconcile Engine (Option A: Temporal) | Operator↔Temporal scheduling, atom worker lifecycle, transition tracking, SDK contract | Proposed alternative |
 | 0011 Reconcile Engine (Option B: Pods stdin/stdout) | Operator→Pod invocation, JSON I/O contract, state persistence, transition tracking, SDK contract | Proposed alternative |
-| 0012 Execution Layer Decision | Side-by-side comparison of 0010 vs 0011 with trade-off analysis and a recorded choice | Proposed (decision pending) |
+| 0012 Execution Layer Decision | Side-by-side comparison of 0010 vs 0011 with trade-off analysis and a recorded choice | **Decided in ADR-0018 — Option B (Pods)** |
 | 0013 Application Graph | Composition rules, cycle detection, cross-Application references, `UserInput` / `Constant` semantics | Proposed |
 | 0014 Status and Conditions API | Status workflow contract, condition publishing, aggregation rules | Proposed |
-| 0015 Execution Placement and Granularity | Two-plane model (shared declaration / placed execution), `atomRunnerPlacement` + `targetPlacement` axes, credential bridging, `execution.mode` enum (ephemeral/warm/stateful), per-tenant same-type pooling | Proposed |
+| 0015 Execution Placement and Granularity | Two-plane model (shared declaration / placed execution), `atomRunnerPlacement` + `targetPlacement` axes, credential bridging, `execution.mode` enum (ephemeral/warm/stateful), per-tenant same-type pooling | **Largely superseded by ADR-0018** |
 | 0016 Catalog and Versioning | `AtomTemplate` + `ApplicationTemplate` storage, semver policy, sync from git | Proposed |
-| 0017 Programmable Generators | Higher-order `CreateApplication` atom, programmable generators, dynamic fan-out ("N from data"), merge-key identity, fan-out vs feedback | Proposed |
+| 0017 Programmable Generators | Higher-order `CreateApplication` atom, programmable generators, dynamic fan-out ("N from data"), merge-key identity, fan-out vs feedback | Proposed — **out of scope for v1** (requirement 5.14) |
+| 0018 Platform Instance and Installation Modes | Per-tenant platform instance, Mode A (host-resident) vs Mode B (dedicated), child tenants, resolves 0012, supersedes most of 0015 | Proposed |
+| 0019 Crossplane Role and Core/Dependency Boundary | Crossplane as glue plus provider fleet, own controller for the core, narrow core↔dependency contract, Upjet three-tier integration strategy | Proposed |
+| 0020 Bundle Format and UI Extensibility | Own OCI bundle format wrapping a Crossplane Configuration, bundle contract, declarative UI view descriptors | Proposed |
 
 ### What survives from the old ADRs
 

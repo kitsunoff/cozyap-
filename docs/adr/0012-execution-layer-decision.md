@@ -2,12 +2,18 @@
 
 ## Status
 
-Proposed. Decision **pending**.
+**Decided — Option B (Pods with stdin/stdout).** Recorded in ADR-0018.
 
-This ADR compares ADR-0010 (Option A: Temporal) and ADR-0011 (Option B:
-Pods with stdin/stdout) and will record the chosen execution layer once the
-decision is made. All three ADRs (0010, 0011, 0012) remain Proposed until
-the decision is committed here.
+ADR-0011 is promoted to Accepted; ADR-0010 (Temporal) is Rejected and kept for
+historical context.
+
+The decision follows from ADR-0018's per-tenant instance model rather than from
+the comparison below. The principal argument for Temporal was durability; the
+principal argument against it was that an outage suspends every tenant at once.
+With a plane per tenant, a Temporal cluster per tenant is not economically
+defensible, and the shared-blast-radius argument against Pods no longer
+applies. The comparison in this document is retained because its trade-off
+analysis stays valid should a durable execution tier be reconsidered later.
 
 ## Context
 

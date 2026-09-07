@@ -2,7 +2,17 @@
 
 ## Status
 
-Proposed. Follows ADR-0008 (Reactive Reconcile Model) and ADR-0009 (Atom
+Proposed — **out of scope for v1.**
+
+Requirement 5.14 (`docs/requirements/5.14-developer-platform.md`) references
+nothing in this ADR: no dynamic fan-out, no higher-order composition, no
+programmable generators. It is retained as a design for a later stage, not as
+work in the current scope.
+
+The execution-layer question below is settled: ADR-0012 is decided in favour of
+Pods (ADR-0011), recorded in ADR-0018.
+
+Follows ADR-0008 (Reactive Reconcile Model) and ADR-0009 (Atom
 Contract). Refines the composition rules that ADR-0013 (Application Graph)
 will formalize; this ADR owns the **dynamic fan-out** and **higher-order
 composition** concerns specifically.
