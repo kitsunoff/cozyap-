@@ -197,3 +197,32 @@ rather than a lighter composition engine.
   extensibility acceptable.
 - **ADR-0020** — the bundle that carries XRDs, Compositions and everything
   Crossplane cannot carry.
+
+## Amendments (2026-09-07)
+
+From `docs/research/crossplane-as-platform-base.md`.
+
+### A1 — `function-kro` is the default composition authoring model
+
+kro's rule — never declare ordering, derive the DAG from references between
+resources — is available inside Crossplane as `function-kro`, which embeds
+kro's graph builder, CEL evaluator and runtime with no separate installation.
+It is both less error-prone than patch-and-transform and the correct substrate
+for the graph editor, which derives topology from references for the same
+reason (`docs/design/graph-editor.md` §2).
+
+### A2 — `function-python` exists, which constrains the `PythonEval` proposal
+
+Crossplane compositions already support Python with the full standard library,
+alongside KCL and CUE. A `PythonEval` **resource** therefore cannot be
+justified as a templating primitive. It is justified only as a *task* primitive
+— side-effecting work with its own lifecycle, retries, idempotency key and log
+surface — which Crossplane genuinely lacks. The split is in
+`docs/design/brick-model.md` §9.
+
+### A3 — Imperative work needs a first-class primitive next to compositions
+
+Neither Crossplane nor kro handles imperative actions; Kratix exists because of
+that gap, and its shape — ordered containers per lifecycle phase — is the one
+to copy. §2's boundary table gains a third implementation kind, `TaskPipeline`,
+detailed in `docs/design/brick-model.md` §3.

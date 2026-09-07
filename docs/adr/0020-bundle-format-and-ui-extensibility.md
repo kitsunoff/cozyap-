@@ -2,8 +2,12 @@
 
 ## Status
 
-Proposed. Depends on ADR-0018 (instance model) and ADR-0019 (Crossplane's
-role). Reshapes ADR-0016 (Catalog and Versioning).
+Proposed, **amended 2026-09-07** — see the Amendments section at the end.
+Two decisions below are superseded: the invention of a distribution format,
+and the rejection of Module Federation UI plugins.
+
+Depends on ADR-0018 (instance model) and ADR-0019 (Crossplane's role).
+Reshapes ADR-0016 (Catalog and Versioning).
 
 ## Context
 
@@ -142,3 +146,59 @@ has been shown to fall short.
   per-tenant. Bundle trust differs accordingly.
 - **ADR-0019** — the bundle carries the dependency half of the boundary; the
   core is not bundled.
+
+## Amendments (2026-09-07)
+
+Arising from `docs/requirements/platform-vision.md` and
+`docs/research/crossplane-as-platform-base.md`.
+
+### A1 — Do not invent the distribution mechanism
+
+§1 concluded that the bundle must be our own OCI artefact. The **content
+model** conclusion stands and is unaffected: a Crossplane Configuration package
+carries only XRDs and Compositions, so UI descriptors, dashboards, RBAC and
+billing metadata need a carrier of our own.
+
+The **distribution** conclusion is withdrawn. Cozystack v1.0 already ships a
+`Package` / `PackageSource` model driven by `cozystack-operator`, with git and
+OCI sources, install-time `flavors`, and a marketplace surface through
+`ApplicationDefinition`. Constraint V2 names it as the vehicle, and it already
+does what this ADR proposed to build.
+
+Revised position: **our content model, Cozystack's `Package` as the first
+distribution backend.** Constraint V7 then requires the content model to carry
+no Cozystack assumptions, so a non-Cozystack installer can consume the same
+artefact. The package contents list is in `docs/design/brick-model.md` §12.
+
+Cozystack's `flavors` — several implementations of one package, selected at
+install time — is the same idea as Radius recipes-per-environment and as the
+per-target `implementations` field in `BrickDefinition`. Use it rather than
+duplicating it.
+
+### A2 — Module Federation UI plugins are accepted, as an opt-in tier
+
+§4 rejected level 2 outright. Constraint V3 asks for it explicitly, and the
+research shows the pattern is proven rather than speculative: Red Hat Developer
+Hub loads Backstage frontend plugins as Module Federation remotes at runtime,
+distributed as NPM packages, tarballs or OCI images.
+
+Revised position, detailed in `docs/design/brick-model.md` §7:
+
+- level 0 (schema-generated forms) and level 1 (declarative view descriptors)
+  remain the **default**, and cover most bricks;
+- level 2 is **available and opt-in**, declared by the brick, via a `UIPlugin`
+  resource pointing at an image serving a Module Federation remote;
+- the costs this ADR cited are accepted knowingly, not waved away: a
+  plugin/host compatibility matrix, a reload to pick up changes, and — the one
+  that matters most — a plugin runs in the operator's browser session with
+  their privileges, so plugin images require the same signing and allowlisting
+  as packages (§3.5);
+- a plugin that fails to load must degrade to level 1, never break the page.
+
+### A3 — Blueprint rendering semantics are still undecided
+
+Not addressed by this ADR and now blocking: does a blueprint render once
+(scaffold, then applications diverge) or continuously (a blueprint change
+updates every application using it)? Requirement R6's "versioned by the
+Customer" implies the second; the first is far simpler. Recorded as an open
+question in `docs/design/brick-model.md` §15.
