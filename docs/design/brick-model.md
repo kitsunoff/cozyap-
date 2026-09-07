@@ -158,6 +158,121 @@ joined by annotation or label — including ones the platform did not create —
 appear in the application. `External` makes adoption a first-class brick rather
 than a special case in the UI.
 
+### How a `Composition` implementation actually executes
+
+The `implementations` field above is a binding, not a call. Crossplane's engine
+is driven by **composite resources**: an XR is a CRD generated from an XRD, and
+it selects its Composition through `compositionRef` / `compositionRevisionRef`.
+For a Composition to run, something must create an XR.
+
+That something is the **brick controller**. It is a translator, not a
+composition engine:
+
+```text
+BrickInstance                      ← what the user and the editor see
+      │  brick-controller: resolve BrickDefinition + Target.class,
+      │  pick implementation, map parameters and resolved inputs
+      ▼
+XPostgresCozystack  (an XR)        ← the executable object, XRD from the package
+      │  Crossplane: pinned CompositionRevision → function pipeline
+      ▼
+composed managed resources          ← provider-kubernetes Object, or a Cozystack CR
+      ▼
+Cozystack operator → CNPG → pods    ← the real database
+      │
+      │  connection secret + Ready condition
+      ▼
+brick-controller reads the XR back → BrickInstance.status.outputs / conditions / usage
+```
+
+`BrickInstance` is therefore a **facade** over an implementation object, and the
+binding needs more than a reference:
+
+```yaml
+implementations:
+  - match: { targetClass: cozystack }
+    kind: Composition
+    composite:
+      apiVersion: cozystack.platform.io/v1alpha1
+      kind: XPostgresCozystack              # XRD ships in the same package
+      compositionRevisionRef: xpostgres-cozystack-a1b2c3
+    parameterMapping: passthrough           # brick parameter schema == XR spec
+    inputMapping: {}                        # resolved connections → XR spec fields
+    outputMapping:
+      connection:                           # our port name
+        from: connectionSecret              # the XR's writeConnectionSecretToRef
+        keys: { host: host, port: port, database: dbname,
+                user: username, password: password }
+    readiness:
+      from: conditions[Ready]
+```
+
+Four decisions live in that block:
+
+1. **`composite`** names the XR kind to create. The XRD arrives in the same
+   package; if it is absent the brick is marked unavailable and the blueprint
+   linter rejects anything using it. Installation-time validation, not a
+   runtime surprise.
+2. **`parameterMapping: passthrough`** — by default the brick's parameter
+   schema *is* the XR's spec schema, and the package author writes the XRD to
+   match. Cheaper than introducing a second templating language; an explicit
+   map exists only for the cases that cannot line up.
+3. **`outputMapping` is mandatory.** Connection-secret keys are the composition
+   author's choice, while a port type has fixed keys. Without the mapping,
+   typed ports do not actually type-check anything.
+4. **`compositionRevisionRef`, never `compositionRef`.** A floating reference
+   means upgrading a package silently changes the behaviour of every existing
+   instance. Pinning a revision plus an explicit upgrade action is what makes
+   requirement R6's "versioned by the Customer" real rather than nominal.
+
+#### Worked trace
+
+1. A `BrickInstance` of type `PostgresDatabase` is created with
+   `targetRef: prod-eu` and `parameters: {size: medium, version: "17"}`.
+2. The brick controller loads the `BrickDefinition`, loads the `Target`, reads
+   `class: cozystack`, matches the implementation, satisfies
+   `targetRequirements` (installing `cnpg-operator` and incrementing its
+   refcount if absent), and creates the XR with an owner reference back to the
+   `BrickInstance`.
+3. Crossplane reconciles the XR against the pinned composition revision; the
+   function pipeline renders composed resources; providers create them.
+4. Crossplane writes the connection secret and sets the XR `Ready`.
+5. The brick controller watches the XR and fills the facade back in:
+   `status.outputs.connection` (secret reference plus non-secret fields inline
+   for the UI), human-readable conditions, and `status.usage` for metering.
+6. A downstream `Workload` with a connection from `api-db.connection` reads
+   `status.outputs.connection.secretRef` and projects it into the pod as
+   `DATABASE_*` variables and a `/bindings/db` mount.
+
+Deletion mirrors this: a finalizer holds the `BrickInstance` until the XR is
+gone.
+
+`Native` and `TaskPipeline` implementations have no XR at all — the controller
+does the work, or creates Jobs. Uniformity exists at the `BrickInstance` level
+only, which is the entire point of the facade.
+
+#### The cost of the facade, stated plainly
+
+Two objects per brick, two reconcile loops, status that must be propagated,
+errors that must be translated, and debugging that goes through an extra hop.
+
+Paid for three things:
+
+- **Constraint V7.** Changing target class changes the XR *kind*
+  (`XPostgresCozystack` → `XPostgresRds`). Without the facade the application's
+  own object would change; with it, the `BrickInstance` does not change at all.
+- **Uniformity.** The editor, the aggregate, metering and facets deal with one
+  kind rather than N unrelated XR kinds.
+- **Non-composition bricks.** `Native` and `TaskPipeline` bricks have no XR;
+  the facade is the only thing that makes them peers of composition-backed ones.
+
+The alternative worth knowing: **make the brick type *be* the XRD**, with
+`BrickDefinition` reduced to metadata *about* an existing XRD (ports, facets,
+billing, ui). Half the objects, and `crossplane beta trace` works directly. It
+is rejected because it breaks V7 — a per-target implementation swap would
+change the kind the user authored — and because every `Native` brick would
+still need a CRD of its own.
+
 ## 4. Layer 3 — `BrickInstance` and derived graphs
 
 One CR per brick instance, namespaced. **The graph is never stored; it is
