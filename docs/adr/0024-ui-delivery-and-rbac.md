@@ -61,10 +61,12 @@ status scattered across HelmReleases, kpack and a remote cluster. Writing the
 two controllers removed the thing it was aggregating. **The BFF is dropped from
 the component list.**
 
-One consequence is not solved by this and is recorded in ADR-0022 question 5:
-pods in a tenant Kubernetes cluster, and kpack build pods that are garbage
-collected, are not reachable from the browser. Logs need a route that is not
-"the SPA calls the API server".
+Logs are the one thing this does not cover — pods in a tenant Kubernetes cluster
+and kpack's collected build pods are not reachable from the browser. **ADR-0025
+resolves it without breaking the model**, by narrowing the rule here to what it
+was protecting: the platform adds no API surface *outside the Kubernetes API*.
+A `logs` subresource served by an aggregated API server satisfies that; a
+standalone REST service would not.
 
 ### 3. RBAC: controllers cluster-wide, tenants namespace-scoped
 
