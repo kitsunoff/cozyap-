@@ -2,6 +2,10 @@
 
 ## Status
 
+**Superseded by ADR-0022 (2026-09-14.)** Its content-model conclusion survives
+as the package contents; the invented distribution format does not. See
+`docs/prior-art.md` §8. Kept for historical context.
+
 Proposed, **amended 2026-09-07** — see the Amendments section at the end.
 Two decisions below are superseded: the invention of a distribution format,
 and the rejection of Module Federation UI plugins.

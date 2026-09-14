@@ -2,6 +2,10 @@
 
 ## Status
 
+**Deferred (2026-09-14.)** No requirement asks for the editor, and it is
+recorded as D1 in `docs/decisions.md`. The model still derives topology from
+references, so the editor stays possible. Kept for historical context.
+
 Design draft, 2026-09-07. Companion to `docs/design/brick-model.md`.
 
 The editor is not a visualisation bolted on at the end. It is the interface

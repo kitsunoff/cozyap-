@@ -2,6 +2,11 @@
 
 ## Status
 
+**Superseded by ADR-0021, ADR-0022 and ADR-0023 (2026-09-14.)** The vocabulary
+survives; the five implementation kinds do not. Its `Task` primitive is Argo
+Workflows (ADR-0022 §3) and its typed ports are `BindingProfile` plus the
+`servicebinding.io` secret shape (ADR-0021 §6). Kept for historical context.
+
 Design draft, 2026-09-07. Synthesises requirement 5.14
 (`docs/requirements/5.14-developer-platform.md`), the product owner
 constraints (`docs/requirements/platform-vision.md`) and the two research

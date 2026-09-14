@@ -2,6 +2,11 @@
 
 ## Status
 
+**Superseded by ADR-0021 and ADR-0022 (2026-09-14.)** Its central argument —
+that the core needs an own controller for status and revisions — is upheld and
+narrowed to `Workload`. Its adoption of Crossplane is dropped; see
+`docs/prior-art.md` §9. Kept for historical context.
+
 Proposed. Depends on ADR-0018 (per-tenant instance). Reverses the rejection of
 Crossplane recorded in ADR-0015 §2.
 

@@ -2,6 +2,10 @@
 
 ## Status
 
+**Superseded by ADR-0021, ADR-0022 and ADR-0023 (2026-09-14.)** Its instance
+model and its statement of Mode A's cluster-scoped-CRD limit survive in
+`docs/prior-art.md` §3. Kept for historical context.
+
 Proposed. Supersedes the two-plane model of ADR-0015 and resolves ADR-0012.
 
 Driven by requirement 5.14 (`docs/requirements/5.14-developer-platform.md`).
