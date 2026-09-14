@@ -163,6 +163,10 @@ A request to read something else out of another application is answered with
 
 ## Relationship to prior art
 
+ADR-0001 through ADR-0017 no longer exist as files; they were removed with the
+retired series and are retrievable from git history. Their durable conclusions
+are in `docs/prior-art.md`.
+
 - **`design/brick-model.md` §14** — "no cross-application graph" is superseded by
   the narrow exception in §4.
 - **ADR-0007** — the networking primitives survive; how an application requests

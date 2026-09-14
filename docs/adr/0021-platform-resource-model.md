@@ -354,6 +354,10 @@ separate authoring surface over the same objects — not a property of this mode
 
 ## Relationship to prior art
 
+ADR-0001 through ADR-0017 no longer exist as files; they were removed with the
+retired series and are retrievable from git history. Their durable conclusions
+are in `docs/prior-art.md`.
+
 - **ADR-0009** — typed ports reduce to `BindingProfile` plus the
   `servicebinding.io` secret shape.
 - **ADR-0010 / 0011 / 0012** — the execution-layer question is void; there is no

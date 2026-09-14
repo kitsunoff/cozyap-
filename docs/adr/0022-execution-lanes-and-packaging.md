@@ -215,6 +215,10 @@ applications sharing an operator must not break when one is deleted.
 
 ## Relationship to prior art
 
+ADR-0001 through ADR-0017 no longer exist as files; they were removed with the
+retired series and are retrievable from git history. Their durable conclusions
+are in `docs/prior-art.md`.
+
 - **ADR-0004** — Argo returns, for one-shot work only, and without
   `cluster-admin`.
 - **ADR-0008** — its rejection of Argo applied to the reconcile role and remains
