@@ -282,6 +282,12 @@ spec:
     password: { fromSecret: { name: "postgres-{{ .name }}-credentials", key: "app" } }
 ```
 
+A node type whose created resource matches a `BindingProfile` publishes
+`status.binding` automatically. That is where `db.status.binding` in the §3
+blueprint comes from: the node type declares nothing about connections, the
+profile supplies them, and swapping the profile — a different PostgreSQL, an
+external one — changes no blueprint.
+
 The projected result follows the Service Binding for Kubernetes specification:
 files under `$SERVICE_BINDING_ROOT/<name>/`, with a mandatory `type` entry. Two
 things follow. Paketo buildpacks and Spring Cloud Bindings consume that layout
