@@ -315,10 +315,12 @@ adopted; the controller is not.
 ### Negative
 
 - `BlueprintInstance` and `Workload` are ordinary CRDs, so `cozystack-api` does
-  not project them and the Cozystack dashboard does not show them. **A UI of our
-  own stops being optional.**
-- Tenant RBAC for these types is ours to define and aggregate into Cozystack's
-  tenant roles. It was previously free.
+  not project them and the Cozystack dashboard does not show them without work.
+  The platform's surface is therefore a **plugin inside `cozystack-ui`**, which
+  requires a plugin mechanism to be contributed upstream first (ADR-0024).
+- Tenant RBAC for these types is ours to define. The controllers themselves are
+  cluster-wide, like every other shared Cozystack controller; tenant permissions
+  are namespace-scoped on the namespaced types (ADR-0024 §3).
 - Reconciliation, finalizers, drift and retry for two types are ours. The
   unpleasant case — a finalizer on a `Workload` whose target cluster is gone —
   must be designed before it is met.
