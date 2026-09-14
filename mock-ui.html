@@ -919,6 +919,299 @@
 
   /* Scroll indicator for modal overlay */
   .screen-shell-wrap { position: relative; }
+
+  /* ─── Condition state badges / dots (reactive model) ─── */
+  .state-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .state-ok      { background: rgba(62,207,142,0.15);  color: #3ecf8e; }
+  .state-warn    { background: rgba(245,166,35,0.15);  color: #f5a623; }
+  .state-error   { background: rgba(248,113,113,0.15); color: #f87171; }
+  .state-info    { background: rgba(76,126,243,0.15);  color: #4c7ef3; }
+  .state-unknown { background: rgba(255,255,255,0.06); color: #9999a8; }
+  .state-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-ok      { background: #3ecf8e; }
+  .dot-warn    { background: #f5a623; }
+  .dot-error   { background: #f87171; }
+  .dot-info    { background: #4c7ef3; }
+  .dot-unknown { background: #666672; }
+
+  /* ─── Condition rows ─── */
+  .cond-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 18px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .cond-row:last-child { border-bottom: none; }
+  .cond-type {
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--text-primary);
+    width: 150px;
+    flex-shrink: 0;
+  }
+  .cond-msg { font-size: 12px; color: var(--text-muted); flex: 1; line-height: 1.4; }
+
+  /* ─── Two-pane detail (graph + inspector) ─── */
+  .detail-cols {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 16px;
+    align-items: start;
+  }
+  .panel {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .panel-title { font-size: 13px; font-weight: 600; color: var(--text-primary); }
+  .panel-body { padding: 14px 16px; }
+
+  /* ─── Atom graph (layered) ─── */
+  .graph-canvas {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    padding: 20px 14px;
+    overflow-x: auto;
+    min-height: 360px;
+  }
+  .graph-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 14px;
+    min-width: 132px;
+  }
+  .graph-col-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .graph-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    padding: 0 2px;
+    min-width: 24px;
+  }
+  .atom-node {
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 8px;
+    padding: 9px 11px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+  .atom-node:hover { border-color: var(--accent-blue); }
+  .atom-node.selected {
+    border-color: var(--accent-blue);
+    background: rgba(76,126,243,0.08);
+    box-shadow: 0 0 0 1px var(--accent-blue);
+  }
+  .atom-node-row1 {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 5px;
+  }
+  .atom-node-icon { font-size: 14px; }
+  .atom-node-name { font-size: 12px; font-weight: 600; color: var(--text-primary); flex: 1; }
+  .atom-node-tmpl {
+    font-family: monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+  .atom-node-row2 {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .atom-node-ports {
+    font-family: monospace;
+    font-size: 9.5px;
+    color: var(--accent-purple);
+    margin-top: 5px;
+    line-height: 1.4;
+  }
+
+  /* ─── Pills (placement / execution mode) ─── */
+  .meta-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    height: 20px;
+    padding: 0 8px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .pill-placement { background: rgba(34,211,238,0.12); color: #22d3ee; }
+  .pill-host      { background: rgba(245,166,35,0.14); color: #f5a623; }
+  .pill-mode      { background: rgba(167,139,250,0.14); color: #a78bfa; }
+
+  /* ─── Inspector field ─── */
+  .insp-field { margin-bottom: 14px; }
+  .insp-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+  .insp-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 12px;
+    padding: 3px 0;
+  }
+  .insp-row .k { color: var(--text-secondary); font-family: monospace; }
+  .insp-row .v { color: var(--text-primary); }
+  .fingerprint {
+    font-family: monospace;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    word-break: break-all;
+  }
+  .port-tag {
+    display: inline-flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 10px;
+    background: rgba(167,139,250,0.12);
+    color: var(--accent-purple);
+  }
+
+  /* ─── Builder palette ─── */
+  .builder-cols {
+    display: grid;
+    grid-template-columns: 188px 1fr 300px;
+    gap: 14px;
+    align-items: start;
+  }
+  .palette-group-label {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 14px 4px;
+  }
+  .palette-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: grab;
+    transition: background 0.12s, color 0.12s;
+  }
+  .palette-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .palette-item .pi-icon { font-size: 13px; }
+  .palette-item .pi-ver { font-family: monospace; font-size: 10px; color: var(--text-muted); margin-left: auto; }
+
+  /* ─── Select (inspector) ─── */
+  .insp-select {
+    width: 100%;
+    height: 30px;
+    background: var(--bg-elevated);
+    border: 0.5px solid var(--border-hover);
+    border-radius: 6px;
+    padding: 0 10px;
+    font-size: 12px;
+    color: var(--text-primary);
+    outline: none;
+    font-family: inherit;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23666672' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  /* ─── Fan-out child cards ─── */
+  .fanout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+  }
+  .child-card {
+    background: var(--bg-surface);
+    border: 0.5px solid var(--border);
+    border-radius: 9px;
+    padding: 12px 14px;
+  }
+  .child-card-row1 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .child-card-name { font-size: 13px; font-weight: 500; color: var(--text-primary); font-family: monospace; flex: 1; }
+  .child-card-key {
+    font-family: monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .gen-node {
+    background: var(--bg-surface);
+    border: 0.5px solid rgba(76,126,243,0.4);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .gen-node-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+  }
+  .gen-attrs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+  }
+  .gen-attr { display: flex; flex-direction: column; gap: 2px; }
+  .gen-attr .ga-k { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); }
+  .gen-attr .ga-v { font-size: 12px; color: var(--text-primary); font-family: monospace; }
 </style>
 </head>
 <body>
@@ -952,6 +1245,7 @@ const SidebarApp = ({ activeItem }) =>
     h('div', { className: 'sidebar-section-label' }, 'Applications'),
     h('div', { className: `sidebar-item sub ${activeItem === 'myapps' ? 'active' : ''}` }, 'My Apps'),
     h('div', { className: `sidebar-item sub ${activeItem === 'appstore' ? 'active' : ''}` }, 'App Store'),
+    h('div', { className: `sidebar-item sub ${activeItem === 'templates' ? 'active' : ''}` }, 'Templates'),
     h('div', { className: 'sidebar-section-label' }, 'Infrastructure'),
     h('div', { className: `sidebar-item ${activeItem === 'envs' ? 'active' : ''}` }, 'Environments'),
     h('div', { className: 'sidebar-item' }, 'Resources'),
@@ -975,6 +1269,26 @@ const StatusBadge = ({ status }) => {
 
 const CatBadge = ({ cat }) =>
   h('span', { className: `cat-badge cat-${cat}` }, cat);
+
+// ─── Condition state (reactive model: ok/warn/error/info/unknown) ───
+const StateBadge = ({ state, label }) =>
+  h('span', { className: `state-badge state-${state}` },
+    h('span', { className: `state-dot dot-${state}` }),
+    label || state
+  );
+
+const StateDot = ({ state }) =>
+  h('span', { className: `state-dot dot-${state}` });
+
+// One AtomTemplate condition row
+const ConditionRow = ({ type, state, message }) =>
+  h('div', { className: 'cond-row' },
+    h('span', { className: 'cond-type' }, type),
+    h('span', { className: `state-badge state-${state}`, style: { flexShrink: 0 } },
+      h('span', { className: `state-dot dot-${state}` }), state
+    ),
+    h('span', { className: 'cond-msg' }, message)
+  );
 
 // ─── Screen divider ───
 const ScreenDiv = ({ label }) =>
@@ -1040,12 +1354,18 @@ const Screen1 = () => {
 // ═══════════════════════════════════════════════
 const Screen2 = () => {
   const statusFields = [
-    ['Status', h(StatusBadge, { key: 'r', status: 'Running' })],
+    ['Health', h(StateBadge, { key: 'h', state: 'ok', label: 'Healthy' })],
     ['Environment', h('span', { key: 'e', className: 'env-pill' }, 'production')],
-    ['Template', 'WordPress'],
+    ['Template', h('span', { key: 't', style: { fontFamily: 'monospace' } }, 'wordpress@2.3.1')],
     ['Domain', h('a', { key: 'd' }, 'my-blog.example.com')],
-    ['Created', 'January 10, 2024 at 14:32'],
-    ['Last updated', 'January 12, 2024 at 09:15'],
+    ['Atoms', '6 atoms · all reconciled'],
+    ['Last reconciled', '6 minutes ago · cron 4h'],
+  ];
+  const conditions = [
+    { type: 'db.ClusterReady', state: 'ok', message: '3 instances streaming WAL' },
+    { type: 'db.BackupOk', state: 'warn', message: 'no backup in last 36h' },
+    { type: 'app.Available', state: 'ok', message: '2/2 replicas ready' },
+    { type: 'ingress.Reachable', state: 'ok', message: 'TLS valid for 64 days' },
   ];
   const configFields = [
     ['Site title', 'My Awesome Blog'],
@@ -1063,15 +1383,18 @@ const Screen2 = () => {
         h('div', { className: 'page-header' },
           h('h1', { className: 'page-title' },
             h('span', null, 'my-blog'),
-            h(StatusBadge, { status: 'Running' })
+            h(StateBadge, { state: 'ok', label: 'Healthy' })
           ),
-          h('div', { className: 'rel' },
-            h('button', { className: 'btn btn-default btn-lg' }, 'Actions ▾'),
-            h('div', { className: 'dropdown-menu' },
-              h('div', { className: 'dropdown-item' }, '🔄 Restart'),
-              h('div', { className: 'dropdown-item' }, '📦 Create Backup'),
-              h('div', { className: 'dropdown-divider' }),
-              h('div', { className: 'dropdown-item danger' }, '🗑 Delete')
+          h('div', { style: { display: 'flex', gap: 8 } },
+            h('button', { className: 'btn btn-default btn-lg' }, 'Atom graph →'),
+            h('div', { className: 'rel' },
+              h('button', { className: 'btn btn-default btn-lg' }, 'Actions ▾'),
+              h('div', { className: 'dropdown-menu' },
+                h('div', { className: 'dropdown-item' }, '🔄 Restart'),
+                h('div', { className: 'dropdown-item' }, '📦 Create Backup'),
+                h('div', { className: 'dropdown-divider' }),
+                h('div', { className: 'dropdown-item danger' }, '🗑 Delete')
+              )
             )
           )
         ),
@@ -1087,6 +1410,13 @@ const Screen2 = () => {
               )
             )
           )
+        ),
+        h('div', { className: 'section-card' },
+          h('div', { className: 'section-card-header' },
+            h('span', { className: 'section-card-title' }, 'Conditions'),
+            h('span', { style: { fontSize: 11, color: 'var(--text-muted)' } }, 'aggregated · worst-state-wins')
+          ),
+          ...conditions.map(c => h(ConditionRow, { key: c.type, ...c }))
         ),
         h('div', { className: 'section-card' },
           h('div', { className: 'section-card-header' },
@@ -1489,6 +1819,290 @@ const Screen8 = () => {
   );
 };
 
+// ─── Atom graph building blocks ───
+const AtomNode = ({ icon, name, tmpl, state, selected, ports }) =>
+  h('div', { className: `atom-node ${selected ? 'selected' : ''}` },
+    h('div', { className: 'atom-node-row1' },
+      h('span', { className: 'atom-node-icon' }, icon),
+      h('span', { className: 'atom-node-name' }, name),
+      h(StateDot, { state })
+    ),
+    h('div', { className: 'atom-node-tmpl' }, tmpl),
+    ports ? h('div', { className: 'atom-node-ports' }, ports) : null
+  );
+
+const GArrow = () =>
+  h('div', { className: 'graph-arrow' },
+    h('svg', { width: 20, height: 12, viewBox: '0 0 20 12', fill: 'none', xmlns: 'http://www.w3.org/2000/svg' },
+      h('path', { d: 'M0 6 H15 M11 2 L17 6 L11 10', stroke: '#666672', strokeWidth: '1.3', strokeLinecap: 'round', strokeLinejoin: 'round' })
+    )
+  );
+
+// Layered WordPress atom graph, with one node selected
+const AtomGraph = ({ selected }) =>
+  h('div', { className: 'graph-canvas' },
+    h('div', { className: 'graph-col' },
+      h('div', { className: 'graph-col-label' }, 'Sources'),
+      h(AtomNode, { icon: '📝', name: 'userInput', tmpl: 'user-input', state: 'ok', ports: 'out: hostname, adminPassword' }),
+      h(AtomNode, { icon: '🪣', name: 's3', tmpl: 'minio@1.0.4', state: 'ok', ports: 'out: bucketSecret' })
+    ),
+    h(GArrow),
+    h('div', { className: 'graph-col' },
+      h('div', { className: 'graph-col-label' }, 'Data'),
+      h(AtomNode, { icon: '🐘', name: 'db', tmpl: 'postgres@1.2.0', state: 'warn', selected: selected === 'db', ports: 'in: backupBucket · out: credentials, service' }),
+      h(AtomNode, { icon: '🔒', name: 'tls', tmpl: 'tls-cert@1.1.0', state: 'ok', selected: selected === 'tls', ports: 'in: hostname · out: cert' })
+    ),
+    h(GArrow),
+    h('div', { className: 'graph-col' },
+      h('div', { className: 'graph-col-label' }, 'App'),
+      h(AtomNode, { icon: '📦', name: 'app', tmpl: 'container@2.1.0', state: 'ok', selected: selected === 'app', ports: 'in: db, dbHost · out: workload, image' })
+    ),
+    h(GArrow),
+    h('div', { className: 'graph-col' },
+      h('div', { className: 'graph-col-label' }, 'Edge'),
+      h(AtomNode, { icon: '🌐', name: 'ingress', tmpl: 'ingress@1.3.0', state: 'ok', selected: selected === 'ingress', ports: 'in: backend, tls · out: host' })
+    )
+  );
+
+// ═══════════════════════════════════════════════
+//  SCREEN 9 — Application Atom Graph + Inspector
+// ═══════════════════════════════════════════════
+const Screen9 = () => {
+  const dbConditions = [
+    { type: 'ClusterReady', state: 'ok', message: '3 instances streaming WAL' },
+    { type: 'BackupOk', state: 'warn', message: 'no backup in last 36h' },
+    { type: 'StorageHealthy', state: 'ok', message: '34% of 10 GB used' },
+  ];
+
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'myapps' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications', 'my-blog', 'Atom graph'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' },
+            h('span', null, 'my-blog'),
+            h(StateBadge, { state: 'warn', label: 'Degraded' })
+          ),
+          h('button', { className: 'btn btn-default btn-lg' }, '🔄 Reconcile now')
+        ),
+        h('div', { className: 'info-box' },
+          'A single ', h('strong', { style: { color: 'var(--text-primary)' } }, 'reconcile'),
+          ' operation drives the whole graph. Output fingerprints cascade to downstream atoms automatically — no install/upgrade/remove hooks.'
+        ),
+        h('div', { className: 'detail-cols' },
+          h('div', { className: 'panel' },
+            h('div', { className: 'panel-header' },
+              h('span', { className: 'panel-title' }, 'Graph'),
+              h('span', { style: { fontSize: 11, color: 'var(--text-muted)' } }, '6 atoms · typed-port edges')
+            ),
+            h(AtomGraph, { selected: 'db' })
+          ),
+          h('div', { className: 'panel' },
+            h('div', { className: 'panel-header' },
+              h('span', { className: 'panel-title' }, '🐘 db'),
+              h(StateBadge, { state: 'warn', label: 'warn' })
+            ),
+            h('div', { className: 'panel-body' },
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'AtomTemplate'),
+                h('div', { className: 'insp-row' }, h('span', { className: 'v', style: { fontFamily: 'monospace' } }, 'postgres@1.2.0'), h('span', { className: 'meta-pill pill-mode' }, 'stateful'))
+              ),
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'Conditions'),
+                ...dbConditions.map(c =>
+                  h('div', { key: c.type, className: 'insp-row', style: { alignItems: 'flex-start', flexDirection: 'column', gap: 2 } },
+                    h('div', { style: { display: 'flex', alignItems: 'center', gap: 6, width: '100%' } },
+                      h(StateDot, { state: c.state }),
+                      h('span', { style: { fontFamily: 'monospace', fontSize: 12, color: 'var(--text-primary)' } }, c.type)
+                    ),
+                    h('span', { style: { fontSize: 11, color: 'var(--text-muted)', paddingLeft: 14 } }, c.message)
+                  )
+                )
+              ),
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'Outputs'),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'credentials'), h('span', { className: 'port-tag' }, 'secret-ref')),
+                h('div', { className: 'fingerprint', style: { marginBottom: 8 } }, 'sha256:9b74c9897bac…'),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'service'), h('span', { className: 'port-tag' }, 'service-ref')),
+                h('div', { className: 'fingerprint' }, 'sha256:1f3a0e52cd11…')
+              ),
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'Placement'),
+                h('div', { style: { display: 'flex', gap: 6, flexWrap: 'wrap' } },
+                  h('span', { className: 'meta-pill pill-placement' }, 'runner: tenant-system'),
+                  h('span', { className: 'meta-pill pill-placement' }, 'target: tenant-system')
+                )
+              ),
+              h('div', { className: 'insp-field', style: { marginBottom: 0 } },
+                h('div', { className: 'insp-label' }, 'Reconcile'),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'cron'), h('span', { className: 'v' }, '4h')),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'last run'), h('span', { className: 'v' }, '6 min ago'))
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 10 — Template Builder (palette · canvas · inspector)
+// ═══════════════════════════════════════════════
+const Screen10 = () => {
+  const palette = [
+    ['Managed services', [['🐘', 'Postgres', '1.2.0'], ['🪣', 'MinIO', '1.0.4'], ['🔴', 'Redis', '2.0.1']]],
+    ['Primitives', [['📦', 'Container', '2.1.0'], ['🔌', 'Service', '1.0.0'], ['🌐', 'Ingress', '1.3.0'], ['🔒', 'TLSCert', '1.1.0']]],
+    ['System', [['📝', 'UserInput', '—'], ['📌', 'Constant', '—'], ['🔁', 'CreateApplication', '1.0.0']]],
+  ];
+
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'templates' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Templates', 'wordpress', 'Builder'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' },
+            h('span', null, 'wordpress'),
+            h('span', { className: 'template-version' }, 'draft → v2.4.0')
+          ),
+          h('div', { style: { display: 'flex', gap: 8 } },
+            h('button', { className: 'btn btn-default btn-lg' }, 'Validate'),
+            h('button', { className: 'btn btn-primary btn-lg' }, 'Publish')
+          )
+        ),
+        h('div', { className: 'builder-cols' },
+          // Palette
+          h('div', { className: 'panel' },
+            h('div', { className: 'panel-header' }, h('span', { className: 'panel-title' }, 'Atom catalog')),
+            h('input', { className: 'search-input', type: 'text', placeholder: 'Search atoms…', style: { margin: '10px 14px', width: 'calc(100% - 28px)', maxWidth: 'none' } }),
+            ...palette.flatMap(([group, items]) => [
+              h('div', { key: group, className: 'palette-group-label' }, group),
+              ...items.map(([icon, name, ver]) =>
+                h('div', { key: name, className: 'palette-item' },
+                  h('span', { className: 'pi-icon' }, icon),
+                  h('span', null, name),
+                  h('span', { className: 'pi-ver' }, ver)
+                )
+              )
+            ])
+          ),
+          // Canvas
+          h('div', { className: 'panel' },
+            h('div', { className: 'panel-header' },
+              h('span', { className: 'panel-title' }, 'Canvas'),
+              h('span', { style: { fontSize: 11, color: 'var(--text-muted)' } }, 'drag atoms · wire typed ports')
+            ),
+            h(AtomGraph, { selected: 'app' })
+          ),
+          // Inspector
+          h('div', { className: 'panel' },
+            h('div', { className: 'panel-header' },
+              h('span', { className: 'panel-title' }, '📦 app'),
+              h('span', { className: 'template-version' }, 'container@2.1.0')
+            ),
+            h('div', { className: 'panel-body' },
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'Inputs (from upstream)'),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'db'), h('span', { className: 'v', style: { fontFamily: 'monospace', fontSize: 11 } }, '← db.credentials')),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'dbHost'), h('span', { className: 'v', style: { fontFamily: 'monospace', fontSize: 11 } }, '← db.service'))
+              ),
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'Outputs'),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'workload'), h('span', { className: 'port-tag' }, 'workload-ref')),
+                h('div', { className: 'insp-row' }, h('span', { className: 'k' }, 'image'), h('span', { className: 'port-tag' }, 'image-ref'))
+              ),
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'targetPlacement'),
+                h('select', { className: 'insp-select' },
+                  h('option', null, 'tenant-system'),
+                  h('option', null, 'host-system (signed only)')
+                )
+              ),
+              h('div', { className: 'insp-field' },
+                h('div', { className: 'insp-label' }, 'Execution mode'),
+                h('select', { className: 'insp-select' },
+                  h('option', null, 'ephemeral'),
+                  h('option', null, 'warm'),
+                  h('option', null, 'stateful')
+                )
+              ),
+              h('div', { className: 'info-box', style: { marginBottom: 0, marginTop: 4 } },
+                'Edges are validated so a typed-port connection never crosses a placement boundary silently.'
+              )
+            )
+          )
+        )
+      )
+    )
+  );
+};
+
+// ═══════════════════════════════════════════════
+//  SCREEN 11 — Fan-out (Programmable Generators)
+// ═══════════════════════════════════════════════
+const Screen11 = () => {
+  const children = [
+    { name: 'preview-pr-1042', key: '1042', state: 'ok', status: 'Running', age: '3 hours ago' },
+    { name: 'preview-pr-1051', key: '1051', state: 'info', status: 'Installing', age: '2 minutes ago' },
+    { name: 'preview-pr-1066', key: '1066', state: 'ok', status: 'Running', age: '1 day ago' },
+    { name: 'preview-pr-1071', key: '1071', state: 'ok', status: 'Running', age: '5 hours ago' },
+    { name: 'preview-pr-1080', key: '1080', state: 'warn', status: 'Degraded', age: '20 minutes ago' },
+    { name: 'preview-pr-1083', key: '1083', state: 'ok', status: 'Running', age: '40 minutes ago' },
+  ];
+
+  return h('div', { className: 'shell' },
+    h(Topbar),
+    h('div', { className: 'body-layout' },
+      h(SidebarApp, { activeItem: 'myapps' }),
+      h('div', { className: 'content' },
+        h(Breadcrumb, { items: ['Applications', 'preview-environments'] }),
+        h('div', { className: 'page-header' },
+          h('h1', { className: 'page-title' },
+            h('span', null, 'preview-environments'),
+            h('span', { className: 'meta-pill pill-mode', style: { height: 22 } }, 'fan-out')
+          ),
+          h('button', { className: 'btn btn-default btn-lg' }, 'Edit generator')
+        ),
+        h('div', { className: 'gen-node' },
+          h('div', { className: 'gen-node-title' }, h('span', null, '🔁'), h('span', null, 'Generator — preview per pull request')),
+          h('div', { className: 'gen-attrs' },
+            h('div', { className: 'gen-attr' }, h('span', { className: 'ga-k' }, 'Source'), h('span', { className: 'ga-v' }, 'github · open PRs')),
+            h('div', { className: 'gen-attr' }, h('span', { className: 'ga-k' }, 'Mapping'), h('span', { className: 'ga-v' }, 'jq: data → []paramBundle')),
+            h('div', { className: 'gen-attr' }, h('span', { className: 'ga-k' }, 'Merge key'), h('span', { className: 'ga-v' }, 'pr.number')),
+            h('div', { className: 'gen-attr' }, h('span', { className: 'ga-k' }, 'Template'), h('span', { className: 'ga-v' }, 'preview-app@1.0.0')),
+            h('div', { className: 'gen-attr' }, h('span', { className: 'ga-k' }, 'Cardinality cap'), h('span', { className: 'ga-v' }, '20')),
+            h('div', { className: 'gen-attr' }, h('span', { className: 'ga-k' }, 'On key removed'), h('span', { className: 'ga-v' }, 'teardown'))
+          )
+        ),
+        h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, color: 'var(--text-muted)', fontSize: 12, margin: '4px 0 14px' } },
+          h('svg', { width: 14, height: 16, viewBox: '0 0 14 16', fill: 'none' }, h('path', { d: 'M7 0 V11 M2 7 L7 13 L12 7', stroke: '#666672', strokeWidth: '1.3', fill: 'none', strokeLinecap: 'round', strokeLinejoin: 'round' })),
+          h('span', null, 'CreateApplication fans out one child Application per merge key')
+        ),
+        h('div', { className: 'fanout-grid' },
+          ...children.map(c =>
+            h('div', { key: c.name, className: 'child-card' },
+              h('div', { className: 'child-card-row1' },
+                h(StateDot, { state: c.state }),
+                h('span', { className: 'child-card-name' }, c.name),
+                h(StatusBadge, { status: c.status })
+              ),
+              h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+                h('span', { className: 'child-card-key' }, 'pr.number=' + c.key),
+                h('span', { style: { fontSize: 11, color: 'var(--text-muted)' } }, c.age)
+              )
+            )
+          )
+        ),
+        h('div', { className: 'summary-line' }, '6 of 20 previews · child Applications owned by the generator · teardown on PR close')
+      )
+    )
+  );
+};
+
 // ─── App Root ───
 const App = () =>
   h(Fragment, null,
@@ -1504,20 +2118,29 @@ const App = () =>
     h(ScreenDiv, { label: 'Screen 3 — Action Modal (Create Backup)' }),
     h(Screen3),
 
-    h(ScreenDiv, { label: 'Screen 4 — App Store' }),
+    h(ScreenDiv, { label: 'Screen 4 — Application Atom Graph' }),
+    h(Screen9),
+
+    h(ScreenDiv, { label: 'Screen 5 — App Store' }),
     h(Screen4),
 
-    h(ScreenDiv, { label: 'Screen 5 — Template Page (Minecraft)' }),
+    h(ScreenDiv, { label: 'Screen 6 — Template Page (Minecraft)' }),
     h(Screen5),
 
-    h(ScreenDiv, { label: 'Screen 6 — Launch Form (Minecraft)' }),
+    h(ScreenDiv, { label: 'Screen 7 — Launch Form (Minecraft)' }),
     h(Screen6),
 
-    h(ScreenDiv, { label: 'Screen 7 — Environments' }),
+    h(ScreenDiv, { label: 'Screen 8 — Template Builder' }),
+    h(Screen10),
+
+    h(ScreenDiv, { label: 'Screen 9 — Environments' }),
     h(Screen7),
 
-    h(ScreenDiv, { label: 'Screen 8 — Create Environment' }),
+    h(ScreenDiv, { label: 'Screen 10 — Create Environment' }),
     h(Screen8),
+
+    h(ScreenDiv, { label: 'Screen 11 — Fan-out (Programmable Generators)' }),
+    h(Screen11),
 
     h('div', { style: { height: 60 } })
   );

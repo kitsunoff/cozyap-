@@ -322,7 +322,7 @@
         <span class="badge badge--amber">Multi-tenant</span>
       </div>
     </div>
-    <div class="slide-number">01 / 19</div>
+    <div class="slide-number">01 / 22</div>
   </section>
 
   <!-- SLIDE 2: PROBLEM -->
@@ -354,7 +354,7 @@
         <strong>Root cause:</strong> imperative lifecycle hooks model. Each lifecycle event is a different operation — but they're all the same thing: <em>make actual match desired.</em>
       </div>
     </div>
-    <div class="slide-number">02 / 19</div>
+    <div class="slide-number">02 / 22</div>
   </section>
 
   <!-- SLIDE 3: THE SHIFT -->
@@ -387,7 +387,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">03 / 19</div>
+    <div class="slide-number">03 / 22</div>
   </section>
 
   <!-- SLIDE 4: ATOMS -->
@@ -429,7 +429,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">04 / 19</div>
+    <div class="slide-number">04 / 22</div>
   </section>
 
   <!-- SLIDE 5: PORT TYPES -->
@@ -475,7 +475,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">05 / 19</div>
+    <div class="slide-number">05 / 22</div>
   </section>
 
   <!-- SLIDE 6: APPLICATION GRAPH -->
@@ -533,7 +533,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">06 / 19</div>
+    <div class="slide-number">06 / 22</div>
   </section>
 
   <!-- SLIDE 7: CASCADE DETECTION -->
@@ -582,7 +582,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">07 / 19</div>
+    <div class="slide-number">07 / 22</div>
   </section>
 
   <!-- SLIDE 8: RECONCILE FLOW -->
@@ -632,7 +632,7 @@
         Removal: detected via <code style="font-size:12px;">deletionTimestamp</code> inside reconcile. Finalizer holds CR until reconcile exits cleanly.
       </div>
     </div>
-    <div class="slide-number">08 / 19</div>
+    <div class="slide-number">08 / 22</div>
   </section>
 
   <!-- SLIDE 9: ATOM TEMPLATE EXAMPLE -->
@@ -693,7 +693,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">09 / 19</div>
+    <div class="slide-number">09 / 22</div>
   </section>
 
   <!-- SLIDE 10: STATUS & CONDITIONS -->
@@ -748,7 +748,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">10 / 19</div>
+    <div class="slide-number">10 / 22</div>
   </section>
 
   <!-- SLIDE 11: EXECUTION LAYER -->
@@ -787,7 +787,7 @@
         <strong>Decision pending (ADR-0012).</strong> Both options remain Proposed. The decision is made before any atom SDK work begins.
       </div>
     </div>
-    <div class="slide-number">11 / 19</div>
+    <div class="slide-number">11 / 22</div>
   </section>
 
   <!-- SLIDE 12: TEMPORAL ARCHITECTURE -->
@@ -852,7 +852,7 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">12 / 19</div>
+    <div class="slide-number">12 / 22</div>
   </section>
 
   <!-- SLIDE 13: PODS ARCHITECTURE -->
@@ -912,11 +912,144 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">13 / 19</div>
+    <div class="slide-number">13 / 22</div>
   </section>
 
-  <!-- SLIDE 14: PERSONAS -->
+  <!-- SLIDE 14: EXECUTION PLACEMENT -->
   <section class="slide" id="slide-14">
+    <div class="slide-inner">
+      <div class="slide-label">Placement · ADR-0015</div>
+      <h2>Where Code Runs vs Where It Lands</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div>
+          <div class="nest-outer">
+            <div class="nest-label">HOST CLUSTER — shared declaration plane</div>
+            <div class="nest-inner" style="border-color:rgba(76,126,243,0.3);">
+              <div class="nest-inner__title" style="color:var(--accent-blue);">Shared host API server</div>
+              <div class="nest-inner__items">
+                <div class="nest-inner__item">Catalog: <code style="font-size:11px;">AtomTemplate</code> (OCI-distributed)</div>
+                <div class="nest-inner__item">Desired state: <code style="font-size:11px;">AtomInstance</code> — lightweight data only</div>
+                <div class="nest-inner__item">One pane over all instances → fleet / governance view</div>
+              </div>
+            </div>
+          </div>
+          <div style="text-align:center;padding:8px 0;">
+            <svg width="20" height="28" viewBox="0 0 20 28" fill="none" style="color:var(--text-muted);"><line x1="10" y1="0" x2="10" y2="20" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 3"/><path d="M4 16 L10 24 L16 16" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text-muted);margin-top:2px;">placement directs execution</div>
+          </div>
+          <div class="nest-outer">
+            <div class="nest-label">TENANT EXECUTION ZONE (per tenant)</div>
+            <div class="nest-inner" style="border-color:rgba(62,207,142,0.3);">
+              <div class="nest-inner__title" style="color:var(--accent-green);">Atom reconcile Pods</div>
+              <div class="nest-inner__items">
+                <div class="nest-inner__item">Run with a <strong>tenant-scoped ServiceAccount only</strong></div>
+                <div class="nest-inner__item">No tenant code runs in the host plane by default</div>
+                <div class="nest-inner__item">Using an atom = running an image, never installing a package</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">atomRunnerPlacement</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;"><em>Where the reconcile container runs.</em> Default = tenant <code style="font-size:11px;">system</code>. <code style="font-size:11px;">host-system</code> only for platform-signed atoms (managed-service ordering), gated by policy.</div>
+          </div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">targetPlacement</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;"><em>Where the workload lands.</em> Propagated along the graph: <code style="font-size:11px;">Ingress</code>→<code style="font-size:11px;">Service</code>→<code style="font-size:11px;">Container</code>. Builder validates edges don't cross a placement boundary.</div>
+          </div>
+          <div class="highlight" style="font-size:13px;border-color:var(--accent-amber);background:rgba(245,166,35,0.08);">
+            <strong>Credential bridging:</strong> when runner ≠ target, the platform wires scoped credentials. Three-part contract: <em>where I run / where I land / what creds bridge them.</em>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">14 / 22</div>
+  </section>
+
+  <!-- SLIDE 15: EXECUTION MODES -->
+  <section class="slide" id="slide-15">
+    <div class="slide-inner">
+      <div class="slide-label">Granularity · ADR-0015</div>
+      <h2>Three Execution Modes</h2>
+      <p style="margin-bottom:20px;">An enum, not two booleans — <code style="font-size:13px;">stateful</code> requires a warm process, so "stateful + cold" is unrepresentable.</p>
+      <div class="card" style="padding:0;overflow:hidden;margin-bottom:18px;">
+        <table>
+          <thead>
+            <tr><th>mode</th><th>Image</th><th>Process</th><th>Scale-to-zero</th><th>Typical atoms</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge--green" style="font-size:11px;height:22px;">ephemeral</span></td>
+              <td>pulled per run</td><td>fresh Job, cold</td><td>—</td><td>container, service, ingress</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge--blue" style="font-size:11px;height:22px;">warm</span></td>
+              <td>hot</td><td>exec per request</td><td>yes</td><td>git-repo, buildpacks</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge--amber" style="font-size:11px;height:22px;">stateful</span></td>
+              <td>hot</td><td>long-lived, holds state</td><td>no</td><td>watch / webhook sources, connection pools</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cols cols--3">
+        <div class="card" style="padding:16px 18px;">
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">Default is ephemeral</div>
+          <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Pure <code style="font-size:11px;">(params, observed) → (desired, outputs)</code>. Lowest authoring barrier.</div>
+        </div>
+        <div class="card" style="padding:16px 18px;">
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">One image per Pod</div>
+          <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Pooling is at most per <code style="font-size:11px;">(atom type, tenant)</code> — never across tenants. Memory + credential isolation.</div>
+        </div>
+        <div class="card" style="padding:16px 18px;">
+          <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-amber);margin-bottom:6px;">Stateful = cache</div>
+          <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Cluster stays source of truth. Pod may die anytime → must cold-rebuild from cluster. Linter enforces kill-restart-converge.</div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">15 / 22</div>
+  </section>
+
+  <!-- SLIDE 16: PROGRAMMABLE GENERATORS -->
+  <section class="slide" id="slide-16">
+    <div class="slide-inner">
+      <div class="slide-label">Fan-out · ADR-0017</div>
+      <h2>Programmable Generators</h2>
+      <div class="cols cols--60-40" style="align-items:start;">
+        <div>
+          <p style="margin-bottom:18px;">"N instances from data" — one preview per PR, one Application per region. The count isn't known at authoring time; it's derived from runtime data.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="dbox" style="padding:12px 18px;"><div class="dbox__title" style="font-size:13px;">Data source</div><div style="font-size:12px;color:var(--text-muted);">open PRs · tenant rows · regions</div></div>
+            <div class="arr--down"><svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M8 0 V14 M3 10 L8 16 L13 10" stroke="var(--text-muted)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="dbox dbox--primary" style="padding:12px 18px;"><div class="dbox__title" style="font-size:13px;color:var(--accent-blue);">Generator</div><div style="font-size:12px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;">data → []paramBundle · each carries a merge key</div></div>
+            <div class="arr--down"><svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M8 0 V14 M3 10 L8 16 L13 10" stroke="var(--text-muted)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="dbox dbox--secondary" style="padding:12px 18px;"><div class="dbox__title" style="font-size:13px;color:var(--accent-green);">Fan-out boundary</div><div style="font-size:12px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;">CreateApplication(templateRef, values = bundle)</div></div>
+            <div class="arr--down"><svg width="16" height="20" viewBox="0 0 16 20" fill="none"><path d="M8 0 V14 M3 10 L8 16 L13 10" stroke="var(--text-muted)" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="dbox dbox--purple" style="padding:12px 18px;"><div class="dbox__title" style="font-size:13px;color:var(--accent-purple);">N × Application</div><div style="font-size:12px;color:var(--text-muted);">each an ordinary static graph — unaware it is one of N</div></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-blue);margin-bottom:6px;">CreateApplication</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Higher-order atom: reconcile creates &amp; reconciles a child Application. Child carries an ownerRef — teardown cascades. The parent may re-export child outputs (sanctioned cross-app sharing).</div>
+          </div>
+          <div class="card" style="padding:16px 20px;">
+            <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--accent-green);margin-bottom:6px;">Merge key is mandatory</div>
+            <div style="font-size:13px;color:var(--text-muted);line-height:1.5;">New key → create · changed bundle → update · key gone → teardown candidate. The author's responsibility, and the primary footgun.</div>
+          </div>
+          <div class="highlight" style="font-size:13px;border-color:var(--accent-amber);background:rgba(245,166,35,0.08);">
+            <strong>Guardrails:</strong> cardinality cap, explicit <code style="font-size:11px;">teardown</code>/<code style="font-size:11px;">retain</code> policy, templateRef whitelist, depth cap. <strong>Acyclic invariant stays</strong> — fan-out is map, not feedback.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slide-number">16 / 22</div>
+  </section>
+
+  <!-- SLIDE 17: PERSONAS -->
+  <section class="slide" id="slide-17">
     <div class="slide-inner">
       <div class="slide-label">User Personas</div>
       <h2>Four Personas, One Platform</h2>
@@ -947,11 +1080,11 @@
         <strong>Key change from old design:</strong> Template Author no longer writes three hooks — they wire existing atoms in a UI. Writing a new atom is a separate, higher-barrier task.
       </div>
     </div>
-    <div class="slide-number">14 / 19</div>
+    <div class="slide-number">17 / 22</div>
   </section>
 
-  <!-- SLIDE 15: ATOM AUTHOR FLOW -->
-  <section class="slide" id="slide-15">
+  <!-- SLIDE 18: ATOM AUTHOR FLOW -->
+  <section class="slide" id="slide-18">
     <div class="slide-inner">
       <div class="slide-label">Atom Author Flow</div>
       <h2>Writing a New Atom</h2>
@@ -999,11 +1132,11 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">15 / 19</div>
+    <div class="slide-number">18 / 22</div>
   </section>
 
-  <!-- SLIDE 16: CATALOG -->
-  <section class="slide" id="slide-16">
+  <!-- SLIDE 19: CATALOG -->
+  <section class="slide" id="slide-19">
     <div class="slide-inner">
       <div class="slide-label">Catalog</div>
       <h2>Catalog &amp; Versioning</h2>
@@ -1050,11 +1183,11 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">16 / 19</div>
+    <div class="slide-number">19 / 22</div>
   </section>
 
-  <!-- SLIDE 17: BENEFITS -->
-  <section class="slide" id="slide-17">
+  <!-- SLIDE 20: BENEFITS -->
+  <section class="slide" id="slide-20">
     <div class="slide-inner">
       <div class="slide-label">Key Benefits</div>
       <h2>Value for Every Stakeholder</h2>
@@ -1091,11 +1224,11 @@
         <strong>Bottom line:</strong> ISPs can offer Heroku-like self-service on their own infrastructure — with backend composability and drift healing built in from day one.
       </div>
     </div>
-    <div class="slide-number">17 / 19</div>
+    <div class="slide-number">20 / 22</div>
   </section>
 
-  <!-- SLIDE 18: SUMMARY -->
-  <section class="slide" id="slide-18">
+  <!-- SLIDE 21: SUMMARY -->
+  <section class="slide" id="slide-21">
     <div class="slide-inner">
       <div class="slide-label">Summary</div>
       <h2>Reactive Application Platform</h2>
@@ -1138,18 +1271,18 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">18 / 19</div>
+    <div class="slide-number">21 / 22</div>
   </section>
 
-  <!-- SLIDE 19: Q&A -->
-  <section class="slide" id="slide-19" style="text-align:center;">
+  <!-- SLIDE 22: Q&A -->
+  <section class="slide" id="slide-22" style="text-align:center;">
     <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:0.2em;color:var(--text-muted);margin-bottom:40px;text-transform:uppercase;">COZY<span style="color:var(--accent-blue)">≡</span>TACK</div>
       <h1 style="font-size:64px;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary) 40%,var(--accent-purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Questions?</h1>
       <div style="width:50px;height:2px;background:linear-gradient(90deg,var(--accent-blue),var(--accent-purple));margin:24px auto;border-radius:2px;"></div>
       <p class="subtitle" style="max-width:480px;margin-bottom:36px;">Cozy User Apps — Reactive Application Platform for Cozystack</p>
       <div class="tag-row" style="justify-content:center;margin-bottom:40px;">
-        <span class="badge badge--blue">ADR-0008 — 0012</span>
+        <span class="badge badge--blue">ADR-0008 — 0017</span>
         <span class="badge badge--green">Proposed</span>
         <span class="badge badge--purple">Decision pending</span>
       </div>
@@ -1168,13 +1301,13 @@
         </div>
       </div>
     </div>
-    <div class="slide-number">19 / 19</div>
+    <div class="slide-number">22 / 22</div>
   </section>
 
 </div>
 
 <div id="progress-bar"></div>
-<div id="slide-counter">01 / 19</div>
+<div id="slide-counter">01 / 22</div>
 <div id="nav-hint">
   <span class="key-hint"><span class="key">↑</span><span class="key">↓</span> navigate</span>
   <span class="key-hint"><span class="key">Space</span> next</span>

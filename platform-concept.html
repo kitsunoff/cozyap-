@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozyap — Платформа из кирпичиков</title>
+<style>
+:root{
+  --bg-app:#1a1a1e; --bg-sidebar:#16161a; --bg-surface:#222226; --bg-elevated:#2a2a2e;
+  --bg-hover:#2e2e34; --text-primary:#e8e8ea; --text-secondary:#9999a8; --text-muted:#666672;
+  --border:rgba(255,255,255,0.08); --border-hover:rgba(255,255,255,0.14);
+  --accent-blue:#4c7ef3; --accent-green:#3ecf8e; --accent-amber:#f5a623;
+  --accent-red:#f87171; --accent-purple:#a78bfa;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:-apple-system,system-ui,'Segoe UI',sans-serif;
+  background:var(--bg-app); color:var(--text-primary);
+  font-size:15px; line-height:1.65; overflow:hidden;
+}
+/* chrome */
+.topbar{
+  position:fixed;top:0;left:0;right:0;height:44px;background:var(--bg-sidebar);
+  border-bottom:.5px solid var(--border);display:flex;align-items:center;
+  justify-content:space-between;padding:0 20px;z-index:100;
+}
+.logo{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.logo span{color:var(--text-muted);font-weight:500;margin-left:10px;letter-spacing:.04em;text-transform:none}
+.counter{font-size:12px;color:var(--text-muted);font-variant-numeric:tabular-nums}
+.progress{position:fixed;top:44px;left:0;height:2px;background:var(--accent-blue);z-index:100;transition:width .18s ease}
+.stage{position:fixed;top:46px;bottom:44px;left:0;right:0;overflow-y:auto;overflow-x:hidden}
+.slide{display:none;max-width:1060px;margin:0 auto;padding:44px 40px 60px}
+.slide.on{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.botbar{
+  position:fixed;bottom:0;left:0;right:0;height:44px;background:var(--bg-sidebar);
+  border-top:.5px solid var(--border);display:flex;align-items:center;
+  justify-content:space-between;padding:0 20px;z-index:100;font-size:12px;color:var(--text-muted)
+}
+.botbar nav{display:flex;gap:8px}
+.botbar button{
+  background:var(--bg-surface);border:.5px solid var(--border);color:var(--text-secondary);
+  border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer;font-family:inherit
+}
+.botbar button:hover{background:var(--bg-hover);color:var(--text-primary);border-color:var(--border-hover)}
+/* typography */
+.kicker{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-blue);font-weight:700;margin-bottom:12px}
+h1{font-size:44px;line-height:1.15;font-weight:700;letter-spacing:-.02em;margin-bottom:16px}
+h2{font-size:29px;line-height:1.2;font-weight:650;letter-spacing:-.015em;margin-bottom:20px}
+h3{font-size:15px;font-weight:650;margin:22px 0 10px;color:var(--text-primary)}
+p{color:var(--text-secondary);margin-bottom:14px;max-width:78ch}
+p strong,li strong{color:var(--text-primary);font-weight:600}
+ul,ol{margin:0 0 16px 20px;color:var(--text-secondary)}
+li{margin-bottom:7px;max-width:78ch}
+.lead{font-size:18px;color:var(--text-secondary);max-width:70ch}
+.dim{color:var(--text-muted)}
+.big{font-size:20px;line-height:1.5;color:var(--text-primary);max-width:72ch}
+/* blocks */
+.callout{
+  border-left:2px solid var(--accent-blue);background:rgba(76,126,243,.07);
+  padding:14px 18px;border-radius:0 8px 8px 0;margin:18px 0;color:var(--text-primary);max-width:80ch
+}
+.callout.warn{border-color:var(--accent-amber);background:rgba(245,166,35,.07)}
+.callout.bad{border-color:var(--accent-red);background:rgba(248,113,113,.07)}
+.callout.ok{border-color:var(--accent-green);background:rgba(62,207,142,.07)}
+.grid{display:grid;gap:14px;margin:18px 0}
+.g2{grid-template-columns:1fr 1fr}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.card{background:var(--bg-surface);border:.5px solid var(--border);border-radius:10px;padding:16px 18px}
+.card h4{font-size:13px;font-weight:650;margin-bottom:7px;color:var(--text-primary)}
+.card p{font-size:13px;margin:0;color:var(--text-secondary)}
+.card .tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:8px;font-weight:700}
+.card.blue{border-color:rgba(76,126,243,.35)} .card.blue .tag{color:var(--accent-blue)}
+.card.green{border-color:rgba(62,207,142,.35)} .card.green .tag{color:var(--accent-green)}
+.card.purple{border-color:rgba(167,139,250,.35)} .card.purple .tag{color:var(--accent-purple)}
+.card.amber{border-color:rgba(245,166,35,.35)} .card.amber .tag{color:var(--accent-amber)}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:13.5px}
+th{text-align:left;font-weight:650;color:var(--text-muted);font-size:11px;letter-spacing:.08em;
+   text-transform:uppercase;padding:8px 12px;border-bottom:.5px solid var(--border)}
+td{padding:9px 12px;border-bottom:.5px solid var(--border);color:var(--text-secondary);vertical-align:top}
+td:first-child{color:var(--text-primary);font-weight:550;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.9em;
+  background:var(--bg-elevated);padding:1.5px 5px;border-radius:4px;color:var(--accent-purple)}
+pre{background:var(--bg-sidebar);border:.5px solid var(--border);border-radius:9px;
+  padding:16px 18px;overflow-x:auto;margin:16px 0;font-size:12.5px;line-height:1.55}
+pre code{background:none;padding:0;color:var(--text-secondary);font-size:inherit}
+.k{color:var(--accent-blue)} .s{color:var(--accent-green)} .c{color:var(--text-muted)} .h{color:var(--accent-amber)}
+.flow{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0}
+.node{background:var(--bg-surface);border:.5px solid var(--border-hover);border-radius:8px;
+  padding:9px 14px;font-size:12.5px;white-space:nowrap}
+.node.n-src{border-color:rgba(167,139,250,.5)} .node.n-bld{border-color:rgba(245,166,35,.5)}
+.node.n-run{border-color:rgba(76,126,243,.5)} .node.n-dat{border-color:rgba(62,207,142,.5)}
+.arrow{color:var(--text-muted);font-size:12px}
+.arrow small{display:block;font-size:9.5px;letter-spacing:.06em;text-align:center;color:var(--accent-blue)}
+.layers{display:flex;flex-direction:column;gap:8px;margin:18px 0}
+.layer{background:var(--bg-surface);border:.5px solid var(--border);border-radius:9px;
+  padding:13px 18px;display:flex;gap:16px;align-items:baseline}
+.layer b{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);min-width:130px}
+.layer span{font-size:13.5px;color:var(--text-secondary)}
+.layer.hi{border-color:rgba(76,126,243,.4);background:rgba(76,126,243,.05)}
+.layer.hi b{color:var(--accent-blue)}
+.yes{color:var(--accent-green)} .no{color:var(--accent-red)} .mid{color:var(--accent-amber)}
+.title-wrap{display:flex;flex-direction:column;justify-content:center;min-height:62vh}
+.meta{margin-top:28px;font-size:13px;color:var(--text-muted);line-height:2}
+.meta b{color:var(--text-secondary);font-weight:550}
+.toc{columns:2;column-gap:36px;font-size:13.5px}
+.toc div{break-inside:avoid;padding:5px 0;color:var(--text-secondary);cursor:pointer;border-bottom:.5px solid var(--border)}
+.toc div:hover{color:var(--text-primary)}
+.toc i{color:var(--text-muted);font-style:normal;margin-right:10px;font-variant-numeric:tabular-nums}
+@media (max-width:900px){.g3,.g4,.g2{grid-template-columns:1fr}h1{font-size:32px}h2{font-size:23px}.toc{columns:1}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">Cozyap <span>Платформа из кирпичиков</span></div>
+  <div class="counter"><span id="cur">1</span> / <span id="tot">24</span></div>
+</div>
+<div class="progress" id="bar"></div>
+
+<div class="stage" id="stage">
+
+<!-- 1 -->
+<section class="slide on">
+ <div class="title-wrap">
+  <div class="kicker">Концепт архитектуры · сентябрь 2026</div>
+  <h1>Приложение — это граф кирпичиков</h1>
+  <p class="lead">Платформа для разработчиков поверх Cozystack: типизированные блоки, пакеты расширений, графовый редактор. Один контракт, много реализаций.</p>
+  <div class="meta">
+    <b>Вход:</b> ТЗ 5.14 «Платформа для разработчиков» + продуктовые ограничения<br>
+    <b>Исследовано:</b> Backstage · OAM/KubeVela · Radius · Humanitec/Score · Kratix · Massdriver · Port · Crossplane · kro<br>
+    <b>Документы:</b> <code>docs/design/brick-model.md</code> · <code>docs/design/graph-editor.md</code> · <code>docs/research/</code>
+  </div>
+ </div>
+</section>
+
+<!-- 2 -->
+<section class="slide">
+ <div class="kicker">Что просят</div>
+ <h2>ТЗ 5.14 — семь требований</h2>
+ <table>
+  <tr><th>#</th><th>Требование</th><th>Чем закрывается</th></tr>
+  <tr><td>R1</td><td>Сборка из исходников без сценариев сборки</td><td>kpack / Cloud Native Buildpacks</td></tr>
+  <tr><td>R2</td><td>Объявление зависимостей, создание платформой</td><td>Кирпичики-зависимости, Cozystack managed apps</td></tr>
+  <tr><td>R3</td><td>Автопередача параметров подключения</td><td>Connection → инъекция env и файлов</td></tr>
+  <tr><td>R4</td><td>Адрес, обновление, <b>откат</b>, стоп, удаление</td><td>HttpRoute + <code>Release</code></td></tr>
+  <tr><td>R5</td><td>Наблюдаемость и секреты по умолчанию</td><td>Платформенные кирпичики в заготовке</td></tr>
+  <tr><td>R6</td><td>Каталог заготовок, версионируемый Заказчиком</td><td>Пакеты + <code>ApplicationBlueprint</code></td></tr>
+  <tr><td>R7</td><td>Учёт потребления в тарификации проекта</td><td>Billing-метаданные в каждом кирпичике</td></tr>
+ </table>
+ <div class="callout warn"><b>Три дыры без покрытия в исходном дизайне:</b> откат (реактивная модель не знает истории), учёт потребления (не упомянут нигде), registry для образов (в ТЗ не упомянут вообще, но без него откат ломается).</div>
+</section>
+
+<!-- 3 -->
+<section class="slide">
+ <div class="kicker">Что хотим сверх ТЗ</div>
+ <h2>Восемь продуктовых ограничений</h2>
+ <div class="grid g4">
+  <div class="card blue"><span class="tag">V1</span><h4>Кирпичики</h4><p>Приложение = гит-репо + сборка + бакет + деплоймент. Не монолитный шаблон.</p></div>
+  <div class="card blue"><span class="tag">V2</span><h4>Пакеты</h4><p>Кирпичики приезжают через <code>Package</code> в cozystack-operator.</p></div>
+  <div class="card blue"><span class="tag">V3</span><h4>Что угодно в пакете</h4><p>Операторы, провайдеры, композиции, UI-плагины через Module Federation.</p></div>
+  <div class="card purple"><span class="tag">V4</span><h4>Java, WordPress, CS2</h4><p>Модель не заточена под twelve-factor.</p></div>
+  <div class="card purple"><span class="tag">V5</span><h4>Capabilities</h4><p>Отображение = агрегат по лейблу + вклады кирпичиков: ссылки, панели, действия.</p></div>
+  <div class="card green"><span class="tag">V6</span><h4>Чистые дата-плейны</h4><p>Нужное доустанавливает платформа, по требованию.</p></div>
+  <div class="card green"><span class="tag">V7</span><h4>Не только Cozystack</h4><p>Cozystack — один из провайдеров.</p></div>
+  <div class="card amber"><span class="tag">V8</span><h4>Инстанс по заказу</h4><p>Child-тенанты как юзеры в отдельных неймспейсах.</p></div>
+ </div>
+</section>
+
+<!-- 4 -->
+<section class="slide">
+ <div class="kicker">Центральный конфликт</div>
+ <h2>Обобщённость против хорошего UX</h2>
+ <p>Модель, достаточно общая для игрового сервера, обычно слишком абстрактна, чтобы дать Java-разработчику хорошую форму. Модель под twelve-factor не потянет WordPress. <b>Все runtime-PaaS из исследования решили это, отказавшись от общности.</b> Нам нельзя.</p>
+ <div class="callout ok">
+  <b>Единый контракт, множественные реализации, курируемое отображение.</b><br>
+  Каждый кирпичик соблюдает один контракт: типизированные порты, готовность, статус, billing-метаданные, facets. <b>Как</b> он реализован — своё у каждого типа и невидимо для графа. <b>Что видит пользователь</b> — заготовку из каталога, а не сырую модель.
+ </div>
+ <p>Это же снимает противоречие между V1 («всё — кирпичик») и границей ADR-0019 («ядро — свой контроллер, зависимости — Crossplane»). Граница выживает как <b>свойство конкретных типов кирпичиков</b>, а не как раскол модели.</p>
+</section>
+
+<!-- 5 -->
+<section class="slide">
+ <div class="kicker">Ландшафт</div>
+ <h2>Четыре категории — их постоянно путают</h2>
+ <table>
+  <tr><th>Категория</th><th>Что владеет</th><th>Примеры</th></tr>
+  <tr><td>Портал / каталог</td><td>Отображение, поиск, владение, self-service формы</td><td>Backstage, Port, Cortex</td></tr>
+  <tr><td>Модель приложения</td><td>Что такое «приложение» как типизированный объект</td><td>OAM/KubeVela, Radius, Score</td></tr>
+  <tr><td>Оркестратор</td><td>Превращение запроса в реальные ресурсы</td><td>Humanitec, Kratix, Crossplane, kro, Massdriver</td></tr>
+  <tr><td>Runtime PaaS</td><td>Вся вертикаль, жёстко мнение</td><td>Heroku, Railway, Northflank</td></tr>
+ </table>
+ <div class="callout"><b>ТЗ 5.14 требует покрыть все четыре.</b> Именно поэтому ответ «просто возьмём Crossplane» отвечает только на третью колонку.</div>
+</section>
+
+<!-- 6 -->
+<section class="slide">
+ <div class="kicker">Что берём</div>
+ <h2>Идеи, украденные осознанно</h2>
+ <table>
+  <tr><th>Источник</th><th>Идея</th></tr>
+  <tr><td>Radius</td><td>Разделение тип/реализация с привязкой <b>на окружение</b>; connection как авторский объект, образующий граф</td></tr>
+  <tr><td>OAM / KubeVela</td><td><b>Component vs Trait</b> — не всё прикреплённое к приложению является узлом графа</td></tr>
+  <tr><td>Backstage</td><td>Агрегат по ссылкам и аннотациям; аннотация как бесплатный шов расширения</td></tr>
+  <tr><td>Red Hat Developer Hub</td><td>Module Federation плагины из OCI-образов, загрузка в рантайме</td></tr>
+  <tr><td>Kratix</td><td>Пакет несёт API <b>плюс</b> операторы, композиции и <b>императивные контейнерные пайплайны</b></td></tr>
+  <tr><td>Massdriver</td><td>Типизированный выходной контракт бандла; связь на канвасе = проброс кредов и прав</td></tr>
+  <tr><td>Score</td><td>Артефакт разработчика несёт только типы и плейсхолдеры; стоит принимать как формат импорта</td></tr>
+  <tr><td>Port</td><td>Scorecards как governance-дополнение к курируемому каталогу</td></tr>
+ </table>
+</section>
+
+<!-- 7 -->
+<section class="slide">
+ <div class="kicker">Калибровка</div>
+ <h2>Что Crossplane реально покрывает</h2>
+ <table>
+  <tr><th>Возможность</th><th>Покрытие</th></tr>
+  <tr><td>Реконсиляция внешних систем</td><td class="yes">Отлично — парк провайдеров это и есть продукт</td></tr>
+  <tr><td>Типизированные self-service API</td><td class="yes">Хорошо — XRD это настоящее версионируемое API</td></tr>
+  <tr><td>Генерация провайдеров из Terraform</td><td class="yes">Отлично — Upjet, 50+ community-провайдеров</td></tr>
+  <tr><td>Мультитенантность в одной плоскости</td><td class="mid">Улучшено в v2 — namespaced XR и ProviderConfig</td></tr>
+  <tr><td>Порядок внутри композиции</td><td class="mid">Слабо — но есть <code>function-kro</code></td></tr>
+  <tr><td>Императивная работа (сборка, миграция, скаффолдинг)</td><td class="no">Отсутствует</td></tr>
+  <tr><td>Ревизии и откат workload'а</td><td class="no">Отсутствует</td></tr>
+  <tr><td>Статус и ошибки для разработчика</td><td class="no">Слабо — conditions без человекочитаемого проброса</td></tr>
+  <tr><td>Портал, каталог, формы</td><td class="no">Отсутствует by design</td></tr>
+  <tr><td>Учёт потребления</td><td class="no">Отсутствует</td></tr>
+ </table>
+ <div class="callout bad"><b>Нижние пять строк — это и есть платформа для разработчиков.</b> Crossplane экономит контроллеры, а не платформу.</div>
+</section>
+
+<!-- 8 -->
+<section class="slide">
+ <div class="kicker">Модель</div>
+ <h2>Пять слоёв</h2>
+ <div class="layers">
+  <div class="layer"><b>5 · Отображение</b><span>Вид приложения = агрегат + facets: ссылки, панели, действия, здоровье</span></div>
+  <div class="layer"><b>4 · Агрегат</b><span><code>Application</code> — набор инстансов по лейблу/селектору + <code>Release</code> для отката</span></div>
+  <div class="layer hi"><b>3 · Инстансы</b><span><code>BrickInstance</code> связаны типизированными <code>Connection</code>. Граф <b>выводится</b>, не хранится</span></div>
+  <div class="layer hi"><b>2 · Тип</b><span><code>BrickDefinition</code>: порты, схема параметров, traits, facets, billing, привязка реализаций</span></div>
+  <div class="layer"><b>1 · Реализация</b><span>Composition · Native controller · TaskPipeline · OperatorResource · External — по классу таргета</span></div>
+ </div>
+ <p>Слой 1 множественный намеренно. Слои 2–5 единственные — на них построен весь продукт.</p>
+</section>
+
+<!-- 9 -->
+<section class="slide">
+ <div class="kicker">Слой 2</div>
+ <h2>BrickDefinition — тип кирпичика</h2>
+<pre><code><span class="k">kind</span>: BrickDefinition
+<span class="k">spec</span>:
+  <span class="k">type</span>: core.cozyap.io/PostgresDatabase
+  <span class="k">parameters</span>:            <span class="c"># OpenAPI-схема → сгенерированная форма</span>
+    size: {enum: [small, medium, large]}
+  <span class="k">ports</span>:
+    <span class="k">out</span>: [{name: connection, type: <span class="s">core.cozyap.io/sql</span>}]
+
+  <span class="h">implementations</span>:      <span class="c"># одна и та же семантика, разные реализации</span>
+    - match: {targetClass: cozystack} → Composition xpostgres-cozystack
+    - match: {targetClass: aws}       → Composition xpostgres-rds
+
+  <span class="k">targetRequirements</span>:  <span class="c"># что доставить в дата-плейн, с refcount</span>
+    - {package: cnpg-operator, version: <span class="s">"&gt;=1.24"</span>, scope: dataplane}
+
+  <span class="k">acceptsTraits</span>: [backup, monitoring, resource-limits]
+  <span class="k">facets</span>: [{kind: link, name: Grafana, urlTemplate: <span class="s">"..."</span>}]
+  <span class="k">billing</span>: {unit: instance-hour, dimensions: [size, storageGiB]}
+  <span class="k">ui</span>: {descriptor: ..., plugin: {image: <span class="s">"registry/.../pg-ui:1.4.2"</span>}}
+</code></pre>
+ <div class="grid g3">
+  <div class="card blue"><h4>implementations</h4><p>Идея Radius. Один контракт, несколько реализаций, выбор по тому, <b>куда приземляется</b>. Это V7 в одном поле.</p></div>
+  <div class="card green"><h4>ports</h4><p>Типизированный выходной контракт. Без него рёбра не типизируются, и редактор — рисовалка.</p></div>
+  <div class="card purple"><h4>facets</h4><p>Вклад в отображение, при котором UI не знает о существовании кирпичика.</p></div>
+ </div>
+</section>
+
+<!-- 10 -->
+<section class="slide">
+ <div class="kicker">Слой 3</div>
+ <h2>Порты — закрытый список типов</h2>
+ <p>Добавление <b>типа порта</b> — релиз платформы. Добавление <b>кирпичика</b> — нет. Это и есть точка, где модульность упирается в стабильность.</p>
+ <div class="grid g4">
+  <div class="card"><span class="tag">Источник</span><p><code>git-source</code><br><code>oci-image</code></p></div>
+  <div class="card"><span class="tag">Данные</span><p><code>sql</code> · <code>redis</code><br><code>queue</code> · <code>s3-bucket</code></p></div>
+  <div class="card"><span class="tag">Сеть</span><p><code>http-endpoint</code> · <code>k8s-service</code><br><code>tls-cert</code> · <code>dns-name</code></p></div>
+  <div class="card"><span class="tag">Прочее</span><p><code>secret</code> · <code>config</code> · <code>target</code><br><code>openapi-spec</code> · <code>docs-site</code></p></div>
+ </div>
+ <div class="callout"><b>Правило графа:</b> топология выводится из <code>spec.connections</code> между инстансами — как kro строит DAG из CEL-ссылок. Хранить граф отдельно значит завести второй источник правды, который разъедется при первом же <code>kubectl</code>.</div>
+</section>
+
+<!-- 11 -->
+<section class="slide">
+ <div class="kicker">Слой 3</div>
+ <h2>Connection делает три вещи</h2>
+ <div class="grid g3">
+  <div class="card blue"><span class="tag">1</span><h4>Поток данных</h4><p>Выходы продюсера становятся входами консьюмера. Очевидная часть.</p></div>
+  <div class="card green"><span class="tag">2</span><h4>Инъекция</h4><p>Env-переменные и смонтированные файлы, разрешаемые в момент деплоя. Требование R3 — никакого ручного переноса паролей.</p></div>
+  <div class="card amber"><span class="tag">3</span><h4>Авторизация</h4><p>Создание связи — это то, что создаёт пользователя БД, политику бакета, IAM-биндинг. <b>Про это забывают.</b></p></div>
+ </div>
+<pre><code><span class="k">connections</span>:
+  - name: db
+    from: {instance: api-db, port: connection}
+    inject:
+      env:   {prefix: <span class="s">DATABASE_</span>}      <span class="c"># DATABASE_HOST, DATABASE_PASSWORD…</span>
+      files: {path: <span class="s">/bindings/db</span>}     <span class="c"># форма Service Binding</span>
+</code></pre>
+ <div class="callout warn">Из-за пункта 3 связь не может быть «просто лейблом». И поэтому в UI ребро обязано показывать, какой доступ оно выдаёт — иначе мы приучаем людей раздавать права не глядя.</div>
+</section>
+
+<!-- 12 -->
+<section class="slide">
+ <div class="kicker">Слой 4</div>
+ <h2>Application — тонкий агрегат, плюс Release</h2>
+<pre><code><span class="k">kind</span>: Application
+<span class="k">spec</span>:
+  blueprintRef: {name: java-service, version: <span class="s">2.1.0</span>}
+  <span class="h">selector</span>: {matchLabels: {app.cozyap.io/application: payments-api}}
+</code></pre>
+ <p>Он не владеет кирпичиками. Он их <b>выбирает</b>. Следствия — все желаемые:</p>
+ <ul>
+  <li>ресурс, созданный вне платформы, усыновляется простым проставлением лейбла;</li>
+  <li>RBAC и статус — на уровне инстанса, а не одним грубым блобом;</li>
+  <li>графовый редактор работает с реальными объектами, а не с секцией большого CR.</li>
+ </ul>
+ <div class="callout ok"><b><code>Release</code> закрывает откат (дыра G1).</b> Неизменяемый снимок <i>разрешённых</i> входов: digest образа, коммит, версия заготовки, все параметры. Откат = «сделать релиз N активным».</div>
+ <div class="callout bad">Что релиз <b>не</b> откатывает — миграции схемы БД. Это надо говорить пользователю в интерфейсе, а не только в документации.</div>
+</section>
+
+<!-- 13 -->
+<section class="slide">
+ <div class="kicker">Читаемость</div>
+ <h2>Кирпичик · Trait · Facet</h2>
+ <div class="grid g3">
+  <div class="card blue"><span class="tag">Узел графа</span><h4>Brick</h4><p>Есть выход, который потребляет другой кирпичик.<br><br><span class="dim">Build, PostgresDatabase, HttpRoute</span></p></div>
+  <div class="card green"><span class="tag">Бейдж на узле</span><h4>Trait</h4><p>Меняет поведение одного кирпичика и только его.<br><br><span class="dim">autoscaling, backup, network-policy, sidecar, pdb</span></p></div>
+  <div class="card purple"><span class="tag">Боковая панель</span><h4>Facet</h4><p>Вклад в отображение приложения.<br><br><span class="dim">link, metric, panel, action, health, badge</span></p></div>
+ </div>
+ <div class="callout"><b>Правило для линтера:</b> есть выход, который кто-то потребляет → кирпичик. Меняет поведение одного кирпичика → trait. Без этого правила Java-сервис из шести кирпичиков рисуется двадцатью узлами и его перестают читать.</div>
+</section>
+
+<!-- 14 -->
+<section class="slide">
+ <div class="kicker">Каталог</div>
+ <h2>Кирпичики — первый срез</h2>
+ <div class="grid g2">
+  <div class="card purple"><span class="tag">Источник и SCM</span><p><code>GitSource</code> · <code>GitRepository</code> · <code>SourceTrigger</code> · <code>PipelineGenerator</code> <span class="dim">— пишет CI-конфиг в репо, чтобы платформа потом видела образ</span></p></div>
+  <div class="card amber"><span class="tag">Сборка и образ</span><p><code>Build</code> (kpack) · <code>DockerfileBuild</code> · <code>ImageRef</code> · <code>ImagePolicy</code> <span class="dim">— следит за новыми тегами в реестре</span></p></div>
+  <div class="card blue"><span class="tag">Workload</span><p><code>Workload</code> · <code>StatefulWorkload</code> · <code>HelmWorkload</code> · <code>VirtualMachine</code> · <code>ScheduledWorkload</code></p></div>
+  <div class="card green"><span class="tag">Зависимости</span><p><code>PostgresDatabase</code> · <code>MySQLDatabase</code> · <code>RedisCache</code> · <code>MessageQueue</code> · <code>ObjectBucket</code> · <code>ClickHouseDatabase</code></p></div>
+  <div class="card"><span class="tag">Сеть</span><p><code>HttpRoute</code> · <code>Certificate</code> · <code>DnsRecord</code> · <code>L4Endpoint</code> <span class="dim">— UDP/TCP, без него CS2 не выразить</span></p></div>
+  <div class="card"><span class="tag">Платформенные и мета</span><p><code>ObservabilityBinding</code> · <code>SecretStore</code> · <code>OpenApiSpec</code> · <code>DocsSite</code> · <code>ExternalResource</code></p></div>
+ </div>
+ <div class="callout"><code>ImageRef</code> и <code>ExternalResource</code> — не мелочь. Первый делает приложение без стадии сборки нормальным случаем, а не исключением. Второй делает усыновление чужого ресурса частью модели.</div>
+</section>
+
+<!-- 15 -->
+<section class="slide">
+ <div class="kicker">Сервисные ресурсы</div>
+ <h2>Про PythonEval: это два разных примитива</h2>
+ <div class="grid g2">
+  <div class="card bad" style="border-color:rgba(248,113,113,.35)"><span class="tag" style="color:var(--accent-red)">Не нужен ресурс</span><h4>Чистое вычисление</h4><p>Вывести значение, переформатировать параметры, посчитать имя — это <b>рендер</b>. В Crossplane уже есть <code>function-python</code> с полной стандартной библиотекой, плюс <code>function-kcl</code> и <code>function-kro</code>.<br><br>Отдельный CR тут строго хуже: лишний объект, лишний reconcile, лишний режим отказа и никакого сандбокса.</p></div>
+  <div class="card green"><span class="tag">Нужен ресурс</span><h4>Работа с побочным эффектом</h4><p>Дёрнуть внешний API, прогнать миграцию, отскаффолдить репозиторий, снять бэкап — нужен свой жизненный цикл, retry, таймаут, логи, ключ идемпотентности и статус.<br><br>Этого у Crossplane нет. Форма правильная у Kratix — упорядоченные контейнеры.</p></div>
+ </div>
+<pre><code><span class="k">kind</span>: Task            <span class="c"># PythonEval — это профиль Task, а не отдельная концепция</span>
+<span class="k">spec</span>:
+  runtime: {python: {inline: <span class="s">"..."</span>, requirements: [requests==2.32.*]}}
+  idempotencyKey: <span class="s">"{{ .spec.inputs.hash }}"</span>
+  policy: {timeout: 15m, retries: {limit: 3, backoff: exponential}}
+  <span class="h">placement</span>: platform      <span class="c"># никогда в дата-плейн — ограничение V6</span>
+</code></pre>
+</section>
+
+<!-- 16 -->
+<section class="slide">
+ <div class="kicker">Безопасность</div>
+ <h2>Inline-код в CR — это RCE с YAML-фасадом</h2>
+ <p>Это приемлемо. Но только со всем нижеперечисленным, и <b>в v1</b>, а не в «потом захардним».</p>
+ <div class="grid g2">
+  <div class="card"><span class="tag">1</span><p>Исполняется <b>в плоскости платформы, никогда в дата-плейне</b>. Это же разница между «задачей» и «плацдармом в кластере тенанта».</p></div>
+  <div class="card"><span class="tag">2</span><p>Отдельный минимальный ServiceAccount на задачу, ограниченный тем, что объявил кирпичик. Не идентичность платформы.</p></div>
+  <div class="card"><span class="tag">3</span><p><b>Явный RBAC на создание задач с inline-кодом.</b> Разработчик, заполняющий форму, не должен мочь. Автор пакета и оператор — могут. Код из заготовки — отревьюенный контент, код от пользователя — эскалация.</p></div>
+  <div class="card"><span class="tag">4</span><p>NetworkPolicy default-deny, egress только объявленный.</p></div>
+  <div class="card"><span class="tag">5</span><p>Лимиты и жёсткий таймаут всегда. Никаких безлимитных дефолтов.</p></div>
+  <div class="card"><span class="tag">6</span><p><b>Никакого разрешения зависимостей в рантайме.</b> <code>requirements</code> резолвятся при сборке пакета. Задача, которая делает pip install на старте, — это и дыра в цепочке поставок, и флак.</p></div>
+ </div>
+ <div class="callout warn">Если хоть один пункт кажется настолько неудобным, что хочется пропустить, — честный ответ поставить работу образом в пакете, а не inline-кодом.</div>
+</section>
+
+<!-- 17 -->
+<section class="slide">
+ <div class="kicker">V7</div>
+ <h2>Target — Cozystack как один из провайдеров</h2>
+<pre><code><span class="k">kind</span>: Target
+<span class="k">spec</span>:
+  <span class="h">class</span>: cozystack | kubeconfig | cloud   <span class="c"># по этому матчатся implementations</span>
+  <span class="h">capabilities</span>: [ingress, loadbalancer-l4, block-storage, gpu]
+  defaults: {observability: platform-stack, secretStore: openbao-prod}
+</code></pre>
+ <div class="grid g2">
+  <div class="card blue"><h4>class</h4><p>То, по чему <code>BrickDefinition.implementations</code> выбирает реализацию. Cozystack становится провайдером, а не платформой.</p></div>
+  <div class="card green"><h4>capabilities</h4><p>Линтер заготовки отклоняет приложение <b>до</b> деплоя: заготовка CS2 требует <code>loadbalancer-l4</code> и не поедет на таргет без него.</p></div>
+ </div>
+ <div class="callout">Падать на этапе авторства, а не на этапе деплоя — это и есть разница между платформой и кучей контроллеров.</div>
+</section>
+
+<!-- 18 -->
+<section class="slide">
+ <div class="kicker">V6</div>
+ <h2>Чистые дата-плейны и refcount</h2>
+ <p>Позиция по умолчанию: в дата-плейне крутятся <b>только рабочие нагрузки</b>. Ни Crossplane, ни оператор платформы, ни раннер задач. Реконсиляция, композиция и задачи исполняются в плоскости платформы и действуют на дата-плейн через ограниченный креденшл.</p>
+<pre><code><span class="k">targetRequirements</span>:
+  - {package: cnpg-operator, version: <span class="s">"&gt;=1.24"</span>, scope: dataplane}
+</code></pre>
+ <div class="grid g3">
+  <div class="card green"><h4>По требованию</h4><p>Платформа ставит машинерию, только когда её реально запросил кирпичик.</p></div>
+  <div class="card amber"><h4>Refcount</h4><p>Оператор снимается, когда исчез последний кирпичик, который его требовал. <b>Это неочевидная часть</b> — два приложения делят оператор, одно удалили, второе не должно сломаться.</p></div>
+  <div class="card"><h4>Конфликт версий</h4><p>Два кирпичика с несовместимыми требованиями к одному оператору на одном таргете — отказ на этапе авторства, а не сюрприз в рантайме.</p></div>
+ </div>
+</section>
+
+<!-- 19 -->
+<section class="slide">
+ <div class="kicker">V2 · V3</div>
+ <h2>Пакеты: не изобретаем транспорт</h2>
+ <div class="callout ok"><b>Поправка к ADR-0020.</b> Cozystack v1.0 уже везёт <code>Package</code> / <code>PackageSource</code> под управлением <code>cozystack-operator</code>: git и OCI источники, <code>flavors</code>, витрина через <code>ApplicationDefinition</code>. Наша — <b>модель содержимого</b>. Транспорт уже есть.</div>
+ <table>
+  <tr><th>Содержимое пакета</th><th>Кто потребляет</th></tr>
+  <tr><td><code>BrickDefinition</code></td><td>Платформа</td></tr>
+  <tr><td>XRD, Composition, зависимости на функции и провайдеры</td><td>Crossplane</td></tr>
+  <tr><td>Операторы (Helm-чарты, манифесты)</td><td>Таргет, через <code>targetRequirements</code></td></tr>
+  <tr><td><code>TaskPipeline</code> и их образы</td><td>Платформа</td></tr>
+  <tr><td><code>ApplicationBlueprint</code></td><td>Каталог (требование R6)</td></tr>
+  <tr><td>UI-дескрипторы · <code>UIPlugin</code> (Module Federation)</td><td>Портал</td></tr>
+  <tr><td>Дашборды, правила алертов · RBAC, политики, квоты</td><td>Observability · Платформа</td></tr>
+  <tr><td>Billing-метаданные</td><td>Пайплайн тарификации</td></tr>
+ </table>
+ <p><code>flavors</code> в модели Cozystack — та же идея, что recipes-per-environment у Radius и <code>implementations</code> у нас. Использовать, а не дублировать.</p>
+</section>
+
+<!-- 20 -->
+<section class="slide">
+ <div class="kicker">V4 — проверка</div>
+ <h2>Три приложения, одна модель</h2>
+ <h3>Java-сервис — основной кейс ТЗ</h3>
+ <div class="flow">
+  <span class="node n-src">GitSource</span><span class="arrow">→<small>git-source</small></span>
+  <span class="node n-bld">Build (kpack)</span><span class="arrow">→<small>oci-image</small></span>
+  <span class="node n-run">Workload</span><span class="arrow">→<small>k8s-service</small></span>
+  <span class="node">HttpRoute</span>
+  <span class="arrow" style="margin-left:12px">+</span>
+  <span class="node n-dat">PostgresDatabase</span><span class="node n-dat">ObjectBucket</span>
+ </div>
+ <h3>WordPress — без стадии сборки вообще</h3>
+ <div class="flow">
+  <span class="node n-bld">ImageRef</span><span class="arrow">→</span>
+  <span class="node n-run">StatefulWorkload</span><span class="arrow">→</span><span class="node">HttpRoute</span>
+  <span class="arrow" style="margin-left:12px">+</span>
+  <span class="node n-dat">MySQLDatabase</span><span class="node n-dat">ObjectBucket</span>
+ </div>
+ <h3>CS2 — ни сборки, ни HTTP, ни БД</h3>
+ <div class="flow">
+  <span class="node n-bld">ImageRef</span><span class="arrow">→</span>
+  <span class="node n-run">StatefulWorkload</span><span class="arrow">→</span>
+  <span class="node">L4Endpoint (UDP)</span>
+  <span class="arrow" style="margin-left:12px">+</span>
+  <span class="node">facet: player-count</span><span class="node">facet: RCON-панель</span>
+ </div>
+ <div class="callout ok">Третий пример и есть доказательство, что модель — не twelve-factor PaaS в маскировке. Те же пять слоёв, UDP-эндпоинт и собственная UI-панель.</div>
+</section>
+
+<!-- 21 -->
+<section class="slide">
+ <div class="kicker">Редактор</div>
+ <h2>Два продукта на одном канвасе</h2>
+ <table>
+  <tr><th></th><th>Редактор заготовок</th><th>Вид приложения</th></tr>
+  <tr><td>Редактирует</td><td><code>ApplicationBlueprint</code> — шаблон</td><td>Живые <code>BrickInstance</code></td></tr>
+  <tr><td>Аудитория</td><td>Платформенный инженер, Заказчик (R6)</td><td>Разработчик</td></tr>
+  <tr><td>Статус</td><td>Нет — ничего не запущено</td><td>Живые conditions на каждом узле</td></tr>
+  <tr><td>Режим</td><td>Полное редактирование</td><td><b>Сначала чтение</b>, правка за явным действием</td></tr>
+ </table>
+ <div class="grid g2">
+  <div class="card blue"><h4>Топология выводится, раскладка хранится</h4><p>Топология — из <code>spec.connections</code>, как kro строит DAG из ссылок. Позиция — в аннотации <code>ui.cozyap.io/position</code>, отсутствие позиции не ошибка, а повод посчитать раскладку.</p></div>
+  <div class="card green"><h4>ELK layered, не dagre</h4><p>У узлов типизированные порты на конкретных сторонах. Dagre портов не знает, force-directed читается ужасно. Поток source → build → image → workload → route изначально слоистый.</p></div>
+ </div>
+ <div class="callout"><b>Типизация — это фича, а не валидация.</b> При перетаскивании из выходного порта гасятся все несовместимые входы. Ошибка типа становится недостижимой, а не сообщаемой.</div>
+</section>
+
+<!-- 22 -->
+<section class="slide">
+ <div class="kicker">Редактор · главный риск</div>
+ <h2>Редактор против GitOps</h2>
+ <div class="callout bad">Если приложения раскатываются из git через Flux или Argo — а так устроена каждая Crossplane-платформа из исследования и сам Cozystack — то редактор, применяющий изменения прямо в кластер, пишет в систему, которая их откатит. Пользователь двигает узел, тридцать секунд всё работает, потом исчезает. <b>Это хуже, чем отсутствие редактора.</b></div>
+ <table>
+  <tr><th>Режим</th><th>Редактор пишет</th><th>Кому подходит</th></tr>
+  <tr><td>Direct apply</td><td>Прямо в API-сервер</td><td>Приложения без git-апстрима</td></tr>
+  <tr><td><b>Propose</b></td><td>Открывает merge request в репозиторий приложения</td><td>GitOps-приложения — норма для прода</td></tr>
+  <tr><td>Ephemeral</td><td>Dry-run оверлей, не сохраняется</td><td>Предпросмотр и исследование</td></tr>
+ </table>
+ <p>Режим — это <b>свойство приложения</b> (есть ли у него git-апстрим), а не пользовательская настройка. И редактор обязан всегда показывать, в каком он режиме: в propose основная кнопка называется «Предложить изменение», а не «Сохранить».</p>
+</section>
+
+<!-- 23 -->
+<section class="slide">
+ <div class="kicker">Порядок</div>
+ <h2>Что делаем и чего не делаем</h2>
+ <div class="grid g2">
+  <div class="card green"><span class="tag">Порядок сборки редактора</span><p><b>1.</b> Вид приложения только на чтение — авторазметка, живой статус, инспектор. Самое дешёвое, от чего платформа начинает ощущаться настоящей.<br><b>2.</b> Редактор заготовок, полная правка, без статуса. Нужен Заказчику для R6 и он проще, чем правка живого.<br><b>3.</b> Правка приложений: сначала propose, потом direct.<br><b>4.</b> Level-2 плагины узлов — последними.</p></div>
+  <div class="card"><span class="tag">Не делаем в v1</span><p><b>Динамический fan-out и higher-order кирпичики</b> — ADR-0017 вне скоупа.<br><b>Кросс-аппликационный граф</b> — это забота каталога, а не потока данных.<br><b>Произвольный пользовательский inline-код</b> по умолчанию.<br><b>Realtime-коллаборация</b> — раскладка в аннотациях конфликтует, это принятая цена.<br><b>Свободное рисование</b> — каждый элемент канваса обязан соответствовать реальному объекту.<br><b>Правка композиций</b> — провал в кирпичик только на чтение.</p></div>
+ </div>
+ <div class="callout">Собрать 1 и 2 без 3 — связный продукт. Собрать 3 раньше 2 — нет.</div>
+</section>
+
+<!-- 24 -->
+<section class="slide">
+ <div class="kicker">Дальше</div>
+ <h2>Решения, которых не хватает</h2>
+ <ol>
+  <li><b>Семантика рендера заготовки.</b> Заготовка разворачивается один раз (отскаффолдили, дальше приложения расходятся) или непрерывно (правка заготовки обновляет все приложения)? «Версионируется Заказчиком» из R6 намекает на второе, первое сильно проще. <b>Это блокирует реализацию.</b></li>
+  <li><b>Владеет ли Application кирпичиками</b> или только выбирает их — нужен ли <code>reclaimPolicy</code>, чтобы удаление приложения удаляло части.</li>
+  <li><b>Где исполняется авторизационная часть connection</b>, когда продюсер и консьюмер на разных таргетах.</li>
+  <li><b>Версионирование типов портов</b> — добавление поля в <code>sql</code> это релиз платформы, затрагивающий все кирпичики, которые его отдают.</li>
+  <li><b>Разрешение конфликта traits</b> — два trait'а правят один pod spec.</li>
+  <li><b>Registry и retention</b> (дыра G3) и <b>формат выгрузки в тарификацию</b> (дыра G2) — вопросы к Заказчику, блокируют R4 и R7.</li>
+ </ol>
+ <div class="callout warn">Первый пункт — самый дорогой. Непрерывный рендер заготовок означает, что Заказчик может сломать все приложения одним коммитом в каталог, и под это нужна отдельная модель совместимости и раскатки.</div>
+</section>
+
+</div>
+
+<div class="botbar">
+  <div>← → · Space · Home/End · <span id="ttl" class="dim"></span></div>
+  <nav>
+    <button onclick="go(-1)">Назад</button>
+    <button onclick="go(1)">Вперёд</button>
+  </nav>
+</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')];
+let i=0;
+const titles=slides.map(s=>{const h=s.querySelector('h1,h2');return h?h.textContent:''});
+document.getElementById('tot').textContent=slides.length;
+function show(n){
+  i=Math.max(0,Math.min(slides.length-1,n));
+  slides.forEach((s,k)=>s.classList.toggle('on',k===i));
+  document.getElementById('cur').textContent=i+1;
+  document.getElementById('bar').style.width=((i+1)/slides.length*100)+'%';
+  document.getElementById('ttl').textContent=titles[i];
+  document.getElementById('stage').scrollTop=0;
+  location.hash=i+1;
+}
+function go(d){show(i+d)}
+addEventListener('keydown',e=>{
+  if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();go(1)}
+  else if(['ArrowLeft','PageUp'].includes(e.key)){e.preventDefault();go(-1)}
+  else if(e.key==='Home'){e.preventDefault();show(0)}
+  else if(e.key==='End'){e.preventDefault();show(slides.length-1)}
+});
+show(parseInt(location.hash.slice(1))-1||0);
+</script>
+</body>
+</html>
