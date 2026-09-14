@@ -188,8 +188,15 @@ applications sharing an operator must not break when one is deleted.
 
 ## Open questions
 
-1. Whether kpack or a `Containerfile` build is the default for the first
-   release, given kpack is the requirement-satisfying but heavier option.
+1. Whether the build node type creates a kpack `Image` directly or a controller
+   of ours wraps kpack. **kpack itself is settled**; a `Containerfile` build is
+   an escape-hatch node type, not an alternative default. By the rule in
+   ADR-0021 §2 a wrapper does not qualify — a build needs no version history of
+   its own, no reach into another cluster, and kpack already reacts to git. The
+   pluggability a wrapper would buy is already provided one level up: swapping
+   builders means a different `NodeType` publishing the same `status.image`, and
+   no blueprint changes. The one argument on the other side is build logs, which
+   live in pods kpack garbage-collects — see question 5.
 2. Whether Argo Events is worth its operational cost against polling from
    `workload-controller`.
 3. Argo archive retention, and who pays for it — tasks are how everything
@@ -198,6 +205,13 @@ applications sharing an operator must not break when one is deleted.
    helm-controller. Without it, values sourced from a ConfigMap or Secret
    propagate on the reconcile interval rather than on change. It is an
    installation-wide override of a shared component, not a fork.
+5. **Build logs, and logs from a tenant cluster generally.** kpack writes build
+   output to pods it later collects, and application pods live in a cluster the
+   browser cannot reach. Requirement 5.14's user must still be shown why a build
+   failed (`prior-art.md` §1). With no backend of our own (ADR-0024 §2) the
+   options are: ship logs to the platform's existing log store and query that;
+   summarise the failure into `status` and link out; or accept a controller that
+   tails and stores them. This is the largest undesigned area in the model.
 
 ## Relationship to prior art
 

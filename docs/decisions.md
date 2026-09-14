@@ -39,21 +39,28 @@ before the work it blocks), **deferred** (deliberately out of scope for now),
 | C21 | Can a user hand-edit a node of a running application | No. The instance is the source of truth and nodes are reconciled | ADR-0021, consequences |
 | C22 | Do we need our own UI | Yes. Our CRDs are not projected by `cozystack-api` | ADR-0021, consequences |
 | C23 | Does the platform write through the aggregated API | No. It writes HelmReleases with the Cozystack application labels | ADR-0021 §4 |
+| C24 | Builder | kpack. A `Containerfile` build is an escape-hatch node type, not an alternative default | ADR-0022, Q1 |
+| C25 | Where does the platform's UI live | A plugin inside `cozystack-ui`, after a plugin mechanism is contributed upstream | ADR-0024 §1 |
+| C26 | Do we run a backend of our own | No. The console talks to the API directly; the controllers' status is what it reads | ADR-0024 §2 |
+| C27 | Where do the controllers run | Cluster-wide in the host cluster, like every shared Cozystack controller | ADR-0024 §3 |
+| C28 | Tenant RBAC | Namespace-scoped on the namespaced types, read-only on the catalogue, aggregated into Cozystack's tenant roles | ADR-0024 §3 |
+| C29 | How is the plugin loaded | Build-time first; runtime remotes deferred until a second plugin author exists | ADR-0024 §4 |
 
 ## Open
 
 | # | Question | Blocks | Note |
 | --- | --- | --- | --- |
-| O1 | kpack or a `Containerfile` build first | the build node type | kpack satisfies R1 and is heavier; a Containerfile build is the escape hatch either way |
 | O2 | Argo Events, or polling from `workload-controller` | release triggering | Events is the least certain of the added components |
-| O3 | Our own UI: patch `cozystack-ui`, a separate panel, or none in the first iteration | weeks of scope | a first iteration with no UI still proves the architecture |
-| O4 | Tenant RBAC model for our CRDs | anything a tenant touches | ClusterRoles aggregated into Cozystack's tenant roles |
 | O5 | Finalizer semantics when a target cluster is unreachable | `workload-controller` | blocking forever is wrong, orphaning is also wrong |
 | O6 | What a blueprint version bump does to running instances | catalogue upgrades, R6 | the simple answer is "nothing"; untested against the requirement |
 | O7 | Where consumption metadata attaches | R7, gap G2 | node type, instance or revision; cannot be retrofitted into shipped packages |
 | O8 | May applications of different tenants call each other | policy and catalogue scope | assumed no |
 | O9 | Egress allowlist to third parties | default-deny makes it necessary | node type, workload or instance |
 | O10 | Argo archive retention and its cost | operations | tasks are how everything imperative happens |
+| O11 | Does the build node type wrap kpack in a controller | the build node type | ADR-0021 §2's rule says no; the counter-argument is build logs (O13) |
+| O12 | Will a plugin mechanism be accepted upstream, and when | **the entire UI, and it is on the critical path** | if not, the fallback is a separate panel; decide early rather than after waiting |
+| O13 | Logs from kpack build pods and from tenant-cluster pods | showing a developer why a build failed | no backend of ours, and the browser cannot reach a tenant cluster; largest undesigned area |
+| O14 | Should `cozystack-api` learn to project CRD-backed types instead | would remove the need for a plugin registry | larger change to a more load-bearing component, but serves every future extension |
 
 ## Deferred
 
