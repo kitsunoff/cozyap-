@@ -45,6 +45,9 @@ before the work it blocks), **deferred** (deliberately out of scope for now),
 | C27 | Where do the controllers run | Cluster-wide in the host cluster, like every shared Cozystack controller | ADR-0024 §3 |
 | C28 | Tenant RBAC | Namespace-scoped on the namespaced types, read-only on the catalogue, aggregated into Cozystack's tenant roles | ADR-0024 §3 |
 | C29 | How is the plugin loaded | Build-time first; runtime remotes deferred until a second plugin author exists | ADR-0024 §4 |
+| C30 | How do logs reach the console | A `logs` subresource served by an aggregated API server of ours, reading VictoriaLogs | ADR-0025 §1 |
+| C31 | Who builds the log query | The server, from the object's identity; the caller passes only a range and a filter | ADR-0025 §3 |
+| C32 | Are application logs collected already | Yes — fluent-bit in every tenant cluster ships to the tenant's VictoriaLogs | ADR-0025, context |
 
 ## Open
 
@@ -59,7 +62,8 @@ before the work it blocks), **deferred** (deliberately out of scope for now),
 | O10 | Argo archive retention and its cost | operations | tasks are how everything imperative happens |
 | O11 | Does the build node type wrap kpack in a controller | the build node type | ADR-0021 §2's rule says no; the counter-argument is build logs (O13) |
 | O12 | Will a plugin mechanism be accepted upstream, and when | **the entire UI, and it is on the critical path** | if not, the fallback is a separate panel; decide early rather than after waiting |
-| O13 | Logs from kpack build pods and from tenant-cluster pods | showing a developer why a build failed | no backend of ours, and the browser cannot reach a tenant cluster; largest undesigned area |
+| O15 | Is log `follow` in the first version | UI scope | a bounded polled window may be enough at first |
+| O16 | How much free-text log filtering to expose | log UI | full LogsQL re-creates the injection problem; substring may not be enough |
 | O14 | Should `cozystack-api` learn to project CRD-backed types instead | would remove the need for a plugin registry | larger change to a more load-bearing component, but serves every future extension |
 
 ## Deferred
@@ -86,6 +90,7 @@ part of the model.
 | V3 | A HelmRelease created by us, carrying the three `apps.cozystack.io/application.*` labels and the conventional name prefix, is projected by `cozystack-api` as its typed resource | managed dependencies lose their Cozystack dashboard and RBAC surface |
 | V4 | `WorkloadMonitor`-derived conditions are absent for workloads in a tenant cluster, so readiness must come from our own controller | status design changes |
 | V5 | Cilium network policies in a tenant Kubernetes cluster can express the `cluster` visibility level | visibility collapses to `app` and `public` |
+| V6 | The host cluster's own pod logs reach a `VLCluster`, so kpack build output is collected without extra work | the platform ships a collector scoped to its build namespace |
 
 V1 is the one to run first: it can invalidate the dependency model outright.
 
